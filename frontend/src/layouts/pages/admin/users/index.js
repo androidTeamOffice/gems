@@ -424,6 +424,7 @@ function Users() {
                             options={[
                               { value: "user", label: "User" },
                               { value: "manager", label: "Manager" },
+                              { value: "admin", label: "Admin" },
                             ]}
                             onInputChange={(event) => {
                               setErrors({ ...errors, role: undefined });
