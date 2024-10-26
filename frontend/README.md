@@ -1,5 +1,5 @@
-## Front end app for Statff Management System
+## Front end app for GEMS
 Initialize your your project here.
-
-#TODOs
-- Impl of removing employee from duties if sent on coursem e.g. done in leave module
+## TODO
+- create new file .env and add the followng code in the file:
+`REACT_APP_BASE_URL="http://localhost:3216"`
