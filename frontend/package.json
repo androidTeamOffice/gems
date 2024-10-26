@@ -1,10 +1,11 @@
 {
   "name": "frontend",
   "main": "index.js",
-    "version": "1.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "dev": "node index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -68,6 +69,7 @@
     "react-table": "^7.8.0",
     "react-time-picker": "^7.0.0",
     "reactstrap": "^9.2.2",
+    "rrule": "^2.8.1",
     "sass": "^1.75.0",
     "styled-components": "^6.1.11",
     "stylis-plugin-rtl": "^2.1.1",
@@ -91,7 +93,4 @@
   "devDependencies": {
     "ajv": "^7.2.4"
   }
-  
-
-
 }

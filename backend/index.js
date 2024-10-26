@@ -114,7 +114,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/list", validateToken, (req, res) => {
-  res.send("protected Manpower Management System API!");
+  res.send("protected GEMS API!");
 });
 
 app.use("/api", loginRouter);
