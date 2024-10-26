@@ -4,7 +4,11 @@ This document provides an overview of the backend APIs developed for the project
 
 ## TODO
 - create new file .env and add the followng code in the file:
-`REACT_APP_BASE_URL="http://localhost:3216"`
+`PORT=DBPORT`
+`DB_HOST=DBHOST`
+`DB_USER=DBUSERNAME`
+`DB_PASSWORD=DBPASSWORD`
+`DB_NAME=DBNAME`
 
 
 ## Features
