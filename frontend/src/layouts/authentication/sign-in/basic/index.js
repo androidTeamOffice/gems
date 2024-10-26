@@ -65,12 +65,19 @@ function Basic() {
           sessionStorage.setItem("pdf_excel_hash", response.data.token); // Access data after successful response
           sessionStorage.setItem("isAuthenticated", true);
           sessionStorage.setItem("userName", response.data.user);
+          sessionStorage.setItem("userrole", response.data.role);
           Swal.fire(
             "Welcome",
             response.data.user + "! Glad to have you here.",
             "success"
           );
-          navigate("/dashboards/default");
+          if (response.data.role === "admin") {
+            navigate("/dashboards/default");
+          } else if (response.data.role === "manager") {
+            navigate("/dashboards/manager");
+          } else {
+            navigate("/dashboards/user");
+          }
         } else {
           Swal.fire(error.message, "Invalid username or password", "error");
 
