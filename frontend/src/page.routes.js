@@ -60,6 +60,14 @@ const pageRoutes = [
             route: "/dashboards/default",
           },
           {
+            name: "defaultManager",
+            route: "/dashboards/manager",
+          },
+          {
+            name: "defaultUser",
+            route: "/dashboards/user",
+          },
+          {
             name: "automotive",
             route: "/dashboards/automotive",
           },

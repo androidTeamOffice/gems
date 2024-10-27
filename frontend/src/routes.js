@@ -83,6 +83,8 @@ import LeaveType from "layouts/pages/admin/leavetype";
 import LeaveCircle from "layouts/pages/admin/leavecircle";
 import MedicalStatus from "layouts/pages/admin/medicalstatus"
 import Ranks from "layouts/pages/admin/ranks"
+import DefaultManager from "layouts/dashboards/manager";
+import DefaultUser from "layouts/dashboards/user";
 
 
 
@@ -94,6 +96,39 @@ const routes = [
     key: "dashboard",
     route: "/dashboards/default",
     component: <Default />,
+
+    icon: (
+      <ArgonBox
+        component="i"
+        color="primary"
+        fontSize="14px"
+        className="ni ni-shop"
+      />
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Dashboard",
+    key: "dashboardManager",
+    route: "/dashboards/manager",
+    component: <DefaultManager />,
+
+    icon: (
+      <ArgonBox
+        component="i"
+        color="primary"
+        fontSize="14px"
+        className="ni ni-shop"
+      />
+    ),
+    noCollapse: true,
+  },{
+    type: "collapse",
+    name: "Dashboard",
+    key: "dashboardUser",
+    route: "/dashboards/user",
+    component: <DefaultUser />,
 
     icon: (
       <ArgonBox

@@ -61,7 +61,7 @@ authAxios.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-function Default() {
+function DefaultManager() {
   const { size } = typography;
   const [counters, setCounters] = useState({
     onLeave: 0,
@@ -155,4 +155,4 @@ function Default() {
   );
 }
 
-export default Default;
+export default DefaultManager;

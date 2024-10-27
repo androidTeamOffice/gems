@@ -1,7 +1,8 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -15,28 +16,39 @@ import ArgonButton from "components/ArgonButton";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
-import Socials from "layouts/authentication/components/Socials";
-import Separator from "layouts/authentication/components/Separator";
 
-// Images
-const bgImage =
-  "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-cover.jpg";
+// Background Image
+const bgImage = "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-cover.jpg";
 
-function Cover() {
+function Cover({ role }) {
   const [rememberMe, setRememberMe] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
+  // Handle sign-in based on role
+  const handleSignIn = () => {
+    if (role === "admin") {
+      navigate("/admin/dashboard");
+    } else if (role === "manager") {
+      navigate("/manager/dashboard");
+    } else {
+      navigate("/user/dashboard");
+    }
+  };
+
   return (
     <CoverLayout
-      title="Welcome!"
-      description="Use these awesome forms to login or create new account in your project for free."
+      title={`Welcome, ${role.charAt(0).toUpperCase() + role.slice(1)}!`}
+      description={`Enter your email and password to sign in as ${role}.`}
       image={bgImage}
     >
       <Card>
         <ArgonBox pt={3} px={3}>
           <ArgonTypography variant="h3" color="dark" fontWeight="bold" mb={1}>
-            Welcome back
+            {`Welcome back, ${role.charAt(0).toUpperCase() + role.slice(1)}`}
           </ArgonTypography>
           <ArgonTypography variant="body2" color="text">
             Enter your email and password to sign in
@@ -54,7 +66,12 @@ function Cover() {
               >
                 Email
               </ArgonTypography>
-              <ArgonInput type="email" placeholder="Email" />
+              <ArgonInput
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </ArgonBox>
             <ArgonBox mb={3}>
               <ArgonTypography
@@ -66,7 +83,12 @@ function Cover() {
               >
                 Password
               </ArgonTypography>
-              <ArgonInput type="password" placeholder="Password" />
+              <ArgonInput
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </ArgonBox>
             <ArgonBox display="flex" alignItems="center">
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -80,8 +102,8 @@ function Cover() {
               </ArgonTypography>
             </ArgonBox>
             <ArgonBox mt={4}>
-              <ArgonButton color="info" fullWidth>
-                Sign In
+              <ArgonButton color="info" fullWidth onClick={handleSignIn}>
+                Sign In as {role.charAt(0).toUpperCase() + role.slice(1)}
               </ArgonButton>
             </ArgonBox>
           </ArgonBox>
@@ -104,5 +126,10 @@ function Cover() {
     </CoverLayout>
   );
 }
+
+// Define prop types
+Cover.propTypes = {
+  role: PropTypes.oneOf(["admin", "manager", "user"]).isRequired,
+};
 
 export default Cover;
