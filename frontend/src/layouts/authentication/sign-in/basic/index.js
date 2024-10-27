@@ -18,7 +18,7 @@ const api = axios.create({ baseURL: baseUrl });
 
 function Basic() {
   const navigate = useNavigate();
-  
+
   // Form validation and API Request
   const validations = Yup.object().shape({
     username: Yup.string().required("Username is required"),
@@ -85,22 +85,20 @@ function Basic() {
           <ArgonBox component="form" role="form" onSubmit={formik.handleSubmit}>
             {/* User Type Dropdown */}
             <ArgonBox mb={2}>
-            <ArgonSelect
-  label="User Type"
-  options={[
-    { value: "admin", label: "Admin" },
-    { value: "manager", label: "Manager" },
-    { value: "user", label: "User" },
-  ]}
-  value={formik.values.userType ? { value: formik.values.userType, label: formik.values.userType.charAt(0).toUpperCase() + formik.values.userType.slice(1) } : null} // Format the value
-  onChange={(option) => formik.setFieldValue("userType", option.value)} // Set Formik value
-  fullWidth
-  required
-  error={formik.touched.userType && Boolean(formik.errors.userType)}
-  placeholder="Select User Type" // Custom placeholder
-/>
-
-
+              <ArgonSelect
+                label="User Type"
+                options={[
+                  { value: "admin", label: "Admin" },
+                  { value: "manager", label: "Manager" },
+                  { value: "user", label: "User" },
+                ]}
+                value={formik.values.userType ? { value: formik.values.userType, label: formik.values.userType.charAt(0).toUpperCase() + formik.values.userType.slice(1) } : null} // Format the value
+                onChange={(option) => formik.setFieldValue("userType", option.value)} // Set Formik value
+                fullWidth
+                required
+                error={formik.touched.userType && Boolean(formik.errors.userType)}
+                placeholder="Select User Type" // Custom placeholder
+              />
               {formik.touched.userType && formik.errors.userType && (
                 <ErrorMessage message={formik.errors.userType} />
               )}
@@ -140,6 +138,31 @@ function Basic() {
                 Sign In
               </ArgonButton>
             </ArgonBox>
+          </ArgonBox>
+
+          <ArgonBox mt={2}>
+            <ArgonTypography variant="body2" sx={{ display: 'inline-block', mx: 1 }}>
+              Don't have an account?
+            </ArgonTypography>
+            <ArgonButton
+              color="info"
+              variant="text"
+              onClick={() => navigate("/authentication/sign-up/basic")} // Navigate to Sign Up page
+              sx={{ display: 'inline-block', textTransform: 'none' }}
+            >
+              Sign Up
+            </ArgonButton>
+          </ArgonBox>
+
+          <ArgonBox mt={1}>
+            <ArgonButton
+              variant="text"
+              color="info"
+              onClick={() => navigate("/forgot-password")} // Navigate to Forgot Password page
+              sx={{ display: 'inline-block', textTransform: 'none' }}
+            >
+              Forgot Password?
+            </ArgonButton>
           </ArgonBox>
         </ArgonBox>
       </Card>

@@ -1,35 +1,84 @@
 import { useState } from "react";
-
-// react-router-dom components
-import { Link } from "react-router-dom";
-
-// @mui material components
+import { useFormik } from "formik";
+import { Link, useNavigate } from "react-router-dom"; // react-router-dom components
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
-
-// Argon Dashboard 2 PRO MUI components
+import * as Yup from "yup"; // Yup for form validation
+import axios from "axios"; // Axios for API requests
 import ArgonBox from "components/ArgonBox";
 import ArgonTypography from "components/ArgonTypography";
 import ArgonInput from "components/ArgonInput";
 import ArgonButton from "components/ArgonButton";
-
-// Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 import Socials from "layouts/authentication/components/Socials";
 import Separator from "layouts/authentication/components/Separator";
+import Swal from "sweetalert2"; // SweetAlert for alerts
+import ArgonSelect from "components/ArgonSelect"; // Import ArgonSelect
 
 // Images
-const bgIamge =
+const bgImage =
   "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-basic.jpg";
 
-function Basic() {
-  const [agreement, setAgremment] = useState(true);
+const baseUrl = process.env.REACT_APP_BASE_URL; // Base URL for the API
+const api = axios.create({ baseURL: baseUrl });
 
-  const handleSetAgremment = () => setAgremment(!agreement);
+function Basic() {
+  const navigate = useNavigate();
+  const [agreement, setAgreement] = useState(true);
+
+  const handleSetAgreement = () => { setAgreement(!agreement); console.log("agreement: ", agreement) };
+
+
+
+  // Form validation
+  const validations = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    validationSchema: validations,
+    onSubmit: async (values) => {
+      try {
+        const response = await api.post("/api/signup", values);
+
+        if (response.status === 201) {
+          Swal.fire("Registration Successful", `Welcome aboard! Your journey starts now!`, "success");
+          // Handle successful registration (e.g., navigate to sign-in page)
+          navigate("/authentication/sign-in/basic");
+        }
+        else if (response.status === 400) {
+          Swal.fire("Error", `Username already exists!`, "warning");
+          // Handle successful registration (e.g., navigate to sign-in page)
+        }
+        else {
+          Swal.fire("Error", `Registration failed. Please try again.`, "error");
+          // Handle error responses
+          alert("Registration failed. Please try again.");
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          Swal.fire("Error", `Username already exists!`, "warning");
+          // Handle successful registration (e.g., navigate to sign-in page)
+        } else {
+          console.error("Error during registration:", error);
+          Swal.fire("Error", `Error during registration: ${error}`, "error");
+        }
+      }
+    },
+  });
 
   return (
     <BasicLayout
-      image={bgIamge}
+      image={bgImage}
       button={{ variant: "gradient", color: "dark" }}
     >
       <Card>
@@ -39,44 +88,74 @@ function Basic() {
           </ArgonTypography>
         </ArgonBox>
         <ArgonBox mb={2}>
-          <Socials />
+          {/* <Socials /> */}
         </ArgonBox>
         <ArgonBox px={12}>
-          <Separator />
+          {/* <Separator /> */}
         </ArgonBox>
         <ArgonBox pt={2} pb={3} px={3}>
-          <ArgonBox component="form" role="form">
+          <ArgonBox component="form" role="form" onSubmit={formik.handleSubmit}>
             <ArgonBox mb={2}>
-              <ArgonInput placeholder="Name" />
+              <ArgonInput
+                placeholder="Name"
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+              />
+              {formik.touched.name && formik.errors.name && (
+                <ErrorMessage message={formik.errors.name} />
+              )}
             </ArgonBox>
             <ArgonBox mb={2}>
-              <ArgonInput type="email" placeholder="Email" />
+              <ArgonInput
+                type="email"
+                placeholder="Email"
+                name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+              />
+              {formik.touched.email && formik.errors.email && (
+                <ErrorMessage message={formik.errors.email} />
+              )}
             </ArgonBox>
             <ArgonBox mb={2}>
-              <ArgonInput type="password" placeholder="Password" />
+              <ArgonInput
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+              />
+              {formik.touched.password && formik.errors.password && (
+                <ErrorMessage message={formik.errors.password} />
+              )}
             </ArgonBox>
             <ArgonBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
+              <Checkbox checked={agreement} onChange={handleSetAgreement} />
               <ArgonTypography
                 variant="button"
                 fontWeight="regular"
-                onClick={handleSetAgremment}
+                onClick={handleSetAgreement}
                 sx={{ cursor: "pointer", userSelect: "none" }}
               >
-                &nbsp;&nbsp;I agree the&nbsp;
+                &nbsp;&nbsp;I agree to the&nbsp;
               </ArgonTypography>
               <ArgonTypography
                 component="a"
                 href="#"
+                color="info"
                 variant="button"
                 fontWeight="bold"
-                textGradient
               >
                 Terms and Conditions
               </ArgonTypography>
             </ArgonBox>
             <ArgonBox mt={4} mb={1}>
-              <ArgonButton variant="gradient" color="dark" fullWidth>
+              <ArgonButton color="info" disabled={!agreement || formik.isSubmitting} // Disable if agreement is false or form is submitting
+                fullWidth type="submit">
                 Sign up
               </ArgonButton>
             </ArgonBox>
@@ -91,9 +170,8 @@ function Basic() {
                   component={Link}
                   to="/authentication/sign-in/basic"
                   variant="button"
-                  color="dark"
+                  color="info"
                   fontWeight="bold"
-                  textGradient
                 >
                   Sign in
                 </ArgonTypography>
@@ -103,6 +181,14 @@ function Basic() {
         </ArgonBox>
       </Card>
     </BasicLayout>
+  );
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p style={{ color: "red", fontSize: "0.8rem", margin: "0 0" }}>
+      {message}
+    </p>
   );
 }
 

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const pool = require("../db/db"); // Assuming the file is named db.js
 require("dotenv").config();
 
-const { findUserByUsername } = require("../models/user");
+const { findUserByUsername,addUserToDatabase } = require("../models/user");
 
 const router = express.Router();
 router.post("/login", async (req, res) => {
@@ -52,6 +52,38 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/signup", async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    // Check if the user already exists
+    const existingUser = await findUserByUsername(email);
+
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert the new user into the database    
+    const newUser = addUserToDatabase({ username: email, password: hashedPassword, role: "user" });
+
+    res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        username: newUser.username,
+        role: "user",
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+);
 async function generateRefreshToken(userId) {
   // Replace with your logic to generate a secure random string
   const refreshToken =

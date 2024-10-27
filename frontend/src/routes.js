@@ -25,6 +25,7 @@
 import Default from "layouts/dashboards/default";
 
 import SignInBasic from "layouts/authentication/sign-in/basic";
+import SignUpBasic from "layouts/authentication/sign-up/basic";
 
 // Argon Dashboard 2 PRO MUI components
 import ArgonBox from "components/ArgonBox";
@@ -123,7 +124,7 @@ const routes = [
       />
     ),
     noCollapse: true,
-  },{
+  }, {
     type: "collapse",
     name: "Dashboard",
     key: "dashboardUser",
@@ -614,6 +615,19 @@ const routes = [
             // invisible: true,
             route: "/authentication/sign-in/basic",
             component: <SignInBasic />,
+          },
+        ],
+      },
+      {
+        name: "Sign Up",
+        key: "sign-up",
+        collapse: [
+          {
+            name: "Basic",
+            key: "basic",
+            // invisible: true,
+            route: "/authentication/sign-up/basic",
+            component: <SignUpBasic />,
           },
         ],
       },

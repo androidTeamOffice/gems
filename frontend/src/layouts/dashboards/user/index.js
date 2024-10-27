@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 // Argon Dashboard 2 PRO MUI components
 import ArgonBox from "components/ArgonBox";
 import ArgonTypography from "components/ArgonTypography";
+import Card from "@mui/material/Card";
 
 // Argon Dashboard 2 PRO MUI example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -40,7 +41,9 @@ import salesTableData from "layouts/dashboards/default/data/salesTableData";
 import authorsTableData from "layouts/dashboards/default/data/authorsTableData";
 import categoriesListData from "layouts/dashboards/default/data/categoriesListData";
 import axios from "axios";
-
+import Wizard from "layouts/pages/user_doc_upload";
+import Header from "./components/Header";
+const bgImage = "";
 //
 // Request interceptor to add JWT token to Authorization header (if present)
 const baseUrl = process.env.REACT_APP_BASE_URL; // Assuming variable name is REACT_APP_BASE_URL
@@ -82,71 +85,36 @@ function DefaultUser() {
     }
   };
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <ArgonBox py={3}>
-        <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Leave"
-              count={counters.onLeave}
-              icon={{
-                color: "info",
-                component: <i className="ni ni-send" />,
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Duty"
-              count={counters.onDuty}
-              icon={{
-                color: "error",
-                component: <i className="ni ni-world" />,
-              }}
-              // percentage={{
-              //   color: "success",
-              //   count: "+3%",
-              //   text: "since last week",
-              // }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Rest"
-              count={counters.onRest}
-              icon={{
-                color: "success",
-                component: <i className="ni ni-paper-diploma" />,
-              }}
-              // percentage={{
-              //   color: "error",
-              //   count: "-2%",
-              //   text: "since last quarter",
-              // }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Course"
-              count={counters.onCourse}
-              icon={{
-                color: "warning",
-                component: <i className="ni ni-books" />,
-              }}
-              // percentage={{
-              //   color: "success",
-              //   count: "+5%",
-              //   text: "than last month",
-              // }}
-            />
-          </Grid>
-        </Grid>
+    <DashboardLayout
+      sx={{
+        backgroundImage: ({
+          functions: { rgba, linearGradient },
+          palette: { gradients },
+        }) =>
+          `${linearGradient(
+            rgba(gradients.info.main, 0.6),
+            rgba(gradients.info.state, 0.6)
+          )}, url(${bgImage})`,
+        backgroundPositionY: "50%",
+      }}
+    >
+      <Header />
+      <ArgonBox mt={1} mb={5}>
         <Grid container spacing={3}>
-          <Grid>hi</Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid>hi</Grid>
+          <Grid item xs={12} lg={12}>
+            <Card>
+              <ArgonBox p={2}>
+                <ArgonBox mb={2}>
+                  <Wizard />
+                </ArgonBox>
+
+                <ArgonBox mt={1}>
+                  <Grid container spacing={3}>
+                  </Grid>
+                </ArgonBox>
+              </ArgonBox>
+            </Card>
+          </Grid>
         </Grid>
       </ArgonBox>
 
