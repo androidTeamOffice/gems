@@ -97,7 +97,7 @@ const routes = [
     key: "dashboard",
     route: "/dashboards/default",
     component: <Default />,
-
+    role: ["admin"],
     icon: (
       <ArgonBox
         component="i"
@@ -114,7 +114,7 @@ const routes = [
     key: "dashboardManager",
     route: "/dashboards/manager",
     component: <DefaultManager />,
-
+    role: ["manager"],
     icon: (
       <ArgonBox
         component="i"
@@ -130,7 +130,7 @@ const routes = [
     key: "dashboardUser",
     route: "/dashboards/user",
     component: <DefaultUser />,
-
+    role: ["user"],
     icon: (
       <ArgonBox
         component="i"
@@ -144,83 +144,29 @@ const routes = [
   { type: "title", title: "Management", key: "management" },
   {
     type: "collapse",
-    name: "Leave",
-    key: "leave",
+    name: "Users",
+        key: "add-user",
+        route: "/admin/users/",
+        component: <Users />,
+        role: ["admin"],
+
     icon: (
       <ArgonBox
         component="i"
-        color="warning"
+        color="primary"
         fontSize="14px"
-        className="ni ni-send"
+        className="ni ni-shop"
       />
     ),
-
-    collapse: [
-      {
-        name: "Add Leave",
-        key: "add-leave",
-        route: "/admin/leave/new-leave",
-        component: <NewLeave />,
-      },
-      {
-        name: "Edit Leave",
-        key: "edit-leave",
-        route: "/admin/leave/edit-leave",
-        component: <EditLeave />,
-      },
-      {
-        name: "All Leaves",
-        key: "all-leaves",
-        route: "/admin/leave/leave-list",
-        component: <LeaveList />,
-      },
-    ],
+    noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Duty Schedule",
-    key: "dutymgmt",
-    icon: (
-      <ArgonBox
-        component="i"
-        color="error"
-        fontSize="14px"
-        className="ni ni-ruler-pencil"
-      />
-    ),
 
-    collapse: [
-      {
-        name: "Add Schedule",
-        key: "add-schedule",
-        route: "/admin/schedule/new-schedule",
-        component: <NewSchedule />,
-      },
-      {
-        name: "Edit Schedule",
-        key: "edit-schedule",
-        route: "/admin/schedule/edit-schedule",
-        component: <EditSchedule />,
-      },
-      {
-        name: "All Schedule",
-        key: "all-schedule",
-        route: "/admin/schedule/schedule-list",
-        component: <ScheduleList />,
-      },
-      {
-        name: "Daily Schedule",
-        key: "dailySchedule",
-        route: "/applications/calendar",
-        component: <DailySchedule />,
-      },
-    ],
-  },
   {
     type: "collapse",
     name: "Search",
     key: "search",
     route: "/search",
+    role: ["admin", "manager", "user"],
     component: <SearchData />,
 
     icon: (
@@ -232,363 +178,6 @@ const routes = [
       />
     ),
     noCollapse: true,
-  },
-
-  { type: "divider", key: "divider-2" },
-  { type: "title", title: "Reports", key: "title-reports" },
-  {
-    type: "collapse",
-    name: "Leave Report",
-    key: "leavereport",
-    route: "/reports/leavereport/",
-    component: <LeaveReport />,
-
-    icon: (
-      <ArgonBox
-        component="i"
-        color="success"
-        fontSize="14px"
-        className="ni ni-bus-front-12"
-      />
-    ),
-    noCollapse: true,
-  },
-
-  { type: "divider", key: "divider-1" },
-  { type: "title", title: "Admin", key: "title-admin" },
-  {
-    type: "collapse",
-    name: "Basic Information",
-    key: "basic",
-    icon: (
-      <ArgonBox
-        component="i"
-        color="success"
-        fontSize="14px"
-        className="ni ni-single-copy-04"
-      />
-    ),
-    collapse: [
-      {
-        name: "Bio Data",
-        key: "biodata",
-        collapse: [
-          {
-            name: "Add BioData",
-            key: "add-biodata",
-            route: "/admin/biodata/new-biodata",
-            component: <NewBioData />,
-          },
-          {
-            name: "Edit BioData",
-            key: "edit-biodata",
-            route: "/admin/biodata/edit-biodata",
-            component: <EditBioData />,
-          },
-
-          {
-            name: "BioData List",
-            key: "biodata-list",
-            route: "/admin/biodata/biodata-list",
-            component: <BioDataList />,
-          },
-        ],
-      },
-      {
-        name: "Contact Addresses",
-        key: "contactaddresses",
-        collapse: [
-          {
-            name: "Add Contact",
-            key: "add-contact",
-            route: "/admin/contact/new-contact",
-            component: <NewContact />,
-          },
-          {
-            name: "Edit Contact",
-            key: "edit-contact",
-            route: "/admin/contact/edit-contact",
-            component: <EditContact />,
-          },
-
-          {
-            name: "Contact List",
-            key: "contact-list",
-            route: "/admin/contact/contact-list",
-            component: <ContactList />,
-          },
-        ],
-      },
-      {
-        name: "NOK",
-        key: "nok",
-        collapse: [
-          {
-            name: "Add NOK",
-            key: "add-nok",
-            route: "/admin/nok/new-nok",
-            component: <NewNOK />,
-          },
-          {
-            name: "Edit NOK",
-            key: "edit-nok",
-            route: "/admin/nok/edit-nok",
-            component: <EditNOK />,
-          },
-
-          {
-            name: "NOK List",
-            key: "nok-list",
-            route: "/admin/nok/nok-list",
-            component: <NOKList />,
-          },
-        ],
-      },
-      {
-        name: "Employee",
-        key: "employee",
-        collapse: [
-          // {
-          //   name: "Add Employee",
-          //   key: "add-employee",
-          //   route: "/admin/employee/new-employee",
-          //   component: <NewEmployee />,
-          // },
-          {
-            name: "Edit Employee",
-            key: "edit-employee",
-            route: "/admin/employee/edit-employee",
-            component: <EditEmployee />,
-          },
-
-          {
-            name: "Employee List",
-            key: "employee-list",
-            route: "/admin/employee/employee-list",
-            component: <EmployeList />,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "collapse",
-    name: "Courses/ Promotions",
-    key: "courses",
-    icon: (
-      <ArgonBox
-        component="i"
-        color="info"
-        fontSize="14px"
-        className="ni ni-books"
-      />
-    ),
-    collapse: [
-      {
-        name: "Course",
-        key: "course",
-        collapse: [
-          {
-            name: "Add Course",
-            key: "add-course",
-            route: "/admin/course/new-course",
-            component: <NewCourse />,
-          },
-          {
-            name: "Edit Course",
-            key: "edit-course",
-            route: "/admin/course/edit-course",
-            component: <EditCourse />,
-          },
-
-          {
-            name: "Course List",
-            key: "course-list",
-            route: "/admin/course/courses-list",
-            component: <CourseList />,
-          },
-        ],
-      },
-      {
-        name: "Course Details",
-        key: "coursecompletion",
-        collapse: [
-          {
-            name: "Add Course Completion",
-            key: "add-coursecompletion",
-            route: "/admin/coursecompletion/new-coursecompletion",
-            component: <NewCourseCompletion />,
-          },
-          {
-            name: "Edit Course Completion",
-            key: "edit-coursecompletion",
-            route: "/admin/coursecompletion/edit-coursecompletion",
-            component: <EditCourseCompletion />,
-          },
-
-          {
-            name: "Course Completion List",
-            key: "coursecompletion-list",
-            route: "/admin/coursecompletion/coursecompletion-list",
-            component: <CourseCompletionList />,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "collapse",
-    name: "LUVs",
-    key: "luvs",
-    icon: (
-      <ArgonBox
-        component="i"
-        color="inherit"
-        fontSize="14px"
-        className="ni ni-settings"
-      />
-    ),
-
-    collapse: [
-      {
-        name: "Users",
-        key: "add-user",
-        route: "/admin/users/",
-        component: <Users />,
-      },
-      {
-        name: "Trade",
-        key: "trade",
-        route: "/admin/trade/",
-        component: <Trade />,
-      },
-      {
-        name: "LeaveType",
-        key: "trade",
-        route: "/admin/leavetype/",
-        component: <LeaveType />,
-      },
-      {
-        name: "Medical Status",
-        key: "medicalstatus",
-        route: "/admin/medicalstatus/",
-        component: <MedicalStatus />,
-      },
-      {
-        name: "Ranks",
-        key: "ranks",
-        route: "/admin/ranks/",
-        component: <Ranks />,
-      },
-
-      {
-        name: "Battery",
-        key: "batteries",
-        collapse: [
-          {
-            name: "Add Battery",
-            key: "add-battery",
-            route: "/admin/batteries/new-battery",
-            component: <NewBattery />,
-          },
-          {
-            name: "Edit Battery",
-            key: "edit-battery",
-            route: "/admin/batteries/edit-battery",
-            component: <EditBattery />,
-          },
-
-          {
-            name: "Batteries List",
-            key: "batteries-list",
-            route: "/admin/batteries/batteries-list",
-            component: <BatteryList />,
-          },
-        ],
-      },
-      {
-        name: "Appts",
-        key: "appts",
-        collapse: [
-          {
-            name: "Add Appt",
-            key: "add-appt",
-            route: "/admin/appts/new-appt",
-            component: <NewAppt />,
-          },
-          {
-            name: "Edit Appt",
-            key: "edit-appt",
-            route: "/admin/appts/edit-appt",
-            component: <EditAppt />,
-          },
-
-          {
-            name: "Appts List",
-            key: "appts-list",
-            route: "/admin/appts/appts-list",
-            component: <ApptList />,
-          },
-        ],
-      },
-
-      {
-        name: "Locations",
-        key: "location",
-        collapse: [
-          {
-            name: "Add Location",
-            key: "add-location",
-            route: "/admin/location/new-location",
-            component: <NewLocation />,
-          },
-          {
-            name: "Edit Location",
-            key: "edit-location",
-            route: "/admin/location/edit-location",
-            component: <EditLocation />,
-          },
-
-          {
-            name: "Locations List",
-            key: "locations-list",
-            route: "/admin/location/locations-list",
-            component: <LocationList />,
-          },
-        ],
-      },
-      {
-        name: "Duties",
-        key: "duty",
-        collapse: [
-          {
-            name: "Add Duty",
-            key: "add-duty",
-            route: "/admin/duty/new-duty",
-            component: <NewDuty />,
-          },
-          {
-            name: "Edit Duty",
-            key: "edit-duty",
-            route: "/admin/duty/edit-duty",
-            component: <EditDuty />,
-          },
-
-          {
-            name: "Duty List",
-            key: "duty-list",
-            route: "/admin/duty/duty-list",
-            component: <DutyList />,
-          },
-        ],
-      },
-      {
-        name: "Leave Circle",
-        key: "add-lveCircle",
-        route: "/admin/leavecircle/",
-        component: <LeaveCircle />,
-      },
-    ],
   },
   {
     type: "collapse",
@@ -615,6 +204,7 @@ const routes = [
             // invisible: true,
             route: "/authentication/sign-in/basic",
             component: <SignInBasic />,
+            role: ["admin", "manager", "user","guest"],
           },
         ],
       },
@@ -628,11 +218,27 @@ const routes = [
             // invisible: true,
             route: "/authentication/sign-up/basic",
             component: <SignUpBasic />,
+            role: ["admin", "manager", "user","guest"],
           },
+          
         ],
       },
     ],
   },
 ];
 
-export default routes;
+function filterRoutesByRole(routes, userRole) {
+  return routes
+    .map(route => {
+      if (route.collapse) {
+        const filteredCollapse = filterRoutesByRole(route.collapse, userRole);
+        return filteredCollapse.length ? { ...route, collapse: filteredCollapse } : null;
+      }
+      return route.role && route.role.includes(userRole) ? route : null;
+    })
+    .filter(route => route !== null);
+}
+
+// Example usage:
+
+export { routes, filterRoutesByRole };

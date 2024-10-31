@@ -13,11 +13,12 @@ import themeDarkRTL from "assets/theme-dark/theme-rtl";
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import routes from "routes";
+
+import { useUserRole } from "./context/UserRoleContext"; 
 import {
   useArgonController,
   setMiniSidenav,
-  setOpenConfigurator,
+  setOpenConfigurator,  // Assuming setUserRole exists in the context
 } from "context";
 import brand from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
@@ -26,16 +27,11 @@ import "assets/css/nucleo-svg.css";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-
 const handleSessionTimeout = () => {
-  // Clear session storage or any other session-related data
   sessionStorage.clear();
   localStorage.clear();
-
-  // Redirect to the sign-in page
   window.location.replace("/authentication/sign-in/basic");
 
-  // Show the alert with a brief delay to give a chance to display it
   setTimeout(() => {
     Swal.fire({
       title: 'Session Timeout',
@@ -43,7 +39,7 @@ const handleSessionTimeout = () => {
       icon: 'warning',
       confirmButtonText: 'OK',
     });
-  }, 100); // Short delay before showing the alert
+  }, 100);
 };
 
 export default function App() {
@@ -56,13 +52,15 @@ export default function App() {
     sidenavColor,
     darkSidenav,
     darkMode,
+   
+      // Accessing userRole from context
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-  const navigate = useNavigate(); // Hook to navigate programmatically
-
-  // Cache for the rtl
+  const navigate = useNavigate();
+  const { roleBaseRoutes, role } = useUserRole(); 
+  // Cache for RTL
   useMemo(() => {
     const cacheRtl = createCache({
       key: "rtl",
@@ -72,7 +70,7 @@ export default function App() {
     setRtlCache(cacheRtl);
   }, []);
 
-  // Open sidenav when mouse enter on mini sidenav
+  // Open sidenav when mouse enters on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -80,7 +78,7 @@ export default function App() {
     }
   };
 
-  // Close sidenav when mouse leave mini sidenav
+  // Close sidenav when mouse leaves mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);
@@ -88,7 +86,7 @@ export default function App() {
     }
   };
 
-  // Change the openConfigurator state
+  // Toggle configurator open state
   const handleConfiguratorOpen = () =>
     setOpenConfigurator(dispatch, !openConfigurator);
 
@@ -103,25 +101,29 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  // Timer for session inactivity
+  // Timer for session inactivity and role-based route setup
   useEffect(() => {
     let timeout;
+    
     const resetTimer = () => {
       clearTimeout(timeout);
-      timeout = setTimeout(handleSessionTimeout, 5 * 60 * 1000); // 5 minutes timeout
+      timeout = setTimeout(handleSessionTimeout, 5 * 60 * 1000); // 5-minute timeout
     };
 
     // Set up event listeners to detect user activity
-    window.addEventListener('mousemove', resetTimer);
-    window.addEventListener('keypress', resetTimer);
+    window.addEventListener("mousemove", resetTimer);
+    window.addEventListener("keypress", resetTimer);
+
+    // Retrieve and set role-based routes using userRole from context
+  
 
     // Clean up event listeners and timer on component unmount
     return () => {
       clearTimeout(timeout);
-      window.removeEventListener('mousemove', resetTimer);
-      window.removeEventListener('keypress', resetTimer);
+      window.removeEventListener("mousemove", resetTimer);
+      window.removeEventListener("keypress", resetTimer);
     };
-  }, []);
+  }, [ dispatch]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -177,7 +179,7 @@ export default function App() {
               color={sidenavColor}
               brand={darkSidenav || darkMode ? brand : brandDark}
               brandName="GEMS"
-              routes={routes}
+              routes={roleBaseRoutes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -187,7 +189,7 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
+          {getRoutes(roleBaseRoutes)}
           <Route
             path="*"
             element={<Navigate to="/authentication/sign-in/basic" />}
@@ -204,7 +206,7 @@ export default function App() {
             color={sidenavColor}
             brand={darkSidenav || darkMode ? brand : brandDark}
             brandName="GEMS"
-            routes={routes}
+            routes={roleBaseRoutes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -214,7 +216,7 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
+        {getRoutes(roleBaseRoutes)}
         <Route
           path="*"
           element={<Navigate to="/authentication/sign-in/basic" />}
