@@ -1,93 +1,53 @@
 import React from 'react';
-import { Container, Box, Typography, Button, TextField, MenuItem, Stepper, Step, StepLabel } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Box, Typography, Button, TextField, MenuItem, Paper, Container } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    backgroundColor: '#f8f9fa',
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  box: {
-    backgroundColor: 'white',
-    padding: theme.spacing(4),
-    borderRadius: theme.spacing(1),
-    boxShadow: theme.shadows[3],
-    width: '80%',
-    maxWidth: '900px',
-  },
-  stepper: {
-    marginBottom: theme.spacing(4),
-  },
-  textField: {
-    width: '100%',
-    marginBottom: theme.spacing(2),
-  },
-  button: {
-    marginTop: theme.spacing(2),
-    backgroundColor: '#5e72e4',
-    color: 'white',
-  },
-}));
-
-const steps = ['Personal Info', 'Other Details', 'Documents', 'Appt Details', 'Print'];
-
-const AppointmentForm = () => {
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(3);
-  const [appointmentDate, setAppointmentDate] = React.useState('31-10-2024');
-  const [timeSlot, setTimeSlot] = React.useState('');
-
+function AppointmentForm() {
   return (
-    <Container className={classes.container}>
-      <Box className={classes.box}>
-        <Stepper activeStep={activeStep} className={classes.stepper}>
-          {steps.map((label, index) => (
-            <Step key={index}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      {/* Form Fields */}
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+        {/* Left Section */}
+        <Box flex={1} mr={2}>
+          <Typography variant="body1" mb={1}>Preferred Appointment Day:</Typography>
+          <TextField
+            type="date"
+            defaultValue="2024-10-31"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Box>
 
-        <Typography variant="h6" gutterBottom>
-          Appt Details
-        </Typography>
-        
-        <TextField
-          label="Preferred Appointment Day"
-          type="date"
-          value={appointmentDate}
-          onChange={(e) => setAppointmentDate(e.target.value)}
-          className={classes.textField}
-          InputLabelProps={{ shrink: true }}
-        />
+        {/* Right Section */}
+        <Box flex={1} ml={2}>
+          <Typography variant="body1" mb={1}>Time Slot Available:</Typography>
+          <TextField
+            select
+            defaultValue=""
+            fullWidth
+            variant="outlined"
+            disabled
+          >
+            <MenuItem value="">Select time slot</MenuItem>
+            {/* Populate with actual options if available */}
+          </TextField>
+        </Box>
+      </Box>
 
-        <TextField
-          select
-          label="Time Slot Available"
-          value={timeSlot}
-          onChange={(e) => setTimeSlot(e.target.value)}
-          className={classes.textField}
-        >
-          {/* Add available time slots here */}
-          <MenuItem value="9am-10am">9am-10am</MenuItem>
-          <MenuItem value="10am-11am">10am-11am</MenuItem>
-          {/* ... more time slots */}
-        </TextField>
+      {/* Appointment Allotted Text */}
+      <Typography variant="body2" color="textSecondary" align="center" mb={4}>
+        Appointment Allotted: From null hours on 31-10-2024
+      </Typography>
 
-        <Typography variant="body2" color="textSecondary">
-          Appointment Alloted: From {timeSlot ? timeSlot : 'null'} hours on {appointmentDate}
-        </Typography>
-
-        <Button variant="contained" className={classes.button}>
+      {/* Next Button */}
+      <Box textAlign="right">
+        <Button variant="contained" color="success">
           Next
         </Button>
       </Box>
     </Container>
   );
-};
+}
 
 export default AppointmentForm;

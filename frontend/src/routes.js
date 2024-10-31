@@ -86,6 +86,7 @@ import MedicalStatus from "layouts/pages/admin/medicalstatus"
 import Ranks from "layouts/pages/admin/ranks"
 import DefaultManager from "layouts/dashboards/manager";
 import DefaultUser from "layouts/dashboards/user";
+import UserInfo from "layouts/pages/user_doc_upload";
 
 
 
@@ -158,6 +159,25 @@ const routes = [
         className="ni ni-shop"
       />
     ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Users",
+        key: "add-user",
+        route: "/users/info/",
+        component: <UserInfo />,
+        role: ["user"],
+
+    icon: (
+      <ArgonBox
+        component="i"
+        color="primary"
+        fontSize="14px"
+        className="ni ni-shop"
+      />
+    ),
+    hide: true,
     noCollapse: true,
   },
 

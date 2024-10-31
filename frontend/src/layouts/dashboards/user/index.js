@@ -41,8 +41,12 @@ import salesTableData from "layouts/dashboards/default/data/salesTableData";
 import authorsTableData from "layouts/dashboards/default/data/authorsTableData";
 import categoriesListData from "layouts/dashboards/default/data/categoriesListData";
 import axios from "axios";
-import Wizard from "layouts/pages/user_doc_upload";
+// import Wizard from "layouts/pages/user_doc_upload";
+
 import Header from "./components/Header";
+import UserLandingPage from "../../pages/user_doc_upload/components/landingpage";
+import UserMain from "../../pages/user_doc_upload";
+
 const bgImage = "";
 //
 // Request interceptor to add JWT token to Authorization header (if present)
@@ -72,6 +76,10 @@ function DefaultUser() {
     onRest: 0,
     onCourse: 0,
   });
+
+  const [switcher, setSwitcher] = useState(
+    false
+  );
 
   useEffect(() => {
     fetchCounters();
@@ -105,9 +113,8 @@ function DefaultUser() {
             <Card>
               <ArgonBox p={2}>
                 <ArgonBox mb={2}>
-                  <Wizard />
+                  <UserLandingPage />
                 </ArgonBox>
-
                 <ArgonBox mt={1}>
                   <Grid container spacing={3}>
                   </Grid>
@@ -117,7 +124,6 @@ function DefaultUser() {
           </Grid>
         </Grid>
       </ArgonBox>
-
       <Footer />
     </DashboardLayout>
   );

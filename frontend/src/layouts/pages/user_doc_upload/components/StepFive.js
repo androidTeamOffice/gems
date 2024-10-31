@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
   container: {
     backgroundColor: '#f8f9fa',
-    height: '100vh',
+  
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -13,26 +13,26 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     backgroundColor: 'white',
-    padding: theme.spacing(4),
-    borderRadius: theme.spacing(1),
-    boxShadow: theme.shadows[3],
+    padding:1,
+    borderRadius: 1,
+    boxShadow: 3,
     width: '80%',
     maxWidth: '1200px',
   },
   stepper: {
-    marginBottom: theme.spacing(4),
+    marginBottom: 4,
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: 2,
     backgroundColor: '#d4e157',
   },
   button: {
-    marginTop: theme.spacing(2),
+    marginTop: 2,
     backgroundColor: '#5e72e4',
     color: 'white',
   },
   footer: {
-    marginTop: theme.spacing(4),
+    marginTop: 1,
     textAlign: 'center',
   },
 }));
@@ -44,21 +44,11 @@ const DocumentSubmission = () => {
   const [activeStep, setActiveStep] = React.useState(4);
 
   return (
-    <Container className={classes.container}>
-      <Box className={classes.box}>
-        <Stepper activeStep={activeStep} className={classes.stepper}>
-          {steps.map((label, index) => (
-            <Step key={index}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+    <Container >
+      <Box>
+     
 
-        <Typography variant="h6" gutterBottom>
-          Print
-        </Typography>
-
-        <Paper className={classes.paper}>
+        <Paper >
           <Typography variant="body2" paragraph>
             The information provided by you must be correct in all aspects. Failing to provide correct information
             will lead to permanent ban from garrison premises and other legal action.
@@ -99,13 +89,7 @@ const DocumentSubmission = () => {
           </Typography>
         </Paper>
 
-        <Button variant="contained" className={classes.button}>
-          Preview
-        </Button>
-
-        <Typography variant="body2" className={classes.footer}>
-          Copyright © 2024 GEMS. Powered By Inotech Solutions
-        </Typography>
+    
       </Box>
     </Container>
   );
