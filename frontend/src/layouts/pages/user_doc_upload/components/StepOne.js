@@ -1,67 +1,89 @@
 // components/StepOne.js
 import React from 'react';
-import { Box, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Grid,
+  Typography,
+  TextField,
+} from '@mui/material';
 import TextFieldPair from '../../../../components/TextFieldPair';
 
 const StepOne = () => (
-  <div>
-    <h2>Personal Info</h2>
-    <TextFieldPair label1="Applicant Name" label2="CNIC" />
-    <TextFieldPair label1="Mobile No" label2="Home Phone.no (optional)" />
+  <Box padding={3} borderRadius={8} bgcolor="#f8f9fa">
+    <Typography variant="h5" gutterBottom>
+      Personal Info
+    </Typography>
 
-<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}></div>
-<Box display="flex" alignItems="center" gap={28} margin="normal">
-<FormControl component="fieldset">
-  <FormLabel component="legend">Applicant</FormLabel>
-  <RadioGroup row aria-label="Applicant" name="Applicant">
-    <FormControlLabel
-      value="New"
-      control={<Radio />}
-      label="New"
-      sx={{ marginLeft: '10px' }}
-    />
-    <FormControlLabel
-      value="For Renewal"
-      control={<Radio />}
-      label="For Renewal"
-      sx={{ marginLeft: '20px' }} // Adds space before "For Renewal"
-    />
-  </RadioGroup>
-</FormControl>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6}>
+        <TextFieldPair label1="Applicant Name" label2="CNIC" />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextFieldPair label1="Mobile No" label2="Home Phone No (optional)" />
+      </Grid>
+    </Grid>
 
-<FormControl component="fieldset">
-  <FormLabel component="legend">Gender</FormLabel>
-  <RadioGroup row aria-label="gender" name="gender">
-    <FormControlLabel
-      value="male"
-      control={<Radio />}
-      label="Male"
-      sx={{ marginLeft: '10px' }} // Space before "Male"
-    />
-    <FormControlLabel
-      value="female"
-      control={<Radio />}
-      label="Female"
-      sx={{ marginLeft: '20px' }} // Space before "Female"
-    />
-    <FormControlLabel
-      value="other"
-      control={<Radio />}
-      label="Other"
-      sx={{ marginLeft: '20px' }} // Space before "Other"
-    />
-  </RadioGroup>
-</FormControl>
+    <Box display="flex" justifyContent="space-evenly" alignItems="flex-start" marginBottom={2}>
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Applicant</FormLabel>
+        <RadioGroup row aria-label="Applicant" name="Applicant">
+          <FormControlLabel value="New" control={<Radio />} label="New" />
+          <FormControlLabel value="For Renewal" control={<Radio />} label="For Renewal" />
+        </RadioGroup>
+      </FormControl>
 
-</Box>
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Gender</FormLabel>
+        <RadioGroup row aria-label="gender" name="gender">
+          <FormControlLabel value="male" control={<Radio />} label="Male" />
+          <FormControlLabel value="female" control={<Radio />} label="Female" />
+          <FormControlLabel value="other" control={<Radio />} label="Other" />
+        </RadioGroup>
+      </FormControl>
+    </Box>
 
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6}>
+        <TextFieldPair label1="Occupation" label2="Father/Husband Name" />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextFieldPair label1="Guardian Contact Number" label2="Guardian CNIC" />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextFieldPair label1="Province" label2="Caste" />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextFieldPair label1="Present Address" label2="Permanent Address" />
+      </Grid>
+    </Grid>
 
-    <TextFieldPair label1="Occupation" label2="Father/Husband Name" />
-    <TextFieldPair label1="Guardian Contact Number" label2="Guardian CNIC" />
-    <TextFieldPair label1="Province" label2="Caste" />
-    <TextFieldPair label1="Present Address" label2="Permanent Address" />
-    <TextField label="Nationality" fullWidth margin="normal" />
-  </div>
+    {/* Converted Nationality to TextFieldPair */}
+    <Grid item xs={12}>
+      <TextField
+        label="Nationality"
+        fullWidth
+        margin="normal"
+        InputLabelProps={{
+          sx: {
+            fontSize: '0.9rem', // Adjust label font size
+          },
+        }}
+        InputProps={{
+          sx: {
+            '&::placeholder': {
+              fontSize: '0.8rem', // Adjust placeholder font size
+            },
+          },
+        }}
+        placeholder="Nationality"
+      />
+    </Grid>
+  </Box>
 );
 
 export default StepOne;

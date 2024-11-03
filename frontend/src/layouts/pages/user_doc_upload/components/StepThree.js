@@ -1,32 +1,53 @@
 // components/StepThree.js
 import React from 'react';
-import { TextField, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+} from '@mui/material';
 
 const StepThree = () => (
-  <div>
-    <h2>Documents</h2>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}></div>
-    <div>
-  <Button variant="outlined" component="label" style={{ marginBottom: '10px' }}>
-    Upload Front Side of CNIC
-    <input type="file" hidden />
-  </Button>
-</div>
-<div>
-<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}></div>
-  <Button variant="outlined" component="label" style={{ marginBottom: '10px' }}>
-    Upload Back Side of CNIC
-    <input type="file" hidden />
-  </Button>
-</div>
-<div>
-<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}></div>
-  <Button variant="outlined" component="label" style={{ marginBottom: '10px' }}>
-    Upload Police Verification Scanned Copy
-    <input type="file" hidden />
-  </Button>
-</div>
-  </div>
+  <Box padding={3} borderRadius={8} bgcolor="#f8f9fa">
+    <Typography variant="h5" gutterBottom>
+      Documents
+    </Typography>
+
+    <Box marginBottom={2}>
+      <Button
+        variant="contained"
+        component="label"
+        style={{ marginBottom: '10px' }}
+        sx={{ color: 'white' }} // Ensure the text color is white
+      >
+        Upload Front Side of CNIC
+        <input type="file" hidden />
+      </Button>
+    </Box>
+
+    <Box marginBottom={2}>
+      <Button
+        variant="contained"
+        component="label"
+        style={{ marginBottom: '10px' }}
+        sx={{ color: 'white' }} // Ensure the text color is white
+      >
+        Upload Back Side of CNIC
+        <input type="file" hidden />
+      </Button>
+    </Box>
+
+    <Box marginBottom={2}>
+      <Button
+        variant="contained"
+        component="label"
+        style={{ marginBottom: '10px' }}
+        sx={{ color: 'white' }} // Ensure the text color is white
+      >
+        Upload Police Verification Scanned Copy
+        <input type="file" hidden />
+      </Button>
+    </Box>
+  </Box>
 );
 
 export default StepThree;
