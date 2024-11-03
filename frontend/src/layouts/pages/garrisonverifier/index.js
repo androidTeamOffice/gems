@@ -21,8 +21,6 @@ import axios from "axios";
 
 import Header from "../../dashboards/user/components/Header";
 import Button from '@mui/material/Button';
-import GarrisonTable from "./components/Garrision/GarrisonTable";
-import GarrisonSearch from "./components/Garrision/GarrisonSearch";
 
 
 const bgImage = "";
@@ -69,12 +67,8 @@ function Verifier() {
           <Grid item xs={12} lg={12}>
             <Card>
               <ArgonBox p={2}>
-                <ArgonBox mb={2}>
-                  <GarrisonSearch />
-                  <GarrisonTable data={[{name:"Umair",cnic:"81302-3941119-8",rank:"GSO-3"},{name:"Samavia",cnic:"32302-3941119-9",rank:"BCF"}]} >
-                     
-                    
-                                  </GarrisonTable>
+                              <ArgonBox mb={2}>
+                                  
                               </ArgonBox>
                 <ArgonBox mt={1}>
                   <Grid container spacing={3}>
