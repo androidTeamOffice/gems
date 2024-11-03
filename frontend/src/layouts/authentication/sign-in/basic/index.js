@@ -22,7 +22,7 @@ function Basic() {
 
   // Form validation and API Request
   const validations = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
+    username: Yup.string().required("CNIC/ Mobile number is required"),
     password: Yup.string()
       .required("Password is required")
       .min(6, "Password must be at least 6 characters"),
@@ -89,7 +89,7 @@ function Basic() {
             <ArgonBox mb={2}>
               <ArgonInput
                 type="text"
-                placeholder="Username"
+                placeholder="CNIC or Mobile number"
                 name="username"
                 value={formik.values.username}
                 onChange={formik.handleChange}
