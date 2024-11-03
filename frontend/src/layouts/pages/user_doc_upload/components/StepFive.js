@@ -1,95 +1,141 @@
-import React from 'react';
-import { Container, Box, Typography, Button, Stepper, Step, StepLabel, Paper } from '@mui/material';
+import React, { useRef } from 'react';
+import { Container, Box, Button, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme) => ({
+// Dummy data to simulate form state (replace with actual state or props)
+const formData = {
+  stepOne: {
+    applicantName: "John Doe",
+    cnic: "12345-6789012-3",
+    mobile: "0300-1234567",
+    homePhone: "021-1234567",
+    applicantType: "New",
+    gender: "Male",
+    occupation: "Engineer",
+    fatherName: "Mr. Doe",
+    guardianContact: "0300-7654321",
+    guardianCnic: "98765-4321098-7",
+    province: "Province Name",
+    caste: "Caste Name",
+    presentAddress: "123 Main St",
+    permanentAddress: "456 Another St",
+    nationality: "Country Name"
+  },
+  stepTwo: {
+    disability: "No",
+    vehicleModel: "Toyota Corolla",
+    vehicleMake: "2020",
+    vehicleType: "Sedan",
+    vehicleRegistration: "ABC-123",
+    cardDuration: "1 Year"
+  },
+  stepThree: {
+    uploadedDocuments: ["CNIC Front", "CNIC Back", "Police Verification"]
+  },
+  stepFour: {
+    appointmentDate: "2024-10-31",
+    timeSlot: "8:00 AM - 8:30 AM",
+    appointmentLocation: "Main Office, Building A"
+  }
+};
+
+const useStyles = makeStyles({
   container: {
     backgroundColor: '#f8f9fa',
-  
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  box: {
-    backgroundColor: 'white',
-    padding:1,
-    borderRadius: 1,
-    boxShadow: 3,
-    width: '80%',
-    maxWidth: '1200px',
-  },
-  stepper: {
-    marginBottom: 4,
-  },
-  paper: {
-    padding: 2,
-    backgroundColor: '#d4e157',
-  },
   button: {
-    marginTop: 2,
+    marginTop: '16px',
     backgroundColor: '#5e72e4',
     color: 'white',
   },
-  footer: {
-    marginTop: 1,
-    textAlign: 'center',
-  },
-}));
-
-const steps = ['Personal Info', 'Other Details', 'Documents', 'Appt Details', 'Print'];
+});
 
 const DocumentSubmission = () => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(4);
+  const printRef = useRef();
+
+  const handlePreview = () => {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Application Preview</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { margin-top: 20px; }
+            strong { font-weight: bold; }
+            .print-button {
+              position: fixed;
+              top: 10px;
+              right: 10px;
+              background-color: #5e72e4;
+              color: white;
+              padding: 8px 16px;
+              border: none;
+              cursor: pointer;
+              font-size: 14px;
+            }
+          </style>
+        </head>
+        <body>
+          <button class="print-button" onclick="window.print()">Print</button>
+          ${printRef.current.innerHTML}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
 
   return (
-    <Container >
+    <Container className={classes.container}>
       <Box>
-     
+        <Button className={classes.button} onClick={handlePreview}>
+          Preview
+        </Button>
 
-        <Paper >
-          <Typography variant="body2" paragraph>
-            The information provided by you must be correct in all aspects. Failing to provide correct information
-            will lead to permanent ban from garrison premises and other legal action.
-          </Typography>
-          <Typography variant="body2" paragraph>
-            It is further requested that form may be downloaded and hardcopy to be brought along on assigned date & time.
-          </Typography>
+        {/* Hidden content for previewing and printing */}
+        <div style={{ display: 'none' }} ref={printRef}>
+          <Paper>
+            <h2>Step One: Personal Info</h2>
+            <p><strong>Applicant Name:</strong> {formData.stepOne.applicantName}</p>
+            <p><strong>CNIC:</strong> {formData.stepOne.cnic}</p>
+            <p><strong>Mobile No:</strong> {formData.stepOne.mobile}</p>
+            <p><strong>Home Phone:</strong> {formData.stepOne.homePhone}</p>
+            <p><strong>Applicant Type:</strong> {formData.stepOne.applicantType}</p>
+            <p><strong>Gender:</strong> {formData.stepOne.gender}</p>
+            <p><strong>Occupation:</strong> {formData.stepOne.occupation}</p>
+            <p><strong>Father/Husband Name:</strong> {formData.stepOne.fatherName}</p>
+            <p><strong>Guardian Contact Number:</strong> {formData.stepOne.guardianContact}</p>
+            <p><strong>Guardian CNIC:</strong> {formData.stepOne.guardianCnic}</p>
+            <p><strong>Province:</strong> {formData.stepOne.province}</p>
+            <p><strong>Caste:</strong> {formData.stepOne.caste}</p>
+            <p><strong>Present Address:</strong> {formData.stepOne.presentAddress}</p>
+            <p><strong>Permanent Address:</strong> {formData.stepOne.permanentAddress}</p>
+            <p><strong>Nationality:</strong> {formData.stepOne.nationality}</p>
 
-          <Typography variant="h6" gutterBottom>
-            APPLICATION FORM MUST BE SUBMITTED WITH FOLLOWING DOCUMENTS
-          </Typography>
+            <h2>Step Two: Other Details</h2>
+            <p><strong>Disability/Reasonable Adjustment:</strong> {formData.stepTwo.disability}</p>
+            <p><strong>Vehicle Model:</strong> {formData.stepTwo.vehicleModel}</p>
+            <p><strong>Vehicle Make:</strong> {formData.stepTwo.vehicleMake}</p>
+            <p><strong>Vehicle Type:</strong> {formData.stepTwo.vehicleType}</p>
+            <p><strong>Vehicle Registration No:</strong> {formData.stepTwo.vehicleRegistration}</p>
+            <p><strong>Card Duration:</strong> {formData.stepTwo.cardDuration}</p>
 
-          <Typography variant="body2" paragraph>
-            <strong>ALL Cat less Residents & Non Residents</strong><br />
-            1. CNIC / FRC copy.<br />
-            2. Passport size picture.<br />
-            3. Copy of vehicle's documents registered in the name of applicant. In case the vehicle is not yet
-            registered in the name of applicant, the transfer letter may be attached.<br />
-            4. Father / Mother CNIC & FRC copy (For Student Only).<br />
-            5. Authority letter from School (For Student only).
-          </Typography>
+            <h2>Step Three: Documents</h2>
+            {formData.stepThree.uploadedDocuments.map((doc, index) => (
+              <p key={index}><strong>{doc}</strong> uploaded</p>
+            ))}
 
-          <Typography variant="body2" paragraph>
-            <strong>Residents & Non Residents (Apart from Above)</strong><br />
-            1. Copy of house/ shop/ ownership/ utility bills.<br />
-            2. Copy of rent agreement (if tenant)/ utility bills.<br />
-            3. Registered company certificate or official authority letter for services / Provisioning civilians category.
-          </Typography>
-
-          <Typography variant="body2" color="error" paragraph>
-            <strong>Please Note:</strong><br />
-            1. Validity of Card is Subject to final security Clearance by security agencies.<br />
-            2. In case CNIC of card holder gets blocked (due to any reason), Card holder must info on Gar Facilition
-            contact number 0336-5785839, else Gar entry pass will be blocked permanently.<br />
-            3. Applicants are required to reach GEP CN Physically on specified date & time for biometric verification,
-            on side pic and other procedure.<br />
-            4. Please add here to allotted timings strictly in order to avoid inconvenience.
-          </Typography>
-        </Paper>
-
-    
+            <h2>Step Four: Appointment Details</h2>
+            <p><strong>Appointment Date:</strong> {formData.stepFour.appointmentDate}</p>
+            <p><strong>Time Slot:</strong> {formData.stepFour.timeSlot}</p>
+            <p><strong>Appointment Location:</strong> {formData.stepFour.appointmentLocation}</p>
+          </Paper>
+        </div>
       </Box>
     </Container>
   );
