@@ -1,7 +1,13 @@
 import React from 'react';
-import { Box, Typography, Button, TextField, MenuItem, Paper, Container } from '@mui/material';
+import { Box, Typography, TextField, Container } from '@mui/material';
+import ArgonSelect from "components/ArgonSelect"; // Adjust the import path if necessary
 
 function AppointmentForm() {
+  // Define an onChange handler for ArgonSelect
+  const handleSelectChange = (value) => {
+    console.log("Selected time slot:", value);
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Form Fields */}
@@ -22,16 +28,19 @@ function AppointmentForm() {
         {/* Right Section */}
         <Box flex={1} ml={2}>
           <Typography variant="body1" mb={1}>Time Slot Available:</Typography>
-          <TextField
-            select
+          <ArgonSelect
+            placeholder="Select time slot"
             defaultValue=""
             fullWidth
             variant="outlined"
-            disabled
-          >
-            <MenuItem value="">Select time slot</MenuItem>
-            {/* Populate with actual options if available */}
-          </TextField>
+            onChange={handleSelectChange} // Pass the handler here
+            options={[
+              { label: "Select time slot", value: "" },
+              { label: "8:00 AM - 8:30 AM", value: "8:00 AM - 8:30 AM" },
+              { label: "8:30 AM - 9:00 AM", value: "8:30 AM - 9:00 AM" },
+              { label: "9:00 AM - 9:30 AM", value: "9:00 AM - 9:30 AM" }
+            ]}
+          />
         </Box>
       </Box>
 
@@ -39,13 +48,6 @@ function AppointmentForm() {
       <Typography variant="body2" color="textSecondary" align="center" mb={4}>
         Appointment Allotted: From null hours on 31-10-2024
       </Typography>
-
-      {/* Next Button */}
-      <Box textAlign="right">
-        <Button variant="contained" color="success">
-          Next
-        </Button>
-      </Box>
     </Container>
   );
 }

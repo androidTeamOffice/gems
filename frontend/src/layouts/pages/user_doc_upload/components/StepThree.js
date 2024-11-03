@@ -22,7 +22,7 @@ const StepThree = () => (
 <div>
 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}></div>
   <Button variant="outlined" component="label" style={{ marginBottom: '10px' }}>
-    Upload Police Verification
+    Upload Police Verification Scanned Copy
     <input type="file" hidden />
   </Button>
 </div>
