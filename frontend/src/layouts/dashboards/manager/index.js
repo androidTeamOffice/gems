@@ -1,46 +1,35 @@
-/* eslint-disable no-unused-vars */
 
-// @mui material components
 import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
+
 import { useState, useEffect } from "react";
 // Argon Dashboard 2 PRO MUI components
 import ArgonBox from "components/ArgonBox";
 import ArgonTypography from "components/ArgonTypography";
+import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
+import ArgonButton from "components/ArgonButton";
+import Card from "@mui/material/Card";
 
 // Argon Dashboard 2 PRO MUI example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { TailSpin } from "react-loader-spinner";
+import axios from "axios";
 import Footer from "examples/Footer";
-import DetailedStatisticsCard from "examples/Cards/StatisticsCards/DetailedStatisticsCard";
-import SalesTable from "examples/Tables/SalesTable";
-import Table from "examples/Tables/Table";
-import CategoriesList from "examples/Lists/CategoriesList";
-import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
+
 
 // Argon Dashboard 2 PRO MUI base styles
 import typography from "assets/theme/base/typography";
 
-// Dashboard layout components
-import Slider from "layouts/dashboards/default/components/Slider";
-import TeamMembers from "layouts/dashboards/default/components/TeamMembers";
-import TodoList from "layouts/dashboards/default/components/TodoList";
-import ProgressTrack from "layouts/dashboards/default/components/ProgressTrack";
-import BalanceCard from "layouts/dashboards/default/components/BalanceCard";
-import CryptoCard from "layouts/dashboards/default/components/CryptoCard";
 
-// Pages layout components
-import Post from "layouts/pages/profile/teams/components/Post";
+import Header from "../../dashboards/user/components/Header";
+import Icon from "@mui/material/Icon";
+import Tooltip from "@mui/material/Tooltip";
+// import EditCadre from "../edit-cadre";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import DataTable from "examples/Tables/DataTable";
 
-// Data
-import reportsBarChartData from "layouts/dashboards/default/data/reportsBarChartData";
-import gradientLineChartData from "layouts/dashboards/default/data/gradientLineChartData";
-import projectsTableData from "layouts/dashboards/default/data/projectsTableData";
-import salesTableData from "layouts/dashboards/default/data/salesTableData";
-import authorsTableData from "layouts/dashboards/default/data/authorsTableData";
-import categoriesListData from "layouts/dashboards/default/data/categoriesListData";
-import axios from "axios";
-
+const bgImage = "";
 //
 // Request interceptor to add JWT token to Authorization header (if present)
 const baseUrl = process.env.REACT_APP_BASE_URL; // Assuming variable name is REACT_APP_BASE_URL
@@ -60,99 +49,226 @@ authAxios.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
 function DefaultManager() {
   const { size } = typography;
-  const [counters, setCounters] = useState({
-    onLeave: 0,
-    onDuty: 0,
-    onRest: 0,
-    onCourse: 0,
+  const [loading, setLoading] = useState(true);
+  const [dataTableData, setDataTableData] = useState({
+    columns: [
+      { Header: "Ser", accessor: "ser" },
+      { Header: "Name", accessor: "name" },
+      { Header: "Occupation", accessor: "occupation" },
+      { Header: "Category", accessor: "category" },
+      { Header: "Type", accessor: "type" },
+      { Header: "CINC", accessor: "cnic" },
+      { Header: "Status", accessor: "status" },
+      { Header: "Remarks", accessor: "remarks" },
+    ],
+    rows: [], // Initially empty array
   });
 
-  useEffect(() => {
-    fetchCounters();
-  }, []);
-  const fetchCounters = async () => {
+  const fetchData = async () => {
     try {
-      const response = await authAxios.get("/api/dashboard_counters");
-      setCounters(response.data);
+      const response = await authAxios.get("/api/civilian_data_verified_list");
+      const formattedData = response.data.civDatas.map((item, index) => ({
+        ser: index + 1,
+        name: item.name,
+        occupation: item.occupation,
+        category: item.category,
+        type: item.type,
+        cnic: item.cnic,
+        status: item.status==="Verified"?(
+          <ArgonBox display="flex" alignItems="center">
+            <ArgonBox mx={2}>
+              <ArgonTypography
+                variant="body1"
+                color="secondary"
+                sx={{ cursor: "pointer", lineHeight: 0 }}
+              >
+                <Tooltip title="Verify" placement="top">
+                  <Icon sx={{ color: "green" }}>verified_user</Icon>
+                </Tooltip>
+              </ArgonTypography>
+            </ArgonBox>
+          </ArgonBox>
+        ):(
+          <ArgonBox display="flex" alignItems="center">
+            <ArgonBox mx={2}>
+            <ArgonTypography
+              variant="body1"
+              color="secondary"
+              sx={{ cursor: "pointer", lineHeight: 0 }}
+            >
+              <Tooltip title="Reject" placement="left">
+                <Icon sx={{ color: "red" }}>remove_circle</Icon>
+              </Tooltip>
+            </ArgonTypography>  
+            </ArgonBox>            
+          </ArgonBox>
+        ),
+        remarks:item.remarks,
+      }));
+      setDataTableData({
+        ...dataTableData,
+        rows: formattedData,
+      });
+      setLoading(false);
     } catch (error) {
-      console.error("Error fetching counters:", error);
+      console.error("Error fetching data:", error);
+      setLoading(false);
     }
   };
-  return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <ArgonBox py={3}>
-        <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Leave"
-              count={counters.onLeave}
-              icon={{
-                color: "info",
-                component: <i className="ni ni-send" />,
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Duty"
-              count={counters.onDuty}
-              icon={{
-                color: "error",
-                component: <i className="ni ni-world" />,
-              }}
-              // percentage={{
-              //   color: "success",
-              //   count: "+3%",
-              //   text: "since last week",
-              // }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Rest"
-              count={counters.onRest}
-              icon={{
-                color: "success",
-                component: <i className="ni ni-paper-diploma" />,
-              }}
-              // percentage={{
-              //   color: "error",
-              //   count: "-2%",
-              //   text: "since last quarter",
-              // }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="On Course"
-              count={counters.onCourse}
-              icon={{
-                color: "warning",
-                component: <i className="ni ni-books" />,
-              }}
-              // percentage={{
-              //   color: "success",
-              //   count: "+5%",
-              //   text: "than last month",
-              // }}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid>hi</Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid>hi</Grid>
-        </Grid>
-      </ArgonBox>
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+  //// Handle Delete User
+  const handleDeleteConfirmation = async (itemID,remarks) => {
+    try {
+      await authAxios.post("/api/reject_civdata", { id: itemID,remarks:remarks }); // Use template literal for clarity
+      Swal.fire("Rejected!", "Rejected successfully.", "success");
+      await fetchData();
+    } catch (error) {
+      console.error("Error rejecting Civillian data:", error);
+      Swal.fire(
+        "Error!",
+        "An error occurred while rejecting the Civillian data.",
+        "error"
+      );
+    } finally {
+      setLoading(false); // Ensure loading state is updated even on errors
+    }
+  };
+  const handleVerifyConfirmation = async (itemID) => {
+    try {
+      await authAxios.post("/api/verify_civData", { id: itemID }); // Use template literal for clarity
+      Swal.fire("Verified!", "Verified successfully.", "success");
+      await fetchData();
+    } catch (error) {
+      console.error("Error verifiing Civillian data:", error);
+      Swal.fire(
+        "Error!",
+        "An error occurred while verifiing the Civillian data.",
+        "error"
+      );
+    } finally {
+      setLoading(false); // Ensure loading state is updated even on errors
+    }
+  };
+
+  const handleDeleteClick = (itemID) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      input: "text", // Adds an input field
+      inputPlaceholder: "Enter remarks here...",
+      inputAttributes: {
+        'aria-label': 'Enter remarks' // Accessibility
+      },
+      showCancelButton: true,
+      confirmButtonColor: "#28a745", // Green color for confirmation button
+      cancelButtonColor: "#dc3545",  // Red color for cancel button
+      confirmButtonText: "Yes, reject it!",
+      cancelButtonText: "No, cancel",
+      preConfirm: (remarks) => {
+        // Check if remarks are provided
+        if (!remarks) {
+          Swal.showValidationMessage("Remarks are required to proceed.");
+        } else {
+          return remarks; // Return the input value if valid
+        }
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const remarks = result.value;
+        handleDeleteConfirmation(itemID, remarks); // Pass itemID and remarks to handleDeleteConfirmation
+      }
+    });
+    
+  };
+  const handleEditClick = (itemID) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#28a745", // Green color for confirmation button
+      cancelButtonColor: "#dc3545", // Red color for cancel button
+      confirmButtonText: "Yes, Verify it!",
+      cancelButtonText: "No, cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleVerifyConfirmation(itemID);
+      }
+    });
+  };
+
+  return (
+    <DashboardLayout
+      sx={{
+        backgroundImage: ({
+          functions: { rgba, linearGradient },
+          palette: { gradients },
+        }) =>
+          `${linearGradient(
+            rgba(gradients.info.main, 1),
+            rgba(gradients.info.state, 1)
+          )}, url(${bgImage})`,
+        backgroundPositionY: "50%",
+      }}
+    >
+      <Header />
+      <ArgonBox my={3}>
+        <Card>
+          <ArgonBox
+            p={3}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="flex-start"
+          >
+            <ArgonBox lineHeight={1}>
+              <ArgonTypography variant="h5" fontWeight="medium">
+                {/* All Appts */}
+              </ArgonTypography>
+            </ArgonBox>
+            {/* <Stack spacing={1} direction="row">
+              <Link to="/admin/appts/new-appt">
+                <ArgonButton variant="gradient" color="info" size="small">
+                  + New Appt
+                </ArgonButton>
+              </Link>
+              <ArgonButton variant="outlined" color="info" size="small">
+                Import
+              </ArgonButton>
+              <ArgonButton variant="outlined" color="info" size="small">
+                Export
+              </ArgonButton>
+            </Stack> */}
+          </ArgonBox>
+          {loading ? (
+            <div style={{ textAlign: "center", marginTop: "20px" }}>
+              <TailSpin
+                visible={true}
+                height={80}
+                width={80}
+                color="#4fa94d"
+                ariaLabel="tail-spin-loading"
+              />
+            </div>
+          ) : (
+            <DataTable
+              table={dataTableData}
+              entriesPerPage={{
+                defaultValue: 7,
+                entries: [5, 7, 10, 15, 20, 25],
+              }}
+              canSearch
+            />
+          )}
+        </Card>
+      </ArgonBox>
       <Footer />
     </DashboardLayout>
   );
 }
-
 export default DefaultManager;

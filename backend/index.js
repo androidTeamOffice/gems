@@ -24,6 +24,7 @@ const coursesRouter = require("./api/courses");
 const dashboardRouter = require("./api/dashboards");
 const leavesRouter = require("./api/leaves");
 const schedulesRouter = require("./api/schedules");
+const civilianDataRouter = require("./api/civiliandatas");
 const resetPasswordRouter = require("./api/resetPassword"); // Assuming the file is named resetPassword.js
 const leaveCircle = require("./api/leaveCircle"); // Assuming the file is named resetPassword.js
 // const path = require('path');  // Required for path manipulation
@@ -139,6 +140,7 @@ app.use("/api", dutyApptsRouter);
 app.use("/api", schedulesRouter);
 app.use("/api", dashboardRouter);
 app.use("/api", coursesRouter);
+app.use("/api", civilianDataRouter);
 app.use("/api", leaveCircle);
 
 app.listen(port, () => {

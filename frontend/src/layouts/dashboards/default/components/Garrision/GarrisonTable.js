@@ -1,6 +1,17 @@
 // src/layouts/garrisonverifier/GarrisonTable.js
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import GarrisonSearch from './GarrisonSearch';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography
+} from '@mui/material';
+import ArgonBox from 'components/ArgonBox';
 
 const GarrisonTable = ({ data }) => {
   return (
@@ -8,17 +19,67 @@ const GarrisonTable = ({ data }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>CNIC</TableCell>
-            <TableCell>Rank</TableCell>
+            <TableCell>
+              {/* <ArgonBox display="flex" justifyContent="center"> */}
+                <Typography variant="h6" color="primary" fontWeight="bold">
+                  Sr
+                </Typography>
+              {/* </ArgonBox> */}
+            </TableCell>
+            <TableCell>
+              <ArgonBox display="flex" justifyContent="center">
+                <Typography variant="h6" color="primary" fontWeight="bold">
+                  NAME
+                </Typography>
+              </ArgonBox>
+            </TableCell>
+            <TableCell>
+              <ArgonBox display="flex" justifyContent="center">
+                <Typography variant="h6" color="primary" fontWeight="bold">
+                  GENDER
+                </Typography>
+              </ArgonBox>
+            </TableCell>
+            <TableCell>
+              <ArgonBox display="flex" justifyContent="center">
+                <Typography variant="h6" color="primary" fontWeight="bold">
+                  OCCUPATION
+                </Typography>
+              </ArgonBox>
+            </TableCell>
+            <TableCell>
+              <ArgonBox display="flex" justifyContent="center">
+                <Typography variant="h6" color="primary" fontWeight="bold">
+                  CATEGORY
+                </Typography>
+              </ArgonBox>
+            </TableCell>
+            <TableCell>
+              <ArgonBox display="flex" justifyContent="center">
+                <Typography variant="h6" color="primary" fontWeight="bold">
+                  TYPE
+                </Typography>
+              </ArgonBox>
+            </TableCell>
+            <TableCell>
+              <ArgonBox display="flex" justifyContent="center">
+                <Typography variant="h6" color="primary" fontWeight="bold">
+                  CNIC
+                </Typography>
+              </ArgonBox>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row, index) => (
             <TableRow key={index}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.cnic}</TableCell>
-              <TableCell>{row.rank}</TableCell>
+              <TableCell>{row.Sr}</TableCell>
+              <TableCell>{row.NAME}</TableCell>
+              <TableCell>{row.GENDER}</TableCell>
+              <TableCell>{row.OCCUPTION}</TableCell>
+              <TableCell>{row.CATEGORY}</TableCell>
+              <TableCell>{row.TYPE}</TableCell>
+              <TableCell>{row.CNIC}</TableCell>
             </TableRow>
           ))}
         </TableBody>

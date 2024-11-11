@@ -86,7 +86,7 @@ const UserLandingPage = () => {
     <ul style={{ paddingLeft: '1.2em' }}>
       <li>Copy of house/shop ownership/utility bills.</li>
       <li>Copy of rent agreement (if tenant)/utility bills.</li>
-      <li>Registered company certificate or official authority letter for services/provisioning civilians category.</li>
+      <li>Necessary Legal Actions. </li>
     </ul>
   </Typography>
   <Typography variant="body2" paragraph style={{ color: 'red', fontSize: '0.9rem', lineHeight: '1.5' }}>
