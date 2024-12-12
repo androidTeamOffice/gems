@@ -27,6 +27,7 @@ const schedulesRouter = require("./api/schedules");
 const civilianDataRouter = require("./api/civiliandatas");
 const resetPasswordRouter = require("./api/resetPassword"); // Assuming the file is named resetPassword.js
 const leaveCircle = require("./api/leaveCircle"); // Assuming the file is named resetPassword.js
+
 // const path = require('path');  // Required for path manipulation
 const app = express();
 /// For Image Handling
@@ -41,7 +42,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
-app.use("/uploads", express.static(path.join(__dirname, "uploads/images")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads/images")));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // Or specify a particular domain
@@ -65,6 +66,17 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   next();
+});
+// List images endpoint
+app.get("/api/images", validateToken, (req, res) => {
+  const uploadPath = path.join(__dirname, "..", "uploads");
+  fs.readdir(uploadPath, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: "Unable to list images" });
+    }
+    const images = files.map((file) => `/uploads/${file}`);
+    res.status(200).json(images);
+  });
 });
 
 const storage = multer.diskStorage({
@@ -142,6 +154,7 @@ app.use("/api", dashboardRouter);
 app.use("/api", coursesRouter);
 app.use("/api", civilianDataRouter);
 app.use("/api", leaveCircle);
+
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

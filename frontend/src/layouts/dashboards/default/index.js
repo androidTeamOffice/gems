@@ -15,7 +15,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import { TailSpin } from "react-loader-spinner";
 import axios from "axios";
 import Footer from "examples/Footer";
-
+import ProductCell from "./components/ProductCell";
 
 // Argon Dashboard 2 PRO MUI base styles
 import typography from "assets/theme/base/typography";
@@ -56,25 +56,46 @@ function Verifier() {
     columns: [
       { Header: "Ser", accessor: "ser" },
       { Header: "Name", accessor: "name" },
+      { Header: "CNIC", accessor: "cnic" },
+      { Header: "Mobile_no", accessor: "Mobile_no" },
+      { Header: "Father_Husband_Name", accessor: "Father_Husband_Name" },
       { Header: "Occupation", accessor: "occupation" },
       { Header: "Category", accessor: "category" },
       { Header: "Type", accessor: "type" },
-      { Header: "CINC", accessor: "cnic" },
+      { Header: "FCNIC", accessor: "FCNIC" },
+      { Header: "BCNIC", accessor: "BCNIC" },
+      { Header: "Police_Verification_Document", accessor: "Police_Verification_Document" },
+      { Header: "Vehicle_Documents", accessor: "Vehicle_Documents" },
+      { Header: "Previous_Card_Picture", accessor: "Previous_Card_Picture" },
+      { Header: "Appointment_Day", accessor: "Appointment_Day" },
+      { Header: "Appointment_Time", accessor: "Appointment_Time" },
       { Header: "Action", accessor: "action" },
+
     ],
     rows: [], // Initially empty array
   });
 
   const fetchData = async () => {
     try {
+      const imageUrl="http://localhost:3216/uploads/";
       const response = await authAxios.get("/api/civilian_data_for_verification_list");
+      console.log("CELL",response.data.civDatas); 
       const formattedData = response.data.civDatas.map((item, index) => ({
         ser: index + 1,
         name: item.name,
+        cnic: item.cnic,
+        Mobile_no: item.Mobile_no,
+        Father_Husband_Name: item.Father_Husband_Name,
         occupation: item.occupation,
         category: item.category,
         type: item.type,
-        cnic: item.cnic,
+        BCNIC: <ProductCell image={imageUrl+item.BCNIC} />,
+        FCNIC: <ProductCell image={imageUrl+item.FCNIC} />,
+        Police_Verification_Document: <ProductCell image={imageUrl+item.Police_Verification_Document} />,
+        Vehicle_Documents: <ProductCell image={imageUrl+item.Vehicle_Documents} />,
+        Previous_Card_Picture:<ProductCell image={imageUrl+item.Previous_Card_Picture} />,
+        Appointment_Day: item.Appointment_Day,
+        Appointment_Time: item.Appointment_Time,
         action: (
           <ArgonBox display="flex" alignItems="center">
             <ArgonBox mx={2}>
@@ -142,7 +163,7 @@ function Verifier() {
       console.error("Error verifiing Civillian data:", error);
       Swal.fire(
         "Error!",
-        "An error occurred while verifiing the Civillian data.",
+        "An error occurred while verifying the Civillian data.",
         "error"
       );
     } finally {

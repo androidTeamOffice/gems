@@ -109,25 +109,6 @@ const routes = [
     hide: true,
     noCollapse: true,
   },
-
-  {
-    type: "collapse",
-    name: "Search",
-    key: "search",
-    route: "/search",
-    role: ["admin", "manager", "user"],
-    component: <SearchData />,
-
-    icon: (
-      <ArgonBox
-        component="i"
-        color="primary"
-        fontSize="14px"
-        className="ni ni-zoom-split-in"
-      />
-    ),
-    noCollapse: true,
-  },
   {
     type: "collapse",
     name: "Authentication",

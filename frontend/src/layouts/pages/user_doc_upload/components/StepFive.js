@@ -1,144 +1,236 @@
 import React, { useRef } from 'react';
-import { Container, Box, Button, Paper } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Container, Box, Button, Paper, Typography, List, ListItem, ListItemText } from '@mui/material';
 
-// Dummy data to simulate form state (replace with actual state or props)
-const formData = {
-  stepOne: {
-    applicantName: "John Doe",
-    cnic: "12345-6789012-3",
-    mobile: "0300-1234567",
-    homePhone: "021-1234567",
-    applicantType: "New",
-    gender: "Male",
-    occupation: "Engineer",
-    fatherName: "Mr. Doe",
-    guardianContact: "0300-7654321",
-    guardianCnic: "98765-4321098-7",
-    province: "Province Name",
-    caste: "Caste Name",
-    presentAddress: "123 Main St",
-    permanentAddress: "456 Another St",
-    nationality: "Country Name"
-  },
-  stepTwo: {
-    disability: "No",
-    vehicleModel: "Toyota Corolla",
-    vehicleMake: "2020",
-    vehicleType: "Sedan",
-    vehicleRegistration: "ABC-123",
-    cardDuration: "1 Year"
-  },
-  stepThree: {
-    uploadedDocuments: ["CNIC Front", "CNIC Back", "Police Verification"]
-  },
-  stepFour: {
-    appointmentDate: "2024-10-31",
-    timeSlot: "8:00 AM - 8:30 AM",
-    appointmentLocation: "Main Office, Building A"
-  }
-};
-
-const useStyles = makeStyles({
-  container: {
-    backgroundColor: '#f8f9fa',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    marginTop: '16px',
-    backgroundColor: '#5e72e4',
-    color: 'white',
-  },
-});
-
-const DocumentSubmission = () => {
-  const classes = useStyles();
+const DocumentSubmission = ({ formData, setFormData, err, urlData }) => {
   const printRef = useRef();
 
-  const handlePreview = () => {
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Application Preview</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            h2 { margin-top: 20px; }
-            strong { font-weight: bold; }
-            .print-button {
-              position: fixed;
-              top: 10px;
-              right: 10px;
-              background-color: #5e72e4;
-              color: white;
-              padding: 8px 16px;
-              border: none;
-              cursor: pointer;
-              font-size: 14px;
-            }
-          </style>
-        </head>
-        <body>
-          <button class="print-button" onclick="window.print()">Print</button>
-          ${printRef.current.innerHTML}
-        </body>
-      </html>
+  const styles = {
+    page: {
+      padding: 30,
+      backgroundColor: "#ffffff",
+      fontFamily: "Helvetica",
+      fontSize: 11,
+      color: "#333",
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 20,
+      borderBottom: "1px solid #333",
+      paddingBottom: 10,
+    },
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#222",
+      textTransform: "uppercase",
+    },
+    sectionHeader: {
+      textAlign: 'center',
+      marginVertical: 10,
+      fontWeight: 'bold',
+      fontSize: 14,
+      color: "#444",
+      borderBottom: "1px solid #ccc",
+      paddingBottom: 5,
+    },
+    tableRow: {
+      flexDirection: "row",
+      margin: 2,
+      alignItems: "center",
+    },
+    tableCell: {
+      fontSize: 10,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: "#ddd",
+      flex: 1,
+      textAlign: "left",
+      margin: 2,
+      backgroundColor: "#f9f9f9",
+    },
+    lastCell: {
+      borderRightWidth: 0,
+    },
+    image: {
+      width: 150,
+      height: 150,
+      borderRadius: 5,
+      marginVertical: 15,
+      alignSelf: "center",
+      objectFit: "cover",
+      borderWidth: "4px solid #808080",
+    },
+    boldText: {
+      fontWeight: "bold",
+    },
+    // Print-specific styles
+    printStyle: {
+      "@media print": {
+        '.printField': {
+          fontSize: '9px',  // Reduce font size for these fields when printing
+        },
+      },
+    },
+  };
+
+  const renderBioData = (bio, urlData) => (
+    <div>
+      <div style={{ display: 'block', marginBottom: 10 }}>
+        <img src={bio.Profile_Picture} style={styles.image} alt="Profile" />
+      </div>
+
+      <div>
+        <div style={{ display: 'block', marginBottom: 10 }} className="printField">
+          <Typography variant="body2" style={{ fontWeight: "bold", marginBottom: 2, color: "#333" }}>
+            Applicant Name
+          </Typography>
+          <Typography variant="body2" style={{ color: "#555" }}>
+            {bio.name}
+          </Typography>
+        </div>
+
+        <div style={{ display: 'block', marginBottom: 10 }} className="printField">
+          <Typography variant="body2" style={{ fontWeight: "bold", marginBottom: 2, color: "#333" }}>
+            CNIC
+          </Typography>
+          <Typography variant="body2" style={{ color: "#555" }}>
+            {bio.cnic}
+          </Typography>
+        </div>
+
+        <div style={{ display: 'block', marginBottom: 10 }} className="printField">
+          <Typography variant="body2" style={{ fontWeight: "bold", marginBottom: 2, color: "#333" }}>
+            Mobile No
+          </Typography>
+          <Typography variant="body2" style={{ color: "#555" }}>
+            {bio.Mobile_no}
+          </Typography>
+        </div>
+
+        <div style={{ display: 'block', marginBottom: 10 }} className="printField">
+          <Typography variant="body2" style={{ fontWeight: "bold", marginBottom: 2, color: "#333" }}>
+            Applicant Type
+          </Typography>
+          <Typography variant="body2" style={{ color: "#555" }}>
+            {bio.Applicant}
+          </Typography>
+        </div>
+
+        <div style={{ display: 'block', marginBottom: 10 }} className="printField">
+          <Typography variant="body2" style={{ fontWeight: "bold", marginBottom: 2, color: "#333" }}>
+            Vehicle Registration No
+          </Typography>
+          <Typography variant="body2" style={{ color: "#555" }}>
+            {bio.Vehicle_Registration_No}
+          </Typography>
+        </div>
+
+        <div style={{ display: 'block', marginBottom: 10 }} className="printField">
+          <Typography variant="body2" style={{ fontWeight: "bold", marginBottom: 2, color: "#333" }}>
+            Appointment Date
+          </Typography>
+          <Typography variant="body2" style={{ color: "#555" }}>
+            {bio.Appointment_Day}
+          </Typography>
+        </div>
+
+        <div style={{ display: 'block', marginBottom: 10 }} className="printField">
+          <Typography variant="body2" style={{ fontWeight: "bold", marginBottom: 2, color: "#333" }}>
+            Time Slot
+          </Typography>
+          <Typography variant="body2" style={{ color: "#555" }}>
+            {bio.Appointment_Time}
+          </Typography>
+        </div>
+      </div>
+    </div>
+  );
+
+  const handlePrint = () => {
+    const printContent = printRef.current;
+    const newWindow = window.open();
+    newWindow.document.write(printContent.innerHTML);
+    newWindow.document.write(`
+      <style>
+        .printField {
+          font-size: 15px;  /* Make text smaller in print */
+        }
+      </style>
     `);
-    printWindow.document.close();
+    newWindow.print();
   };
 
   return (
-    <Container className={classes.container}>
-      <Box>
-        <Button className={classes.button} onClick={handlePreview}>
-          Preview
+    <Container>
+      {/* Print Button on Top Right */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={handlePrint}>
+          Print
         </Button>
-
-        {/* Hidden content for previewing and printing */}
-        <div style={{ display: 'none' }} ref={printRef}>
-          <Paper>
-            <h2>Step One: Personal Info</h2>
-            <p><strong>Applicant Name:</strong> {formData.stepOne.applicantName}</p>
-            <p><strong>CNIC:</strong> {formData.stepOne.cnic}</p>
-            <p><strong>Mobile No:</strong> {formData.stepOne.mobile}</p>
-            <p><strong>Home Phone:</strong> {formData.stepOne.homePhone}</p>
-            <p><strong>Applicant Type:</strong> {formData.stepOne.applicantType}</p>
-            <p><strong>Gender:</strong> {formData.stepOne.gender}</p>
-            <p><strong>Occupation:</strong> {formData.stepOne.occupation}</p>
-            <p><strong>Father/Husband Name:</strong> {formData.stepOne.fatherName}</p>
-            <p><strong>Guardian Contact Number:</strong> {formData.stepOne.guardianContact}</p>
-            <p><strong>Guardian CNIC:</strong> {formData.stepOne.guardianCnic}</p>
-            <p><strong>Province:</strong> {formData.stepOne.province}</p>
-            <p><strong>Caste:</strong> {formData.stepOne.caste}</p>
-            <p><strong>Present Address:</strong> {formData.stepOne.presentAddress}</p>
-            <p><strong>Permanent Address:</strong> {formData.stepOne.permanentAddress}</p>
-            <p><strong>Nationality:</strong> {formData.stepOne.nationality}</p>
-
-            <h2>Step Two: Other Details</h2>
-            <p><strong>Disability/Reasonable Adjustment:</strong> {formData.stepTwo.disability}</p>
-            <p><strong>Vehicle Model:</strong> {formData.stepTwo.vehicleModel}</p>
-            <p><strong>Vehicle Make:</strong> {formData.stepTwo.vehicleMake}</p>
-            <p><strong>Vehicle Type:</strong> {formData.stepTwo.vehicleType}</p>
-            <p><strong>Vehicle Registration No:</strong> {formData.stepTwo.vehicleRegistration}</p>
-            <p><strong>Card Duration:</strong> {formData.stepTwo.cardDuration}</p>
-
-            <h2>Step Three: Documents</h2>
-            {formData.stepThree.uploadedDocuments.map((doc, index) => (
-              <p key={index}><strong>{doc}</strong> uploaded</p>
-            ))}
-
-            <h2>Step Four: Appointment Details</h2>
-            <p><strong>Appointment Date:</strong> {formData.stepFour.appointmentDate}</p>
-            <p><strong>Time Slot:</strong> {formData.stepFour.timeSlot}</p>
-            <p><strong>Appointment Location:</strong> {formData.stepFour.appointmentLocation}</p>
-          </Paper>
-        </div>
       </Box>
+
+      {/* Content to Print */}
+      <div ref={printRef}>
+        <Paper style={{ padding: '20px' }}>
+          <Typography variant="h4" align="center"><strong>PERSONAL DETAILS</strong></Typography>
+
+          {/* Personal Details */}
+          {renderBioData(formData, urlData)}
+
+          {/* Important Note Section */}
+     
+               <Box mt={5} p={2} bgcolor="#f1f1f1" borderRadius="8px">
+        <Typography variant="h6" gutterBottom>
+          NOTE
+        </Typography>
+        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+          The information provided by you must be correct in all aspects. Failing to provide correct information will lead to permanent ban from garrison premises and other legal action.
+        </Typography>
+        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+          It is further requested that the form may be downloaded and a hardcopy brought along on the assigned date & time.
+        </Typography>
+        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+          <strong>APPLICATION FORM MUST BE SUBMITTED WITH THE FOLLOWING DOCUMENTS</strong>
+        </Typography>
+        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+          <strong>ALL Cat less Residents & Non Residents</strong>
+          <ul style={{ paddingLeft: '1.2em' }}>
+            <li>CNIC / FRC copy.</li>
+            <li>Passport size picture.</li>
+            <li>Copy of vehicle's documents registered in the applicant's name. If not registered in the applicant's name, include the transfer letter.</li>
+            <li>Father / Mother CNIC & FRC copy (For Student Only).</li>
+            <li>Authority letter from School (For Student only).</li>
+          </ul>
+        </Typography>
+        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+          <strong>Residents & Non Residents (Apart from Above)</strong>
+          <ul style={{ paddingLeft: '1.2em' }}>
+            <li>Copy of house/shop ownership/utility bills.</li>
+            <li>Copy of rent agreement (if tenant)/utility bills.</li>
+            <li>Registered company certificate or official authority letter for services/provisioning civilians category.</li>
+          </ul>
+        </Typography>
+        <Typography variant="body2" paragraph style={{ color: 'red', fontSize: '0.9rem', lineHeight: '1.5' }}>
+          <strong>Please Note:</strong>
+          <ul style={{ paddingLeft: '1.2em' }}>
+            <li>Validity of Card is subject to final security clearance by security agencies.</li>
+            <li>If the CNIC of the card holder gets blocked (for any reason), the card holder must inform on Gar Facilitation contact number 0336-5785839, or the Gar entry pass will be blocked permanently.</li>
+            <li>Applicants are required to reach GEP CN physically on the specified date & time for biometric verification, onsite picture, and other procedures.</li>
+            <li>Please adhere to the allotted timings strictly to avoid inconvenience.</li>
+          </ul>
+        </Typography>
+      </Box>
+          
+        
+        </Paper>
+      </div>
     </Container>
   );
 };
 
 export default DocumentSubmission;
+
+

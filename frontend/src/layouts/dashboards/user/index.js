@@ -81,9 +81,6 @@ function DefaultUser() {
     false
   );
 
-  useEffect(() => {
-    fetchCounters();
-  }, []);
   const fetchCounters = async () => {
     try {
       const response = await authAxios.get("/api/dashboard_counters");

@@ -2,11 +2,13 @@
 import React from 'react';
 import { Grid, TextField } from '@mui/material';
 
-const TextFieldPair = ({ label1, label2 }) => (
+const TextFieldPair = ({ label1, label2, formDaaValue1, formDaaValue2, onChange1, onChange2 }) => (
   <Grid container spacing={2}>
     <Grid item xs={6}>
       <TextField
         label={label1}
+        value={formDaaValue1}
+        onChange={onChange1}  // Update with onChange for handling input
         fullWidth
         margin="normal"
         InputLabelProps={{
@@ -27,6 +29,8 @@ const TextFieldPair = ({ label1, label2 }) => (
     <Grid item xs={6}>
       <TextField
         label={label2}
+        value={formDaaValue2}
+        onChange={onChange2}  // Update with onChange for handling input
         fullWidth
         margin="normal"
         InputLabelProps={{

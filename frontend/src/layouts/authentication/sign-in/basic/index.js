@@ -18,7 +18,7 @@ const api = axios.create({ baseURL: baseUrl });
 
 function Basic() {
   const navigate = useNavigate();
-  const { updateRole } = useUserRole();
+  const { updateRole , updateid} = useUserRole();
 
   // Form validation and API Request
   const validations = Yup.object().shape({
@@ -45,10 +45,11 @@ function Basic() {
           sessionStorage.setItem("isAuthenticated", true);
           sessionStorage.setItem("userName", response.data.user);
           sessionStorage.setItem("userrole", response.data.role);
+          sessionStorage.setItem("userid", response.data.userid);
           Swal.fire("Welcome", `${response.data.user}! Glad to have you here. ${response.data.role}`, "success");
 
           updateRole(response.data.role);
-
+          updateid(response.data.userid)
           // Navigate based on role
           setTimeout(() => {
             switch (response.data.role) {

@@ -7,6 +7,7 @@ const UserRoleContext = createContext();
 
 export function UserRoleProvider({ children }) {
   const [role, setRole] = useState("guest");
+  const [id, setId] = useState(1);
   const [roleBaseRoutes, setRoleBaseRoutes] = useState([]);
 
   useEffect(() => {
@@ -14,9 +15,10 @@ export function UserRoleProvider({ children }) {
   }, [role]); // Only update when role changes
 
   const updateRole = (newRole) => setRole(newRole);
+  const updateid = (newid) => setId(newid);
 
   return (
-    <UserRoleContext.Provider value={{ role, roleBaseRoutes, updateRole }}>
+    <UserRoleContext.Provider value={{ role, roleBaseRoutes,id, updateRole, updateid }}>
       {children}
     </UserRoleContext.Provider>
   );
