@@ -63,7 +63,7 @@ const StepOne = ({ formData, setFormData, err }) => {
       </Grid>
 
       <Box display="flex" justifyContent="space-evenly" alignItems="flex-start" marginBottom={2} marginTop={2}>
-        <FormControl component="fieldset">  
+        <FormControl component="fieldset">
           <FormLabel component="legend" style={{ fontSize: '1.1rem' }}>
             <RequiredLabel text="Applicant" />
           </FormLabel>
@@ -126,69 +126,73 @@ const StepOne = ({ formData, setFormData, err }) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12}  display="flex" >
-  {/* Present Address */}
-  <TextField
-    label={<RequiredLabel text="Present Address" />}
-    fullWidth
-    margin="normal"
-    value={formData.Present_Address}
-    onChange={(e) => handleInputChange('Present_Address', e.target.value)}
-    placeholder="House near zam zam plaza"
-    InputProps={{
-      style: {
-        fontSize: '1rem',
-        padding: '10px',  // Adjust padding for single line input
-      },
-    }}
-    inputProps={{
-      style: {
-        height: '40px', // Ensure single line height
-      },
-    }}
-    sx={{
-      '& .MuiInputLabel-root': {
-        fontSize: '1rem',
-      },
-      '& .MuiOutlinedInput-root': {
-        fontSize: '1rem',
-        borderRadius: '4px',  // Slightly rounded corners for a clean look
-      },
-    }}
-  />
-  {err.Present_Address && <ErrorMessage message={err.Present_Address} />}
-</Grid>
+      <Grid item xs={12} display="flex" >
+        {/* Present Address */}
+        <TextField
+          label={<RequiredLabel text="Present Address" />}
+          fullWidth
+          margin="normal"
+          value={formData.Present_Address}
+          onChange={(e) => handleInputChange("Present_Address", e.target.value)}
+          placeholder="House near zam zam plaza"
+          InputProps={{
+            style: {
+              fontSize: "1rem",
+              padding: "5px", // Padding inside the input
+            },
+          }}
+          inputProps={{
+            style: {
+              height: "40px", // Ensures single line height
+              width: "100%", // Ensures input field spans full width of the container
+              boxSizing: "border-box", // Includes padding in width calculation
+            },
+          }}
+          sx={{
+            "& .MuiInputLabel-root": {
+              fontSize: "1rem",
+            },
+            "& .MuiOutlinedInput-root": {
+              fontSize: "1rem",
+              borderRadius: "4px", // Slightly rounded corners for a clean look
+              width: "100%", // Ensures the field spans full width
+            },
+          }}
+        />
 
-<Grid item xs={12}>
-  {/* Permanent Address */}
-  <TextField
-    label={<RequiredLabel text="Permanent Address" />}
-    fullWidth
-    margin="normal"
-    value={formData.Permanent_Address}
-    onChange={(e) => handleInputChange('Permanent_Address', e.target.value)}
-    placeholder="Permanent Address"
-    InputProps={{
-      style: {
-        fontSize: '1rem', // Matches the font size of other fields
-      },
-    }}
-    inputProps={{
-      style: {
-        height: '40px', // Matches the height of other fields
-      },
-    }}
-    sx={{
-      '& .MuiInputLabel-root': {
-        fontSize: '1rem', // Adjusts label size
-      },
-      '& .MuiOutlinedInput-root': {
-        fontSize: '1rem', // Ensures input font size matches
-      },
-    }}
-  />
-  {err.Permanent_Address && <ErrorMessage message={err.Permanent_Address} />}
-</Grid>
+        {err.Present_Address && <ErrorMessage message={err.Present_Address} />}
+      </Grid>
+
+      <Grid item xs={12}>
+        {/* Permanent Address */}
+        <TextField
+          label={<RequiredLabel text="Permanent Address" />}
+          fullWidth
+          margin="normal"
+          value={formData.Permanent_Address}
+          onChange={(e) => handleInputChange('Permanent_Address', e.target.value)}
+          placeholder="Permanent Address"
+          InputProps={{
+            style: {
+              fontSize: '1rem', // Matches the font size of other fields
+            },
+          }}
+          inputProps={{
+            style: {
+              height: '40px', // Matches the height of other fields
+            },
+          }}
+          sx={{
+            '& .MuiInputLabel-root': {
+              fontSize: '1rem', // Adjusts label size
+            },
+            '& .MuiOutlinedInput-root': {
+              fontSize: '1rem', // Ensures input font size matches
+            },
+          }}
+        />
+        {err.Permanent_Address && <ErrorMessage message={err.Permanent_Address} />}
+      </Grid>
 
     </Box>
   );

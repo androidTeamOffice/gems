@@ -43,7 +43,11 @@ const AppointmentForm = ({ formData, setFormData }) => {
     fetchDisabledDates();
   }, []);
 
-  const isDateDisabled = (date) => disabledDates.includes(date);
+  const isDateDisabled = (date) => {
+    // Ensure the date is converted to the same format as the items in disabledDates
+    const dateString = date instanceof Date ? date.toISOString().split("T")[0] : date;
+    return disabledDates.includes(dateString);
+  };
 
   const handleInputChange = (event, field) => {
     const { value } = event.target || event;
@@ -101,9 +105,9 @@ const AppointmentForm = ({ formData, setFormData }) => {
             value={
               appointmentData.timeSlot
                 ? {
-                    label: appointmentData.timeSlot,
-                    value: appointmentData.timeSlot,
-                  }
+                  label: appointmentData.timeSlot,
+                  value: appointmentData.timeSlot,
+                }
                 : null
             }
             fullWidth
