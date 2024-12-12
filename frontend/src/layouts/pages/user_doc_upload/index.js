@@ -156,7 +156,6 @@ function UserInfo() {
           const requiredFieldsStep2 = [
             "FCNIC",
             "BCNIC",
-            "Vehicle_Documents",
             "Police_Verification_Document",
             
           ];

@@ -1,6 +1,6 @@
 
 import Grid from "@mui/material/Grid";
-
+import { Dialog, DialogContent, IconButton } from "@mui/material"; 
 import { useState, useEffect } from "react";
 // Argon Dashboard 2 PRO MUI components
 import ArgonBox from "components/ArgonBox";
@@ -74,6 +74,8 @@ function Verifier() {
     ],
     rows: [], // Initially empty array
   });
+  const [openDialog, setOpenDialog] = useState(false); // Dialog state
+  const [selectedImage, setSelectedImage] = useState(""); // Store selected image URL
 
   const fetchData = async () => {
     try {
@@ -89,11 +91,36 @@ function Verifier() {
         occupation: item.occupation,
         category: item.category,
         type: item.type,
-        BCNIC: <ProductCell image={imageUrl+item.BCNIC} />,
-        FCNIC: <ProductCell image={imageUrl+item.FCNIC} />,
-        Police_Verification_Document: <ProductCell image={imageUrl+item.Police_Verification_Document} />,
-        Vehicle_Documents: <ProductCell image={imageUrl+item.Vehicle_Documents} />,
-        Previous_Card_Picture:<ProductCell image={imageUrl+item.Previous_Card_Picture} />,
+        BCNIC:(
+          <ProductCell
+            image={imageUrl + item.BCNIC}
+            onClick={() => handleImageClick(imageUrl + item.BCNIC)}
+          />
+        ),
+        FCNIC: (
+          <ProductCell
+            image={imageUrl + item.FCNIC}
+            onClick={() => handleImageClick(imageUrl + item.FCNIC)}
+          />
+        ),
+        Police_Verification_Document: (
+          <ProductCell
+            image={imageUrl + item.Police_Verification_Document}
+            onClick={() => handleImageClick(imageUrl + item.Police_Verification_Document)}
+          />
+        ),
+        Vehicle_Documents:(
+          <ProductCell
+            image={imageUrl + item.Vehicle_Documents}
+            onClick={() => handleImageClick(imageUrl + item.Vehicle_Documents)}
+          />
+        ),
+        Previous_Card_Picture:(
+          <ProductCell
+            image={imageUrl + item.Previous_Card_Picture}
+            onClick={() => handleImageClick(imageUrl + item.Previous_Card_Picture)}
+          />
+        ),
         Appointment_Day: item.Appointment_Day,
         Appointment_Time: item.Appointment_Time,
         action: (
@@ -170,7 +197,14 @@ function Verifier() {
       setLoading(false); // Ensure loading state is updated even on errors
     }
   };
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl); // Set the clicked image URL
+    setOpenDialog(true); // Open the dialog
+  };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Close the dialog
+  };
   const handleDeleteClick = (itemID) => {
     Swal.fire({
       title: "Are you sure?",
@@ -283,6 +317,19 @@ function Verifier() {
           )}
         </Card>
       </ArgonBox>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogContent>
+          <img src={selectedImage} alt="Full size" style={{ width: '100%', height: 'auto' }} />
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={handleCloseDialog}
+            sx={{ position: 'absolute', top: 10, right: 10 }}
+          >
+            <Icon>close</Icon>
+          </IconButton>
+        </DialogContent>
+      </Dialog>
       <Footer />
     </DashboardLayout>
   );

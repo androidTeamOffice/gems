@@ -43,6 +43,30 @@ console.log("Payload:", payload);
         </Button>
       </Box>
       
+     <Typography
+  variant="h6"
+  sx={{
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    display: 'block',
+    animation: 'scrollText 10s linear infinite',
+    fontWeight: 'bold',
+    color: 'red',
+    mt: 2,
+    animation: "scrollText 10s linear infinite",
+
+    "@keyframes scrollText": {
+      "0%": { transform: "translateX(100%)" },
+      "100%": { transform: "translateX(-100%)" },
+    },
+  }}
+>
+  انتباہ: جن افراد کے پاس مکمل دستاویزات نہیں ہوں گی، ان کے خلاف قانونی چارہ جوئی کی جائے گی۔ 
+  <br />
+  Warning: Those who do not have complete documents will face legal action.
+</Typography>
+
+      
       <Box display="flex" justifyContent="center" mt={5} gap={5}>
         <Box
           display="flex"
@@ -90,7 +114,7 @@ console.log("Payload:", payload);
         </Box>
       </Box>
       <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2} mt={2}>
-  <Box display="flex" alignItems="center" ml={60}> {/* Added margin-left */}
+  <Box display="flex" alignItems="center" ml={40}> {/* Added margin-left */}
     <Box width="10px" height="10px" bgcolor="#C0C0C0" borderRadius="50%" mr={0.5} />
     <Typography variant="caption">Pending</Typography>
   </Box>
@@ -116,7 +140,7 @@ console.log("Payload:", payload);
   <strong>Necessary Documents for Obtaining Cantt Pass</strong>
 </Typography>
 <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-  <strong>Compulsory documents for all categories:</strong>
+  <strong>Compulsory documents for all categories:-</strong>
   <ul style={{ paddingLeft: '1.2em' }}>
     <li>Completely filled GEP form attested by the concerned police station.</li>
     <li>Original Identity Card or Copy of Form ‘B’.</li>
@@ -124,7 +148,7 @@ console.log("Payload:", payload);
   </ul>
 </Typography>
 <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-  <strong>Additional Documents for Cantt Residents:</strong>
+  <strong>Additional Documents for Cantt Residents:-</strong>
   <ul style={{ paddingLeft: '1.2em' }}>
     <li>In case of residence in a private house, 1x Copy of GLR attested by MEO and 1x Copy of electricity and gas bill.</li>
     <li>In case of residence in a government house, 1x Copy of attested allotment letter of the concerned institution and 1x Copy of electricity and gas bills.</li>
@@ -135,26 +159,26 @@ console.log("Payload:", payload);
   </ul>
 </Typography>
 <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-  <strong>Additional Documents for Students:</strong>
+  <strong>Additional Documents for Students:-</strong>
   <ul style={{ paddingLeft: '1.2em' }}>
     <li>Parent’s ID card copy and authorization letter issued by the concerned educational institution.</li>
   </ul>
 </Typography>
 <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-  <strong>Additional Documents for Employees:</strong>
+  <strong>Additional Documents for Employees:-</strong>
   <ul style={{ paddingLeft: '1.2em' }}>
     <li>Certificate or official authority letter of the concerned company.</li>
     <li>If there is a shop, its affidavit (ID card of shop owner and attested allotment of shop).</li>
   </ul>
 </Typography>
 <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-  <strong>Additional Documents for Hanna Urak:</strong>
+  <strong>Additional Documents for Hanna Urak:-</strong>
   <ul style={{ paddingLeft: '1.2em' }}>
     <li>Attested form from Mashraan/Malik for Hanna Urak Cantt Pass.</li>
   </ul>
 </Typography>
 <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-  <strong>Additional Documents for Laborers:</strong>
+  <strong>Additional Documents for Laborers:-</strong>
   <ul style={{ paddingLeft: '1.2em' }}>
     <li>Attested copy of agreement letter and copy of security fee slip for labor Cantt Pass.</li>
   </ul>
@@ -170,7 +194,7 @@ console.log("Payload:", payload);
 <Typography variant="h6" gutterBottom>
   کینٹ پاس کے حصول کے لئے ضروری دستاویزات
 </Typography>
-<Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+<Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5', marginTop: '1em'}}>
   <strong>تمام کیٹگری کے لئے لازمی دستاویزات (All Cat)</strong>
   <ul style={{ paddingRight: '1.2em', listStyleType: 'disc' }}>
     <li>متعلقہ پولیس تھانے سے تصدیق شدہ مکمل GEP فارم۔</li>

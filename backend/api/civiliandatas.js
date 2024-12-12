@@ -47,6 +47,8 @@ router.post("/add_civData", validateToken, async (req, res) => {
 
       const saveBase64Image = (base64String, folderPath, fileName) => {
         try {
+          if (base64String && typeof base64String === 'string' && base64String.includes(',')) 
+          {
           const buffer = Buffer.from(base64String.split(",")[1], "base64");
           const filePath = path.join(folderPath, fileName);
           fs.writeFileSync(filePath, buffer);
@@ -56,7 +58,9 @@ router.post("/add_civData", validateToken, async (req, res) => {
           const nameWithoutExtension = path.basename(fileName, fileType); // Get the name without extension
       
           return nameWithoutExtension+fileType; 
-        } catch (error) {
+        } else{
+          return null;
+        }}catch (error) {
           console.error("Error saving image:", error);
           return null;
         }
@@ -97,11 +101,21 @@ router.post("/add_civData", validateToken, async (req, res) => {
   const profilePicturePath = saveBase64Image(Profile_Picture, uploadsFolder, `${fileName}_profile.jpg`);
   const bcnicPath = saveBase64Image(BCNIC, uploadsFolder, `${fileName}_bcnic.jpg`);
   const fcnicPath = saveBase64Image(FCNIC, uploadsFolder, `${fileName}_fcnic.jpg`);
-  const vehicleDocsPath = saveBase64Image(Vehicle_Documents, uploadsFolder, `${fileName}_vehicle_docs.jpg`);
-  const policeVerificationPath = saveBase64Image(Police_Verification_Document, uploadsFolder, `${fileName}_police_verification.jpg`);
+  let vehicleDocsPath = null;
+
+  if (Vehicle_Documents) {
+    vehicleDocsPath = saveBase64Image(
+      Vehicle_Documents, 
+      uploadsFolder, 
+      `${fileName}_vehicle_docs.jpg`
+    );
+  } else {
+    console.log("Vehicle_Documents is null or undefined.");
+  }
+    const policeVerificationPath = saveBase64Image(Police_Verification_Document, uploadsFolder, `${fileName}_police_verification.jpg`);
   const previousCardPicturePath = saveBase64Image(Previous_Card_Picture, uploadsFolder, `${fileName}_previous_card_picture.jpg`);
 
-  if (!profilePicturePath || !bcnicPath || !vehicleDocsPath || !policeVerificationPath ) {
+  if (!profilePicturePath || !bcnicPath || !policeVerificationPath ) {
     return res.status(500).json({ message: "Error saving images" });
   }
   console.log("req.body: ",profilePicturePath);

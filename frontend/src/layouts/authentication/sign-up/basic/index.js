@@ -33,12 +33,12 @@ function Basic() {
   // Form validation
   const validations = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    cnicOrMobile: Yup.string()
-      .matches(/^\d{13}$/, "Invalid CNIC. It must be a 13-digit number without any special characters.")
-      .required("CNIC/ Mobile number is required")
-      .test('is-valid-mobile', 'Invalid Mobile number. It must start with 03 and be 11 digits long.', value => {
-        return value ? /^\d{11}$/.test(value) && value.startsWith('03') : false;
-      }),
+    // cnicOrMobile: Yup.string()
+    //   .matches(/^\d{13}$/, "Invalid CNIC. It must be a 13-digit number without any special characters.")
+    //   .required("CNIC/ Mobile number is required")
+    //   .test('is-valid-mobile', 'Invalid Mobile number. It must start with 03 and be 11 digits long.', value => {
+    //     return value ? /^\d{11}$/.test(value) && value.startsWith('03') : false;
+    //   }),
     password: Yup.string()
       .required("Password is required")
       .min(6, "Password must be at least 6 characters"),

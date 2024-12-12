@@ -126,7 +126,7 @@ const StepOne = ({ formData, setFormData, err }) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={12}  display="flex" >
   {/* Present Address */}
   <TextField
     label={<RequiredLabel text="Present Address" />}
@@ -134,23 +134,25 @@ const StepOne = ({ formData, setFormData, err }) => {
     margin="normal"
     value={formData.Present_Address}
     onChange={(e) => handleInputChange('Present_Address', e.target.value)}
-    placeholder="Present Address"
+    placeholder="House near zam zam plaza"
     InputProps={{
       style: {
-        fontSize: '1rem', // Matches the font size of other fields
+        fontSize: '1rem',
+        padding: '10px',  // Adjust padding for single line input
       },
     }}
     inputProps={{
       style: {
-        height: '40px', // Matches the height of other fields
+        height: '40px', // Ensure single line height
       },
     }}
     sx={{
       '& .MuiInputLabel-root': {
-        fontSize: '1rem', // Adjusts label size
+        fontSize: '1rem',
       },
       '& .MuiOutlinedInput-root': {
-        fontSize: '1rem', // Ensures input font size matches
+        fontSize: '1rem',
+        borderRadius: '4px',  // Slightly rounded corners for a clean look
       },
     }}
   />

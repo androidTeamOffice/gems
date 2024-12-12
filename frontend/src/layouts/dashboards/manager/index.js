@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Dialog, DialogContent } from "@mui/material";
+import { Dialog, DialogContent, IconButton } from "@mui/material"; 
 import { useState, useEffect } from "react";
 import {
   Grid,
@@ -66,7 +66,8 @@ function DefaultManager() {
 
   const [newSlot, setNewSlot] = useState("");
   const [timeSlots, setTimeSlots] = useState([]);
-  const [zoomImage, setZoomImage] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false); // Dialog state
+  const [selectedImage, setSelectedImage] = useState(""); // Store selected image URL
 
   const fetchData = async () => {
     try {
@@ -82,32 +83,32 @@ function DefaultManager() {
         type: item.type,
         BCNIC: (
           <ProductCell
-            image={imageUrl + item.BCNIC} 
-            
+            image={imageUrl + item.BCNIC}
+            onClick={() => handleImageClick(imageUrl + item.BCNIC)} // Add onClick handler
           />
         ),
         FCNIC: (
           <ProductCell
             image={imageUrl + item.FCNIC}
-            onClick={() => setZoomImage(imageUrl + item.FCNIC)}
+            onClick={() => handleImageClick(imageUrl + item.FCNIC)}
           />
         ),
         Police_Verification_Document: (
           <ProductCell
             image={imageUrl + item.Police_Verification_Document}
-            onClick={() => setZoomImage(imageUrl + item.Police_Verification_Document)}
+            onClick={() => handleImageClick(imageUrl + item.Police_Verification_Document)}
           />
         ),
         Vehicle_Documents: (
           <ProductCell
             image={imageUrl + item.Vehicle_Documents}
-            onClick={() => setZoomImage(imageUrl + item.Vehicle_Documents)}
+            onClick={() => handleImageClick(imageUrl + item.Vehicle_Documents)}
           />
         ),
         Previous_Card_Picture: (
           <ProductCell
             image={imageUrl + item.Previous_Card_Picture}
-            onClick={() => setZoomImage(imageUrl + item.Previous_Card_Picture)}
+            onClick={() => handleImageClick(imageUrl + item.Previous_Card_Picture)}
           />
         ),
         Appointment_Day: item.Appointment_Day,
@@ -176,7 +177,14 @@ function DefaultManager() {
       )
     );
   };
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl); // Set the clicked image URL
+    setOpenDialog(true); // Open the dialog
+  };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Close the dialog
+  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -234,7 +242,19 @@ function DefaultManager() {
 </ArgonButton>
 
       </ArgonBox>
-      
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogContent>
+          <img src={selectedImage} alt="Full size" style={{ width: '100%', height: 'auto' }} />
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={handleCloseDialog}
+            sx={{ position: 'absolute', top: 10, right: 10 }}
+          >
+            <Icon>close</Icon>
+          </IconButton>
+        </DialogContent>
+      </Dialog>
       <Footer />
     </DashboardLayout>
   );

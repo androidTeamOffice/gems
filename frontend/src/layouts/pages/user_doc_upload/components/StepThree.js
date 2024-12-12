@@ -85,8 +85,7 @@ return (
           onChange={(e) => Vehicle_Documents(e,'Vehicle_Documents')}
         />
       </ArgonButton>
-      <Typography sx={{fontSize:'10px'}}>{urlData.Vehicle_Documents}</Typography>
-      {err.Vehicle_Documents && <ErrorMessage message={err.Vehicle_Documents} />}
+      
     </Box>
 
     <Box marginBottom={2}>
