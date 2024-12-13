@@ -115,7 +115,7 @@ return (
         label="Resident"
         style={{ marginLeft: '8px', marginRight: '24px' }}
       />
-      <FormControlLabel value="Non-Resident" control={<Radio />} label="Non-Resident" />
+      <FormControlLabel value="Employee" control={<Radio />} label="Employee" />
       <FormControlLabel value="Visitor" control={<Radio />} label="Visitor" />
       <FormControlLabel value="Hanna Orak" control={<Radio />} label="Hanna Orak" />
       <FormControlLabel value="Student" control={<Radio />} label="Student" />

@@ -477,10 +477,7 @@ const headers = {
 
 
   const handleBack = () => {
-
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-
-
   };
 
   const handleImageUpload = (e, field) => {

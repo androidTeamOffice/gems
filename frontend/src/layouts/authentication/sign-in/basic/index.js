@@ -46,7 +46,7 @@ function Basic() {
           sessionStorage.setItem("userName", response.data.user);
           sessionStorage.setItem("userrole", response.data.role);
           sessionStorage.setItem("userid", response.data.userid);
-          Swal.fire("Welcome", `${response.data.user}! Glad to have you here. ${response.data.role}`, "success");
+          Swal.fire("Welcome", `${response.data.user}! Glad to have you. ${response.data.role}`, "success");
 
           updateRole(response.data.role);
           updateid(response.data.userid)

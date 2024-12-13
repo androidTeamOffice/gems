@@ -182,48 +182,63 @@ const DocumentSubmission = ({ formData, setFormData, err, urlData }) => {
 
           {/* Important Note Section */}
      
-               <Box mt={5} p={2} bgcolor="#f1f1f1" borderRadius="8px">
-        <Typography variant="h6" gutterBottom>
-          NOTE
-        </Typography>
-        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-          The information provided by you must be correct in all aspects. Failing to provide correct information will lead to permanent ban from garrison premises and other legal action.
-        </Typography>
-        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-          It is further requested that the form may be downloaded and a hardcopy brought along on the assigned date & time.
-        </Typography>
-        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-          <strong>APPLICATION FORM MUST BE SUBMITTED WITH THE FOLLOWING DOCUMENTS</strong>
-        </Typography>
-        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-          <strong>ALL Cat less Residents & Non Residents</strong>
-          <ul style={{ paddingLeft: '1.2em' }}>
-            <li>CNIC / FRC copy.</li>
-            <li>Passport size picture.</li>
-            <li>Copy of vehicle's documents registered in the applicant's name. If not registered in the applicant's name, include the transfer letter.</li>
-            <li>Father / Mother CNIC & FRC copy (For Student Only).</li>
-            <li>Authority letter from School (For Student only).</li>
-          </ul>
-        </Typography>
-        <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-          <strong>Residents & Non Residents (Apart from Above)</strong>
-          <ul style={{ paddingLeft: '1.2em' }}>
-            <li>Copy of house/shop ownership/utility bills.</li>
-            <li>Copy of rent agreement (if tenant)/utility bills.</li>
-            <li>Registered company certificate or official authority letter for services/provisioning civilians category.</li>
-          </ul>
-        </Typography>
-        <Typography variant="body2" paragraph style={{ color: 'red', fontSize: '0.9rem', lineHeight: '1.5' }}>
-          <strong>Please Note:</strong>
-          <ul style={{ paddingLeft: '1.2em' }}>
-            <li>Validity of Card is subject to final security clearance by security agencies.</li>
-            <li>If the CNIC of the card holder gets blocked (for any reason), the card holder must inform on Gar Facilitation contact number 0336-5785839, or the Gar entry pass will be blocked permanently.</li>
-            <li>Applicants are required to reach GEP CN physically on the specified date & time for biometric verification, onsite picture, and other procedures.</li>
-            <li>Please adhere to the allotted timings strictly to avoid inconvenience.</li>
-          </ul>
-        </Typography>
-      </Box>
-          
+          <Box mt={5} p={2} bgcolor="#f1f1f1" borderRadius="8px">
+  <Typography variant="h6" gutterBottom>
+    NOTE
+  </Typography>
+  
+  <Box display="flex" justifyContent="space-between">
+    {/* English Section */}
+    <Box width="48%">
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        The information provided by you must be correct in all aspects. Failing to provide correct information will lead to permanent ban from garrison premises and other legal action.
+      </Typography>
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        It is further requested that the form may be downloaded and a hardcopy brought along on the assigned date & time.
+      </Typography>
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        <strong>APPLICATION FORM MUST BE SUBMITTED WITH THE FOLLOWING DOCUMENTS</strong>
+      </Typography>
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        <strong>ALL Cat less Residents & Non Residents</strong>
+        <ul style={{ paddingLeft: '1.2em' }}>
+          <li>CNIC / FRC copy.</li>
+          <li>Passport size picture.</li>
+          <li>Copy of vehicle's documents registered in the applicant's name. If not registered in the applicant's name, include the transfer letter.</li>
+          <li>Father / Mother CNIC & FRC copy (For Student Only).</li>
+          <li>Authority letter from School (For Student only).</li>
+        </ul>
+      </Typography>
+    </Box>
+
+     {/* Urdu Section */}
+     <Box width="48%" textAlign="right" dir="rtl">
+      <Typography variant="h6" gutterBottom>
+        نوٹ
+      </Typography>
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        آپ کی طرف سے فراہم کردہ معلومات ہر پہلو سے درست ہونی چاہئیں۔ غلط معلومات فراہم کرنے سے گیریژن کے احاطے میں مستقل پابندی اور دیگر قانونی کارروائی ہو سکتی ہے۔
+      </Typography>
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        مزید درخواست کی جاتی ہے کہ فارم کو ڈاؤن لوڈ کیا جائے اور مقررہ تاریخ اور وقت پر اس کی ہارڈ کاپی ساتھ لائیں۔
+      </Typography>
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        <strong>درخواست فارم درج ذیل دستاویزات کے ساتھ جمع کرانا ضروری ہے</strong>
+      </Typography>
+      <Typography variant="body2" paragraph style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+        <strong>تمام رہائشی اور غیر رہائشی افراد</strong>
+        <ul style={{ paddingRight: '1.2em' }}>
+          <li>شناختی کارڈ / خاندانی رجسٹریشن سرٹیفکیٹ کی کاپی۔</li>
+          <li>پاسپورٹ سائز تصویر۔</li>
+          <li>گاڑی کے دستاویزات کی کاپی جو درخواست دہندہ کے نام پر رجسٹرڈ ہیں۔ اگر درخواست دہندہ کے نام پر رجسٹرڈ نہ ہو تو منتقلی کا خط شامل کریں۔</li>
+          <li>والد / والدہ کا شناختی کارڈ اور خاندانی رجسٹریشن سرٹیفکیٹ (صرف طلباء کے لیے)۔</li>
+          <li>اسکول کا اتھارٹی لیٹر (صرف طلباء کے لیے)۔</li>
+        </ul>
+      </Typography>
+    </Box>
+  </Box>
+</Box>
+
         
         </Paper>
       </div>
