@@ -1,9 +1,9 @@
 const pool = require('../db/db'); // Assuming the file is named db.js
 const bcrypt = require('bcryptjs');
 
-async function findUserByUsername(username) {
+async function findUserByUsername(CNIC) {
     try {
-        const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+        const [rows] = await pool.query('SELECT * FROM users WHERE user_cnic= ?', [CNIC]);
         return rows[0] || null;
     } catch (error) {
         console.error('Error finding user by username:', error);
@@ -58,8 +58,8 @@ async function resetPassword(req, res) {
 async function addUserToDatabase(user) {
     const connection = await pool.getConnection();
     try {
-        const sql = `INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)`;
-        const [results] = await connection.execute(sql, [user.username, user.password, user.role]);
+        const sql = `INSERT INTO users (name,user_cnic, password_hash, role) VALUES (?, ?, ?,?)`;
+        const [results] = await connection.execute(sql, [user.name,user.CNIC, user.password, user.role]);
         user.id = results.insertId; // Set the generated ID on the user object
     } catch (error) {
         console.error('Error adding user to database:', error);

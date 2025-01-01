@@ -19,7 +19,7 @@ const RequiredLabel = ({ text }) => (
   </span>
 );
 
-const StepTwo = ({ formData,setFormData, err ,Profile_Picture,Previous_Card_Picture, urlData  }) => {// Update the form data when input changes
+const StepTwo = ({ formData,setFormData, err ,Profile_Picture, urlData  }) => {// Update the form data when input changes
   const handleInputChange = (e, field) => {
     const value = e.target.value;
     setFormData((prevData) => ({
@@ -145,11 +145,11 @@ return (
     {err.Vehicle_Registration_No && <ErrorMessage message={err.Vehicle_Registration_No} />}
 
     <Box display="flex" flexDirection="column" gap={2}>
-    <Button variant="contained" component="label" style={{ marginBottom: '18px', marginTop: '18px' }} sx={{ color: 'white' }}>
+    {/* <Button variant="contained" component="label" style={{ marginBottom: '18px', marginTop: '18px' }} sx={{ color: 'white' }}>
     Upload Previous Card picture 
     <input type="file" hidden label="" onChange={(e) => Previous_Card_Picture(e, 'Previous_Card_Picture')} />
   </Button>
-  <Typography sx={{fontSize:'10px'}}>{urlData.Previous_Card_Picture}</Typography>
+  <Typography sx={{fontSize:'10px'}}>{urlData.Previous_Card_Picture}</Typography> */}
     <FormControl component="fieldset" margin="normal" style={{ marginTop: '1px' }}>
       <FormLabel component="legend" style={{ fontSize: '1.1rem' }}>
         <RequiredLabel text="Card Duration" />

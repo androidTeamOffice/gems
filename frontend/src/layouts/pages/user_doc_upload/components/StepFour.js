@@ -126,11 +126,16 @@ const AppointmentForm = ({ formData, setFormData }) => {
               // { label: "12:30 PM - 1:00 PM", value: "12:30 PM - 1:00 PM" },
               // { label: "1:00 PM - 1:30 PM", value: "1:00 PM - 1:30 PM" },
               // { label: "1:30 PM - 2:00 PM", value: "1:30 PM - 2:00 PM" },
+              { label: "2:00 PM - 2:30 PM", value: "2:00 PM - 2:30 PM" },
+              { label: "2:30 PM - 3:00 PM", value: "2:30 PM - 3:00 PM" },
               { label: "3:00 PM - 3:30 PM", value: "3:00 PM - 3:30 PM" },
               { label: "3:30 PM - 4:00 PM", value: "3:30 PM - 4:00 PM" },
               { label: "4:00 PM - 4:30 PM", value: "4:00 PM - 4:30 PM" },
               { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
-              { label: "5:00 PM - 5:30 PM", value: "5:00 PM - 5:30 PM" },
+              { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
+              { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
+              { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
+
             ]}
           />
         </Box>

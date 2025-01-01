@@ -56,7 +56,7 @@ function Basic() {
         const response = await api.post("/api/signup", values);
 
         if (response.status === 201) {
-          Swal.fire("Registration Successful", `Welcome aboard! Your journey starts now!`, "success");
+          Swal.fire("Registration Successful", `Welcome!`, "success");
           // Handle successful registration (e.g., navigate to sign-in page)
           navigate("/authentication/sign-in/basic");
         }
@@ -114,15 +114,15 @@ function Basic() {
             </ArgonBox>
             <ArgonBox mb={2}>
               <ArgonInput
-                type="email"
-                placeholder="Email"
-                name="email"
-                value={formik.values.email}
+                type="CNIC"
+                placeholder="CNIC"
+                name="CNIC"
+                value={formik.values.CNIC}
                 onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
+                error={formik.touched.CNIC && Boolean(formik.errors.CNIC)}
               />
-              {formik.touched.email && formik.errors.email && (
-                <ErrorMessage message={formik.errors.email} />
+              {formik.touched.CNIC && formik.errors.CNIC && (
+                <ErrorMessage message={formik.errors.CNIC} />
               )}
             </ArgonBox>
             <ArgonBox mb={2}>

@@ -46,7 +46,7 @@ function Basic() {
           sessionStorage.setItem("userName", response.data.user);
           sessionStorage.setItem("userrole", response.data.role);
           sessionStorage.setItem("userid", response.data.userid);
-          Swal.fire("Welcome", `${response.data.user}! Glad to have you. ${response.data.role}`, "success");
+          Swal.fire("", `Welcome! Glad to have you.`, "success");
 
           updateRole(response.data.role);
           updateid(response.data.userid)
@@ -90,7 +90,7 @@ function Basic() {
             <ArgonBox mb={2}>
               <ArgonInput
                 type="text"
-                placeholder="CNIC or Mobile number"
+                placeholder="CNIC"
                 name="username"
                 value={formik.values.username}
                 onChange={formik.handleChange}

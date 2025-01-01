@@ -77,7 +77,7 @@ return (
             size="medium"
         style={{ marginBottom: '10px' }}
       >
-        <RequiredLabel text="Upload Vehicle Documents" />
+        <span>Upload Vehicle Documents</span>
         <input
           type="file"
           hidden
@@ -85,7 +85,7 @@ return (
           onChange={(e) => Vehicle_Documents(e,'Vehicle_Documents')}
         />
       </ArgonButton>
-      
+      <Typography sx={{fontSize:'10px'}}>{urlData.Vehicle_Documents}</Typography>
     </Box>
 
     <Box marginBottom={2}>

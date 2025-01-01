@@ -49,11 +49,11 @@ console.log("Payload:", payload);
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     display: 'block',
-    animation: 'scrollText 10s linear infinite',
+    animation: 'scrollText 20s linear infinite',
     fontWeight: 'bold',
     color: 'red',
     mt: 2,
-    animation: "scrollText 10s linear infinite",
+    animation: "scrollText 20s linear infinite",
 
     "@keyframes scrollText": {
       "0%": { transform: "translateX(100%)" },
@@ -61,9 +61,9 @@ console.log("Payload:", payload);
     },
   }}
 >
-  انتباہ: جن افراد کے پاس مکمل دستاویزات نہیں ہوں گی، ان کے خلاف قانونی چارہ جوئی کی جائے گی۔ 
+  انتباہ: جعلی دستاویزات فراہم کرنے والے کے خلاف قانونی چارہ جوئی کی جائے گی۔ 
   <br />
-  Warning: Those who do not have complete documents will face legal action.
+  Warning: Uploading fake documents will be liable to legal actions.
 </Typography>
 
       

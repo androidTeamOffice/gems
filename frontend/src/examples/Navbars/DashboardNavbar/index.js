@@ -223,7 +223,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     fontWeight="medium"
                     color={light && transparentNavbar ? "white" : "dark"}
                   >
-                    Welcome! {userName}
+                    Welcome!
                   </ArgonTypography>
                 )}
                 {!userName && (

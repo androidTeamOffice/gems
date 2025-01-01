@@ -330,10 +330,10 @@ const schema = Yup.object().shape({
     .required("FCNIC is required"),
   Father_Husband_Name: Yup.string().required("Father_Husband_Name is required"),
   Gaurdian_Contact: Yup.string()
-    .matches(/^[0-9]{10,11}$/, "Guardian contact should be 10-11 digits")
+    .matches(/^[0-9]{10,11}$/, "Gaurdian_Contact should be 10-11 digits")
     .required("Guardian Contact is required"),
   Gaurdian_CNIC: Yup.string()
-    .matches(/^[0-9]{13}$/, "Guardian CNIC must be 13 digits")
+    .matches(/^[0-9]{13}$/, "Gaurdian_CNIC must be 13 digits")
     .required("Guardian CNIC is required"),
   Gaurdian_Occupation: Yup.string().required("Guardian Occupation is required"),
   Caste: Yup.string().required("Caste is required"),
@@ -662,9 +662,9 @@ const headers = {
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
-        return <StepOne formData={formData} err={errors} setFormData={setFormData}/>;
+        return <StepOne formData={formData} err={errors} setFormData={setFormData} urlData={urlData} Previous_Card_Picture={Previous_Card_Picture} setUrlData={setUrlData}/>;
       case 1:
-        return <StepTwo formData={formData} urlData={urlData}err={errors}  Profile_Picture={Profile_Picture} Previous_Card_Picture={Previous_Card_Picture} setFormData={setFormData} setUrlData={setUrlData}/>;
+        return <StepTwo formData={formData} urlData={urlData} err={errors}  Profile_Picture={Profile_Picture} Previous_Card_Picture={Previous_Card_Picture} setFormData={setFormData} setUrlData={setUrlData}/>;
       case 2:
         return <StepThree formData={formData} urlData={urlData} FCNIC={FCNIC} BCNIC={BCNIC} Vehicle_Documents={Vehicle_Documents} Police_Verification_Document={Police_Verification_Document} err={errors} setUrlData={setUrlData} setFormData={setFormData}/>;
       case 3:

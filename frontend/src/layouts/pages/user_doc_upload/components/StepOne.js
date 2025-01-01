@@ -10,6 +10,7 @@ import {
   Grid,
   Typography,
   TextField,
+  Button
 } from '@mui/material';
 import TextFieldPair from '../../../../components/TextFieldPair';
 
@@ -19,7 +20,7 @@ const RequiredLabel = ({ text }) => (
   </span>
 );
 
-const StepOne = ({ formData, setFormData, err }) => {
+const StepOne = ({ formData, setFormData, err, Previous_Card_Picture, urlData, setUrlData}) => {
   // Update the form data when input changes
   const handleInputChange = (field, value) => {
     setFormData((prevData) => ({
@@ -27,6 +28,34 @@ const StepOne = ({ formData, setFormData, err }) => {
       [field]: value,
     }));
     console.log(formData);
+  };
+
+  const handlePreviousCardPicture = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const fileUrl = `C:\\fakepath\\${file.name}`; 
+      setFormData((prevData) => ({
+        ...prevData,
+        Previous_Card_Picture: file,
+      }));
+      setUrlData((prevData) => ({
+        ...prevData,
+        Previous_Card_Picture: fileUrl, 
+      }));
+    }
+  };
+  
+  const handleApplicantChange = (e) => {
+    const value = e.target.value;
+    setFormData((prevData) => ({
+      ...prevData,
+      Applicant: value,
+      Previous_Card_Picture: value === "For Renewal" ? prevData.Previous_Card_Picture : null,
+    }));
+    setUrlData((prevData) => ({
+      ...prevData,
+      Previous_Card_Picture: value === "For Renewal" ? prevData.Previous_Card_Picture : "",
+    }));
   };
 
   return (
@@ -62,23 +91,36 @@ const StepOne = ({ formData, setFormData, err }) => {
         </Grid>
       </Grid>
 
-      <Box display="flex" justifyContent="space-evenly" alignItems="flex-start" marginBottom={2} marginTop={2}>
-        <FormControl component="fieldset">
-          <FormLabel component="legend" style={{ fontSize: '1.1rem' }}>
-            <RequiredLabel text="Applicant" />
-          </FormLabel>
-          <RadioGroup
-            row
-            aria-label="Applicant"
-            name="Applicant"
-            value={formData.Applicant}
-            onChange={(e) => handleInputChange('Applicant', e.target.value)}
-          >
-            <FormControlLabel value="New" control={<Radio />} label="New" style={{ marginRight: '24px' }} />
-            <FormControlLabel value="For Renewal" control={<Radio />} label="For Renewal" />
-          </RadioGroup>
-          {err.Applicant && <ErrorMessage message={err.Applicant} />}
-        </FormControl>
+      <Box display="flex" justifyContent="space-between" alignItems="flex-start" marginBottom={2} marginTop={2}>
+      <FormControl component="fieldset" style={{ width: '200px', marginRight: '16px' }}>
+        <FormLabel component="legend" style={{ fontSize: '1.1rem' }}>
+          <RequiredLabel text="Applicant" />
+        </FormLabel>
+        <RadioGroup
+  row
+  aria-label="Applicant"
+  name="Applicant"
+  value={formData.Applicant}
+  onChange={handleApplicantChange}
+>
+  <FormControlLabel
+    value="New"
+    control={<Radio />}
+    label="New"
+    style={{ marginRight: "24px" }}
+  />
+  <FormControlLabel
+    value="For Renewal"
+    control={<Radio />}
+    label="For Renewal"
+  />
+</RadioGroup>
+
+        {err.Applicant && <ErrorMessage message={err.Applicant} />}
+      </FormControl>
+
+      
+
 
         <FormControl component="fieldset">
           <FormLabel component="legend" style={{ fontSize: '1.1rem' }}>
@@ -98,35 +140,58 @@ const StepOne = ({ formData, setFormData, err }) => {
           {err.gender && <ErrorMessage message={err.gender} />}
         </FormControl>
       </Box>
+{/* Conditionally show the Upload Button */}
+{formData.Applicant === 'For Renewal' && (
+        <Box flexGrow={1} display="flex" alignItems="center" justifyContent="flex-start">
+          <Button
+            variant="contained"
+            component="label"
+            style={{ marginBottom: '18px', marginTop: '18px' }}
+            sx={{ color: 'white' }}
+          >
+            Upload Previous Card Picture
+            <input
+              type="file"
+              hidden
+              onChange={e => Previous_Card_Picture(e, 'Previous_Card_Picture')} // Call the new handler here
+            />
+          </Button>
+        </Box>
+      )}
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          {/* Occupation and Father_Husband_Name */}
-          <TextFieldPair
-            label1={<RequiredLabel text="Occupation" />}
-            label2={<RequiredLabel text="Father_Husband_Name" />}
-            formDaaValue1={formData.occupation}
-            formDaaValue2={formData.Father_Husband_Name}
-            onChange1={(e) => handleInputChange('occupation', e.target.value)}
-            onChange2={(e) => handleInputChange('Father_Husband_Name', e.target.value)}
-          />
-          {err.occupation && <ErrorMessage message={err.occupation} />}
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          {/* Guardian Contact Number and Guardian CNIC */}
-          <TextFieldPair
-            label1={<RequiredLabel text="Guardian Contact Number" />}
-            label2={<RequiredLabel text="Guardian CNIC" />}
-            formDaaValue1={formData.Gaurdian_Contact}
-            formDaaValue2={formData.Gaurdian_CNIC}
-            onChange1={(e) => handleInputChange('Gaurdian_Contact', e.target.value)}
-            onChange2={(e) => handleInputChange('Gaurdian_CNIC', e.target.value)}
-          />
-          {err.Gaurdian_Contact && <ErrorMessage message={err.Gaurdian_Contact} />}
-        </Grid>
+      {/* Conditionally show the uploaded file URL */}
+      {formData.Applicant === 'For Renewal' && urlData.Previous_Card_Picture && (
+        <Typography sx={{ fontSize: '10px', color: 'green' }}>
+          {urlData.Previous_Card_Picture}
+        </Typography>
+      )}
+   
+      <Grid item xs={12} sm={8}>
+        {/* Father_Husband_Name and Guardian CNIC */}
+        <TextFieldPair
+          label1={<RequiredLabel text="Father/Husband/GuardianName" />}
+          label2={<RequiredLabel text="Father/Husband/GuardianCNIC" />}
+          formDaaValue1={formData.Father_Husband_Name}
+          formDaaValue2={formData.Gaurdian_CNIC}
+          onChange1={(e) => handleInputChange('Father_Husband_Name', e.target.value)}
+          onChange2={(e) => handleInputChange('Gaurdian_CNIC', e.target.value)}
+        />
+        {err.occupation && <ErrorMessage message={err.occupation} />}
+      </Grid>
+      <Grid item xs={12} sm={8}>
+        {/* Guardian Contact Number and Occupation */}
+        <TextFieldPair
+          label1={<RequiredLabel text="Father/Husband/GuardianContact" />}
+          label2={<RequiredLabel text="Occupation" />}
+          formDaaValue1={formData.Gaurdian_Contact}
+          formDaaValue2={formData.occupation}
+          onChange1={(e) => handleInputChange('Gaurdian_Contact', e.target.value)}
+          onChange2={(e) => handleInputChange('occupation', e.target.value)}
+        />
+        {err.Gaurdian_Contact && <ErrorMessage message={err.Gaurdian_Contact} />}
       </Grid>
 
-      <Grid item xs={12} display="flex" >
+      <Grid item xs={12} display="flex">
         {/* Present Address */}
         <TextField
           label={<RequiredLabel text="Present Address" />}
