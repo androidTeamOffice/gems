@@ -18,7 +18,7 @@ import typography from "assets/theme/base/typography";
 
 import axios from "axios";
 // import Wizard from "layouts/pages/user_doc_upload";
-import { useUserRole } from "../../../context/UserRoleContext"; 
+import { useUserRole } from "../../../context/UserRoleContext";
 import Header from "../../dashboards/user/components/Header";
 import StepOne from './components/StepOne';
 import StepTwo from './components/StepTwo';
@@ -32,7 +32,7 @@ import Swal from "sweetalert2";
 import Button from '@mui/material/Button';
 import * as Yup from "yup";
 import CircularProgress from "@mui/material/CircularProgress"; // MUI Spinner
-
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const steps = ['Personal Info', 'Other Details', 'Documents', 'Appoitment Details', 'Print'];
 
@@ -59,6 +59,7 @@ authAxios.interceptors.request.use(
 
 function UserInfo() {
   const { size } = typography;
+  const navigate = useNavigate(); // Initialize navigate
   const [counters, setCounters] = useState({
     onLeave: 0,
     onDuty: 0,
@@ -70,21 +71,21 @@ function UserInfo() {
     false
   );
 
- 
-
- 
-  const { id } = useUserRole(); 
- 
 
 
-    useEffect(() => {
-    
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        userid: id, // Dynamically set the field key
-      }));
-     
-    
+
+  const { id } = useUserRole();
+
+
+
+  useEffect(() => {
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      userid: id, // Dynamically set the field key
+    }));
+
+
   }, [id]);
 
 
@@ -112,21 +113,21 @@ function UserInfo() {
             "Present_Address",
             "Permanent_Address",
           ];
-  
+
           missingFields = requiredFieldsStep0.filter(
             (field) => !formData[field] || formData[field].trim() === ""
           );
-  
+
           if (missingFields.length > 0) {
             // Show a dialog or alert for missing fields
             alert(`The following fields are required: ${missingFields.join(", ")}`);
             return; // Stop here if validation fails
           }
-  
+
           // If validation passes, move to the next step
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
           break;
-  
+
         case 1:
           // Check if required fields are filled
           const requiredFieldsStep1 = [
@@ -134,19 +135,19 @@ function UserInfo() {
             "Disability",
             "category",
             "Card_Duration",
-            
+
           ];
-  
+
           missingFields = requiredFieldsStep1.filter(
             (field) => !formData[field] || formData[field].trim() === ""
           );
-  
+
           if (missingFields.length > 0) {
             // Show a dialog or alert for missing fields
             alert(`The following fields are required: ${missingFields.join(", ")}`);
             return; // Stop here if validation fails
           }
-  
+
           // If validation passes, move to the next step
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
           break;
@@ -157,41 +158,41 @@ function UserInfo() {
             "FCNIC",
             "BCNIC",
             "Police_Verification_Document",
-            
+
           ];
-  
+
           missingFields = requiredFieldsStep2.filter(
             (field) => !formData[field] || formData[field].trim() === ""
           );
-  
+
           if (missingFields.length > 0) {
             // Show a dialog or alert for missing fields
             alert(`The following fields are required: ${missingFields.join(", ")}`);
             return; // Stop here if validation fails
           }
-  
+
           // If validation passes, move to the next step
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
           break;
 
-          case 3:
-             // Check if required fields are filled
+        case 3:
+          // Check if required fields are filled
           const requiredFieldsStep3 = [
             "Appointment_Day",
             "Appointment_Time",
-            
+
           ];
-  
+
           missingFields = requiredFieldsStep3.filter(
             (field) => !formData[field] || formData[field].trim() === ""
           );
-  
+
           if (missingFields.length > 0) {
             // Show a dialog or alert for missing fields
             alert(`The following fields are required: ${missingFields.join(", ")}`);
             return; // Stop here if validation fails
           }
-  
+
           // If validation passes, move to the next step
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
           break;
@@ -201,7 +202,7 @@ function UserInfo() {
           // Proceed to the next step for other cases
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
           break;
-  
+
         default:
           console.error("Unhandled step:", activeStep);
       }
@@ -209,7 +210,7 @@ function UserInfo() {
       console.error("Validation error:", error);
     }
   };
-  
+
   const [errors, setErrors] = useState({});
   const [urlData, setUrlData] = useState({
     FCNIC: "",
@@ -218,162 +219,162 @@ function UserInfo() {
     BCNIC: "",
     Vehicle_Documents: "", // for file input
     Police_Verification_Document: "", // for file input
-  
-  });
-// Define initial form data state
-const [formData, setFormData] = useState({
-  name: "",
-  userid: "",
-  cnic: "",
-  occupation: "",
-  category: "",
-  Applicant: "",
-  status: "",
-  remarks: "",
-  Card_Duration: "",
-  Vehicle_Registration_No: "",
-  Mobile_no: "",
-  Home_phone_no: "",
-  FCNIC: "",
-  Father_Husband_Name: "",
-  Gaurdian_Contact: "",
-  Gaurdian_CNIC: "",
-  Gaurdian_Occupation: "",
-  Present_Address: "",
-  Permanent_Address: "",
-  Profile_Picture: null, // for file input
-  Disability: "",
-  Description: "",
-  Vehicle_Make: "",
-  Vehicle_Model: "",
-  Vehicle_Type: "",
-  Previous_Card_Picture: "",
-  BCNIC: "",
-  Vehicle_Documents: null, // for file input
-  Police_Verification_Document: null, // for file input
-  Appointment_Day: "",
-  Appointment_Time: "",
-});
 
-// Handle form field changes
-const handleChange = (event) => {
-  setFormData({ ...formData, [event.target.name]: event.target.value });
-};
-const handleClear = (event) => {
-  setFormData({
+  });
+  // Define initial form data state
+  const [formData, setFormData] = useState({
     name: "",
-  cnic: "",
-  occupation: "",
-  category: "",
-  type: "",
-  status: "",
-  remarks: "",
-  Card_Duration: "",
-  Vehicle_Registration_No: "",
-  Mobile_no: "",
-  Home_phone_no: "",
-  FCNIC: "",
-  Father_Husband_Name: "",
-  Gaurdian_Contact: "",
-  Gaurdian_CNIC: "",
-  Gaurdian_Occupation: "",
-  Caste: "",
-  Province: "",
-  Nationality: "",
-  Present_Address: "",
-  Permanent_Address: "",
-  Profile_Picture: null, // for file input
-  Disability: "",
-  Description: "",
-  Vehicle_Make: "",
-  Vehicle_Model: "",
-  Vehicle_Type: "",
-  BCNIC: "",
-  Vehicle_Documents: null, // for file input
-  Police_Verification_Document: null, // for file input
-  Appointment_Day: "",
-  Appointment_Time: "",
+    userid: "",
+    cnic: "",
+    occupation: "",
+    category: "",
+    Applicant: "",
+    status: "",
+    remarks: "",
+    Card_Duration: "",
+    Vehicle_Registration_No: "",
+    Mobile_no: "",
+    Home_phone_no: "",
+    FCNIC: "",
+    Father_Husband_Name: "",
+    Gaurdian_Contact: "",
+    Gaurdian_CNIC: "",
+    Gaurdian_Occupation: "",
+    Present_Address: "",
+    Permanent_Address: "",
+    Profile_Picture: null, // for file input
+    Disability: "",
+    Description: "",
+    Vehicle_Make: "",
+    Vehicle_Model: "",
+    Vehicle_Type: "",
+    Previous_Card_Picture: "",
+    BCNIC: "",
+    Vehicle_Documents: null, // for file input
+    Police_Verification_Document: null, // for file input
+    Appointment_Day: "",
+    Appointment_Time: "",
   });
-};
-/*
 
-For the references only:
-name, cnic, occupation, category, type, status, remarks, Card_Duration, Vehicle_Registration_No, Mobile_no, Home_phone_no,
-     FCNIC, Father_Husband_Name, Gaurdian_Contact,Gaurdian_CNIC, Gaurdian_Occupation, Caste, Province, Nationality, Present_Address,
-      Permanent_Address, Profile_Picture, Disability, Description, Vehicle_Make, Vehicle_Model, Vehicle_Type, BCNIC, Vehicle_Documents,
-       Police_Verification_Document, Appointment_Day, Appointment_Time
+  // Handle form field changes
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+  const handleClear = (event) => {
+    setFormData({
+      name: "",
+      cnic: "",
+      occupation: "",
+      category: "",
+      type: "",
+      status: "",
+      remarks: "",
+      Card_Duration: "",
+      Vehicle_Registration_No: "",
+      Mobile_no: "",
+      Home_phone_no: "",
+      FCNIC: "",
+      Father_Husband_Name: "",
+      Gaurdian_Contact: "",
+      Gaurdian_CNIC: "",
+      Gaurdian_Occupation: "",
+      Caste: "",
+      Province: "",
+      Nationality: "",
+      Present_Address: "",
+      Permanent_Address: "",
+      Profile_Picture: null, // for file input
+      Disability: "",
+      Description: "",
+      Vehicle_Make: "",
+      Vehicle_Model: "",
+      Vehicle_Type: "",
+      BCNIC: "",
+      Vehicle_Documents: null, // for file input
+      Police_Verification_Document: null, // for file input
+      Appointment_Day: "",
+      Appointment_Time: "",
+    });
+  };
+  /*
+  
+  For the references only:
+  name, cnic, occupation, category, type, status, remarks, Card_Duration, Vehicle_Registration_No, Mobile_no, Home_phone_no,
+       FCNIC, Father_Husband_Name, Gaurdian_Contact,Gaurdian_CNIC, Gaurdian_Occupation, Caste, Province, Nationality, Present_Address,
+        Permanent_Address, Profile_Picture, Disability, Description, Vehicle_Make, Vehicle_Model, Vehicle_Type, BCNIC, Vehicle_Documents,
+         Police_Verification_Document, Appointment_Day, Appointment_Time
+  
+  
+  
+  */
 
-
-
-*/
-
-const schema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  cnic: Yup.string()
-    .matches(/^[0-9]{13}$/, "CNIC must be 13 digits")
-    .required("CNIC is required"),
-  occupation: Yup.string().required("Occupation is required"),
-  category: Yup.string().required("Category is required"),
-  type: Yup.string().required("Type is required"),
-  status: Yup.string().required("Status is required"),
-  remarks: Yup.string(),
-  Card_Duration: Yup.number().required("Card Duration is required"),
-  Vehicle_Registration_No: Yup.string()
-    .matches(/^[A-Z0-9]+$/, "Vehicle Registration No should be alphanumeric")
-    .required("Vehicle Registration No is required"),
-  Mobile_no: Yup.string()
-    .matches(/^[0-9]{10,11}$/, "Mobile number should be 10-11 digits")
-    .required("Mobile number is required"),
-  Home_phone_no: Yup.string().matches(/^[0-9]{10,11}$/, "Home phone number should be 10-11 digits"),
-  FCNIC: Yup.string()
-    .matches(/^[0-9]{13}$/, "FCNIC must be 13 digits")
-    .required("FCNIC is required"),
-  Father_Husband_Name: Yup.string().required("Father_Husband_Name is required"),
-  Gaurdian_Contact: Yup.string()
-    .matches(/^[0-9]{10,11}$/, "Gaurdian_Contact should be 10-11 digits")
-    .required("Guardian Contact is required"),
-  Gaurdian_CNIC: Yup.string()
-    .matches(/^[0-9]{13}$/, "Gaurdian_CNIC must be 13 digits")
-    .required("Guardian CNIC is required"),
-  Gaurdian_Occupation: Yup.string().required("Guardian Occupation is required"),
-  Caste: Yup.string().required("Caste is required"),
-  Province: Yup.string().required("Province is required"),
-  Nationality: Yup.string().required("Nationality is required"),
-  Present_Address: Yup.string().required("Present Address is required"),
-  Permanent_Address: Yup.string().required("Permanent Address is required"),
-  Profile_Picture: Yup.mixed()
-    .required("Profile Picture is required")
-    .test("fileType", "Unsupported file format", (value) =>
-      ["image/jpeg", "image/png"].includes(value?.type)
-    ),
-  Disability: Yup.string(),
-  Description: Yup.string().required("Description is required"),
-  Vehicle_Make: Yup.string().required("Vehicle Make is required"),
-  Vehicle_Model: Yup.string().required("Vehicle Model is required"),
-  Vehicle_Type: Yup.string().required("Vehicle Type is required"),
-  BCNIC: Yup.string()
-    .matches(/^[0-9]{13}$/, "BCNIC must be 13 digits")
-    .required("BCNIC is required"),
-  Vehicle_Documents: Yup.mixed().required("Vehicle Documents are required"),
-  Police_Verification_Document: Yup.mixed().required("Police Verification Document is required"),
-  Appointment_Day: Yup.date().required("Appointment Day is required"),
-  Appointment_Time: Yup.string()
-    .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Appointment Time must be in HH:MM format")
-    .required("Appointment Time is required"),
-});
-const headers = {
-  "Content-Type": "multipart/form-data", // Important for Multer
-};
+  const schema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    cnic: Yup.string()
+      .matches(/^[0-9]{13}$/, "CNIC must be 13 digits")
+      .required("CNIC is required"),
+    occupation: Yup.string().required("Occupation is required"),
+    category: Yup.string().required("Category is required"),
+    type: Yup.string().required("Type is required"),
+    status: Yup.string().required("Status is required"),
+    remarks: Yup.string(),
+    Card_Duration: Yup.number().required("Card Duration is required"),
+    Vehicle_Registration_No: Yup.string()
+      .matches(/^[A-Z0-9]+$/, "Vehicle Registration No should be alphanumeric")
+      .required("Vehicle Registration No is required"),
+    Mobile_no: Yup.string()
+      .matches(/^[0-9]{10,11}$/, "Mobile number should be 10-11 digits")
+      .required("Mobile number is required"),
+    Home_phone_no: Yup.string().matches(/^[0-9]{10,11}$/, "Home phone number should be 10-11 digits"),
+    FCNIC: Yup.string()
+      .matches(/^[0-9]{13}$/, "FCNIC must be 13 digits")
+      .required("FCNIC is required"),
+    Father_Husband_Name: Yup.string().required("Father_Husband_Name is required"),
+    Gaurdian_Contact: Yup.string()
+      .matches(/^[0-9]{10,11}$/, "Gaurdian_Contact should be 10-11 digits")
+      .required("Guardian Contact is required"),
+    Gaurdian_CNIC: Yup.string()
+      .matches(/^[0-9]{13}$/, "Gaurdian_CNIC must be 13 digits")
+      .required("Guardian CNIC is required"),
+    Gaurdian_Occupation: Yup.string().required("Guardian Occupation is required"),
+    Caste: Yup.string().required("Caste is required"),
+    Province: Yup.string().required("Province is required"),
+    Nationality: Yup.string().required("Nationality is required"),
+    Present_Address: Yup.string().required("Present Address is required"),
+    Permanent_Address: Yup.string().required("Permanent Address is required"),
+    Profile_Picture: Yup.mixed()
+      .required("Profile Picture is required")
+      .test("fileType", "Unsupported file format", (value) =>
+        ["image/jpeg", "image/png"].includes(value?.type)
+      ),
+    Disability: Yup.string(),
+    Description: Yup.string().required("Description is required"),
+    Vehicle_Make: Yup.string().required("Vehicle Make is required"),
+    Vehicle_Model: Yup.string().required("Vehicle Model is required"),
+    Vehicle_Type: Yup.string().required("Vehicle Type is required"),
+    BCNIC: Yup.string()
+      .matches(/^[0-9]{13}$/, "BCNIC must be 13 digits")
+      .required("BCNIC is required"),
+    Vehicle_Documents: Yup.mixed().required("Vehicle Documents are required"),
+    Police_Verification_Document: Yup.mixed().required("Police Verification Document is required"),
+    Appointment_Day: Yup.date().required("Appointment Day is required"),
+    Appointment_Time: Yup.string()
+      .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Appointment Time must be in HH:MM format")
+      .required("Appointment Time is required"),
+  });
+  const headers = {
+    "Content-Type": "multipart/form-data", // Important for Multer
+  };
   const handleFinish = async (event) => {
     event.preventDefault();
     let response = "";
     try {
       // Validate form data using Yup schema
 
-      
+
 
       // // If validation passes, proceed with form submission logic
-      response = await authAxios.post("/api/add_civData", formData,headers);
+      response = await authAxios.post("/api/add_civData", formData, headers);
       console.log("Resposne " + response.status);
       console.log("User Data add successfully:", response.data);
       Swal.fire("Added!", "Appt Added successfully.", "success");
@@ -381,35 +382,35 @@ const headers = {
       // Optionally clear form data
       setFormData({
         name: "",
-  cnic: "",
-  occupation: "",
-  category: "",
-  type: "",
-  status: "",
-  remarks: "",
-  Card_Duration: "",
-  Vehicle_Registration_No: "",
-  Mobile_no: "",
-  Home_phone_no: "",
-  FCNIC: "",
-  Father_Husband_Name: "",
-  Gaurdian_Contact: "",
-  Gaurdian_CNIC: "",
-  Gaurdian_Occupation: "",
-  Present_Address: "",
-  Permanent_Address: "",
-  Profile_Picture: null, // for file input
-  Disability: "",
-  Description: "",
-  Vehicle_Make: "",
-  Vehicle_Model: "",
-  Vehicle_Type: "",
-  Previous_Card_Picture: "",
-  BCNIC: "",
-  Vehicle_Documents: null, // for file input
-  Police_Verification_Document: null, // for file input
-  Appointment_Day: "",
-  Appointment_Time: "",
+        cnic: "",
+        occupation: "",
+        category: "",
+        type: "",
+        status: "",
+        remarks: "",
+        Card_Duration: "",
+        Vehicle_Registration_No: "",
+        Mobile_no: "",
+        Home_phone_no: "",
+        FCNIC: "",
+        Father_Husband_Name: "",
+        Gaurdian_Contact: "",
+        Gaurdian_CNIC: "",
+        Gaurdian_Occupation: "",
+        Present_Address: "",
+        Permanent_Address: "",
+        Profile_Picture: null, // for file input
+        Disability: "",
+        Description: "",
+        Vehicle_Make: "",
+        Vehicle_Model: "",
+        Vehicle_Type: "",
+        Previous_Card_Picture: "",
+        BCNIC: "",
+        Vehicle_Documents: null, // for file input
+        Police_Verification_Document: null, // for file input
+        Appointment_Day: "",
+        Appointment_Time: "",
       });
     } catch (error) {
       console.error("Validation error:", error);
@@ -473,6 +474,7 @@ const headers = {
 
       // Create a new object to store errors
     }
+    navigate("/dashboards/user"); // Replace "/dashboard" with your actual dashboard route
   };
 
 
@@ -483,22 +485,22 @@ const headers = {
   const handleImageUpload = (e, field) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     // Use a closure to capture `field`
     reader.onload = (event) => {
       setLoading(true);
       const imageData = event.target.result;
       console.log("imageData");
       console.log(imageData);
-  
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         [field]: imageData, // Dynamically set the field key
       }));
-  
+
       setLoading(false);
     };
-  
+
     reader.readAsDataURL(file);
   };
 
@@ -506,20 +508,20 @@ const headers = {
   const Profile_Picture = (e, field) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     // Use a closure to capture `field`
     reader.onload = (event) => {
       setLoading(true);
       const imageData = event.target.result;
       console.log("imageData");
       console.log(imageData);
-  
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         Profile_Picture: imageData, // Dynamically set the field key
       }));
-     
-  
+
+
       setLoading(false);
     };
     setUrlData((prevUrlData) => ({
@@ -532,20 +534,20 @@ const headers = {
   const Previous_Card_Picture = (e, field) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     // Use a closure to capture `field`
     reader.onload = (event) => {
       setLoading(true);
       const imageData = event.target.result;
       console.log("imageDataPrev");
       console.log(imageData);
-  
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         Previous_Card_Picture: imageData, // Dynamically set the field key
       }));
-     
-  
+
+
       setLoading(false);
     };
     setUrlData((prevUrlData) => ({
@@ -554,18 +556,18 @@ const headers = {
     }));
     reader.readAsDataURL(file);
   };
-  
+
   const FCNIC = (e, field) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     // Use a closure to capture `field`
     reader.onload = (event) => {
       setLoading(true);
       const imageData = event.target.result;
       console.log("imageData");
       console.log(imageData);
-  
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         FCNIC: imageData, // Dynamically set the field key
@@ -576,7 +578,7 @@ const headers = {
       }));
       setLoading(false);
     };
-  
+
     reader.readAsDataURL(file);
   };
 
@@ -584,14 +586,14 @@ const headers = {
   const BCNIC = (e, field) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     // Use a closure to capture `field`
     reader.onload = (event) => {
       setLoading(true);
       const imageData = event.target.result;
       console.log("imageData");
       console.log(imageData);
-  
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         BCNIC: imageData, // Dynamically set the field key
@@ -602,7 +604,7 @@ const headers = {
       }));
       setLoading(false);
     };
-  
+
     reader.readAsDataURL(file);
   };
 
@@ -610,26 +612,26 @@ const headers = {
   const Vehicle_Documents = (e, field) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     // Use a closure to capture `field`
     reader.onload = (event) => {
       setLoading(true);
       const imageData = event.target.result;
       console.log("imageData");
       console.log(imageData);
-  
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         Vehicle_Documents: imageData, // Dynamically set the field key
       }));
-     
+
       setLoading(false);
     };
-     setUrlData((prevUrlData) => ({
-        ...prevUrlData,
-        Vehicle_Documents: e.target.value, // Dynamically set the field key
-      }));
-  
+    setUrlData((prevUrlData) => ({
+      ...prevUrlData,
+      Vehicle_Documents: e.target.value, // Dynamically set the field key
+    }));
+
     reader.readAsDataURL(file);
   };
 
@@ -637,19 +639,19 @@ const headers = {
   const Police_Verification_Document = (e, field) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     // Use a closure to capture `field`
     reader.onload = (event) => {
       setLoading(true);
       const imageData = event.target.result;
       console.log("imageData");
       console.log(imageData);
-  
+
       setFormData((prevFormData) => ({
         ...prevFormData,
         Police_Verification_Document: imageData, // Dynamically set the field key
       }));
-   
+
       setLoading(false);
     };
     setUrlData((prevUrlData) => ({
@@ -662,15 +664,15 @@ const headers = {
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
-        return <StepOne formData={formData} err={errors} setFormData={setFormData} urlData={urlData} Previous_Card_Picture={Previous_Card_Picture} setUrlData={setUrlData}/>;
+        return <StepOne formData={formData} err={errors} setFormData={setFormData} urlData={urlData} Previous_Card_Picture={Previous_Card_Picture} setUrlData={setUrlData} />;
       case 1:
-        return <StepTwo formData={formData} urlData={urlData} err={errors}  Profile_Picture={Profile_Picture} Previous_Card_Picture={Previous_Card_Picture} setFormData={setFormData} setUrlData={setUrlData}/>;
+        return <StepTwo formData={formData} urlData={urlData} err={errors} Profile_Picture={Profile_Picture} Previous_Card_Picture={Previous_Card_Picture} setFormData={setFormData} setUrlData={setUrlData} />;
       case 2:
-        return <StepThree formData={formData} urlData={urlData} FCNIC={FCNIC} BCNIC={BCNIC} Vehicle_Documents={Vehicle_Documents} Police_Verification_Document={Police_Verification_Document} err={errors} setUrlData={setUrlData} setFormData={setFormData}/>;
+        return <StepThree formData={formData} urlData={urlData} FCNIC={FCNIC} BCNIC={BCNIC} Vehicle_Documents={Vehicle_Documents} Police_Verification_Document={Police_Verification_Document} err={errors} setUrlData={setUrlData} setFormData={setFormData} />;
       case 3:
-        return <AppointmentForm formData={formData} err={errors} setFormData={setFormData}/>;
+        return <AppointmentForm formData={formData} err={errors} setFormData={setFormData} />;
       case 4:
-        return <DocumentSubmission formData={formData} urlData={urlData} err={errors} setFormData={setFormData}/>;
+        return <DocumentSubmission formData={formData} urlData={urlData} err={errors} setFormData={setFormData} />;
       default:
         return <div>Not Found</div>;
     }
@@ -713,41 +715,41 @@ const headers = {
                       </Step>
                     ))}
                   </Stepper>
-             
-                  <div>{renderStepContent(activeStep)}</div>
-                  {loading?  <CircularProgress/>: <></>}
-                 <div style={{ marginTop: '20px' }}>
-  {/* Conditionally render Back button, but only show if not on Step One */}
-  {activeStep > 0 && (
-    <ArgonButton
-    variant="outlined"
-    color="warning"
-    size="medium"
-    onClick={handleBack}
-  >
-    Back
-  </ArgonButton>
-  )}
 
-  {/* Conditionally render Next button for steps before Step Five */}
-  {activeStep < steps.length - 1 ? (
-    <ArgonButton
-    variant="contained"
-    color="info"
-    size="medium"
-    onClick={handleNext}
-  >
-    Next
-  </ArgonButton>
-  ) : (<ArgonButton
-    variant="gradient"
-    color="primary"
-    size="medium"
-    onClick={handleFinish}
-  >
-    Finish
-  </ArgonButton>)}
-</div>
+                  <div>{renderStepContent(activeStep)}</div>
+                  {loading ? <CircularProgress /> : <></>}
+                  <div style={{ marginTop: '20px' }}>
+                    {/* Conditionally render Back button, but only show if not on Step One */}
+                    {activeStep > 0 && (
+                      <ArgonButton
+                        variant="outlined"
+                        color="warning"
+                        size="medium"
+                        onClick={handleBack}
+                      >
+                        Back
+                      </ArgonButton>
+                    )}
+
+                    {/* Conditionally render Next button for steps before Step Five */}
+                    {activeStep < steps.length - 1 ? (
+                      <ArgonButton
+                        variant="contained"
+                        color="info"
+                        size="medium"
+                        onClick={handleNext}
+                      >
+                        Next
+                      </ArgonButton>
+                    ) : (<ArgonButton
+                      variant="gradient"
+                      color="primary"
+                      size="medium"
+                      onClick={handleFinish}
+                    >
+                      Finish
+                    </ArgonButton>)}
+                  </div>
 
                 </ArgonBox>
                 <ArgonBox mt={1}>
