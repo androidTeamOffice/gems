@@ -2,6 +2,7 @@ const express = require("express");
 const { validateToken, checkManagerRole } = require("../utils/authMiddleware"); // Assuming the file is named authMiddleware.js
 const {
   addCivDataToDatabase,
+  fetchAppointmentSlots,
   saveDisabledDatesToDatabase,
   findCivDataByCNIC,
   findCivDataById,
@@ -166,6 +167,27 @@ router.post("/add_civData", validateToken, async (req, res) => {
     handleError(error, res);
   }
 });
+router.get("/appointmentSlots", async (req, res) => {
+  const currentDay = req.query.date; // Send the date as a query parameter from the frontend
+  try {
+    const rows=await fetchAppointmentSlots(currentDay);
+      // console.log("rows: ",rows);
+      // Transform data into a usable format
+      // Ensure rows is always treated as an array
+      const normalizedRows = Array.isArray(rows) ? rows : [rows];
+            // Transform data into a usable format
+      const slots = normalizedRows.map(row => ({
+        time: row.Appointment_Time,
+        bookings: row.bookings,
+      }));
+      // console.log("slots: ",slots);
+      res.json({ success: true, slots });
+  } catch (error) {
+      console.error("Error fetching appointment slots:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 router.post("/civData_by_id", validateToken, async (req, res) => {
   const id = req.body.id;
   console.log("Finding civData!");

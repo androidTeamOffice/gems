@@ -1,6 +1,27 @@
 const pool = require('../db/db'); // Assuming the file is named db.js
 
+
+async function fetchAppointmentSlots(currentDay) {
+    const connection = await pool.getConnection();
+    try {
+    const sql = `
+    SELECT Appointment_Time, COUNT(*) as bookings 
+    FROM civdatas 
+    WHERE Appointment_Day = ? 
+    GROUP BY Appointment_Time
+`;
+
+const [rows] = await pool.query(sql, [currentDay]);
+return rows || null;
+} catch (error) {
+    console.error('Error fetching appointment time slots from database:', error);
+    throw error; // Re-throw the error for handling in the API route
+} finally {
+    connection.release();
+}
+};
 // Function to add a civData to the MySQL database
+
 async function addCivDataToDatabase(civData) {
     const connection = await pool.getConnection();
     try {
@@ -164,4 +185,4 @@ async function updateCivDataInDatabase(id, updatedCivData) {
         connection.release();
     }
 };
-module.exports = { addCivDataToDatabase, saveDisabledDatesToDatabase, findCivDataByCNIC, findCivDataById, updateCivDataInDatabase, getAllCivDatas, getAllVerifiedCivDatas, deleteCivData, rejectCivData,verifyCivData ,verifyStatus,getAllDisabledDates}
+module.exports = { addCivDataToDatabase, saveDisabledDatesToDatabase, findCivDataByCNIC, findCivDataById, updateCivDataInDatabase, getAllCivDatas, getAllVerifiedCivDatas, deleteCivData, rejectCivData,verifyCivData ,verifyStatus,getAllDisabledDates,fetchAppointmentSlots}

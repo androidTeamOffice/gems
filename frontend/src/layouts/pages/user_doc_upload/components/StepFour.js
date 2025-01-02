@@ -22,6 +22,8 @@ const normalizeDate = (date) => {
 };
 
 const AppointmentForm = ({ formData, setFormData }) => {
+  const [disabledSlots, setDisabledSlots] = useState([]);
+  const [timeOptions, setTimeOptions] = useState([]);
   const [appointmentData, setAppointmentData] = useState({
     appointmentDay: "",
     timeSlot: "",
@@ -42,7 +44,52 @@ const AppointmentForm = ({ formData, setFormData }) => {
     };
     fetchDisabledDates();
   }, []);
+  useEffect(() => {
+    const fetchSlots = async () => {
+        try {
+            const currentDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
+            const response = await authAxios.get(`/api/appointmentSlots?date=${currentDate}`);
+            
+            if (response.data.success) {
+                const disabled = response.data.slots
+                    .filter(slot => slot.bookings >= 10)
+                    .map(slot => slot.time);
+                setDisabledSlots(disabled);
+            }
+        } catch (error) {
+            console.error("Error fetching slots:", error);
+        }
+    };
 
+    fetchSlots();
+}, []);
+// Generate time slot options
+useEffect(() => {
+  const allTimeSlots = [
+      "8:00 AM - 8:30 AM",
+      "8:30 AM - 9:00 AM",
+      "9:00 AM - 9:30 AM",
+      "9:30 AM - 10:00 AM",
+      "10:00 AM - 10:30 AM",
+      "10:30 AM - 11:30 AM",
+      "11:30 AM - 12:00 PM",
+      "2:00 PM - 2:30 PM",
+      "2:30 PM - 3:00 PM",
+      "3:00 PM - 3:30 PM",
+      "3:30 PM - 4:00 PM",
+      "4:00 PM - 4:30 PM",
+      "4:30 PM - 5:00 PM",
+  ];
+
+  const options = allTimeSlots.map(slot => ({
+      label: slot,
+      value: slot,
+      isDisabled: disabledSlots.includes(slot), // Disable if slot is fully booked
+  }));
+  console.log("Time Options:", options);
+
+  setTimeOptions(options);
+}, [disabledSlots]);
   const isDateDisabled = (date) => {
     // Ensure the date is converted to the same format as the items in disabledDates
     const dateString = date instanceof Date ? date.toISOString().split("T")[0] : date;
@@ -52,13 +99,14 @@ const AppointmentForm = ({ formData, setFormData }) => {
   const handleInputChange = (event, field) => {
     const { value } = event.target || event;
     setFormData((prevData) => ({ ...prevData, [field]: value }));
-
+    
     if (field === "Appointment_Day") {
       setAppointmentData((prevData) => ({
         ...prevData,
         appointmentDay: value,
       }));
     } else {
+      
       setAppointmentData((prevData) => ({
         ...prevData,
         timeSlot: value,
@@ -101,43 +149,21 @@ const AppointmentForm = ({ formData, setFormData }) => {
             <RequiredLabel text="Time Slot Available" />
           </Typography>
           <ArgonSelect
-            placeholder="Type and Select time slot"
-            value={
-              appointmentData.timeSlot
-                ? {
-                  label: appointmentData.timeSlot,
-                  value: appointmentData.timeSlot,
+          name="appointmentTime"
+                placeholder="Type and Select time slot"
+                value={
+                    appointmentData.timeSlot
+                        ? { label: appointmentData.timeSlot, value: appointmentData.timeSlot }
+                        : null
                 }
-                : null
-            }
-            fullWidth
-            variant="outlined"
-            onChange={(e) => handleInputChange(e, "Appointment_Time")}
-            options={[
-              { label: "Select time slot", value: "" },
-              { label: "8:00 AM - 8:30 AM", value: "8:00 AM - 8:30 AM" },
-              { label: "8:30 AM - 9:00 AM", value: "8:30 AM - 9:00 AM" },
-              { label: "9:00 AM - 9:30 AM", value: "9:00 AM - 9:30 AM" },
-              { label: "9:30 AM - 10:00 AM", value: "9:30 AM - 10:00 AM" },
-              { label: "10:00 AM - 10:30 AM", value: "10:00 AM - 10:30 AM" },
-              { label: "10:30 AM - 11:30 AM", value: "10:30 AM - 11:30 AM" },
-              { label: "11:30 AM - 12:00 PM", value: "11:30 AM - 12:00 PM" },
-              // { label: "12:00 PM - 12:30 PM", value: "12:00 PM - 12:30 PM" },
-              // { label: "12:30 PM - 1:00 PM", value: "12:30 PM - 1:00 PM" },
-              // { label: "1:00 PM - 1:30 PM", value: "1:00 PM - 1:30 PM" },
-              // { label: "1:30 PM - 2:00 PM", value: "1:30 PM - 2:00 PM" },
-              { label: "2:00 PM - 2:30 PM", value: "2:00 PM - 2:30 PM" },
-              { label: "2:30 PM - 3:00 PM", value: "2:30 PM - 3:00 PM" },
-              { label: "3:00 PM - 3:30 PM", value: "3:00 PM - 3:30 PM" },
-              { label: "3:30 PM - 4:00 PM", value: "3:30 PM - 4:00 PM" },
-              { label: "4:00 PM - 4:30 PM", value: "4:00 PM - 4:30 PM" },
-              { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
-              { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
-              { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
-              { label: "4:30 PM - 5:00 PM", value: "4:30 PM - 5:00 PM" },
-
-            ]}
-          />
+                fullWidth
+                variant="outlined"
+                onChange={(e) => {
+                  if (!e.isDisabled) handleInputChange(e, "Appointment_Time");
+              }}
+                options={timeOptions}
+                isOptionDisabled={(option) => option.isDisabled} // Disable booked slots
+            />
         </Box>
       </Box>
 
