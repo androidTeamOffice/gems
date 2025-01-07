@@ -1,0 +1,6 @@
+nohup: ignoring input
+Server listening on port 3216
+Incoming request: POST /api/login
+Incoming request: POST /api/login
+Incoming request: POST /api/login
+Incoming request: POST /api/checkFormStatus

@@ -22,7 +22,10 @@ const UserLandingPage = () => {
     link.click();
   };
   const handleStatus = async () => {
-    const payload = { id: id };
+	const usereRole=sessionStorage.getItem("userrole");
+	const userId = sessionStorage.getItem("userName");
+	
+    const payload = { id: userId };
 console.log("Payload:", payload);
     try {
       const response = await api.post("/api/checkFormStatus", payload);

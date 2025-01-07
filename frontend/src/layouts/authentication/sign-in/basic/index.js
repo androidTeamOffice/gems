@@ -46,6 +46,11 @@ function Basic() {
           sessionStorage.setItem("userName", response.data.user);
           sessionStorage.setItem("userrole", response.data.role);
           sessionStorage.setItem("userid", response.data.userid);
+		// Retrieve and log the data to ensure it's saved
+const userRole = sessionStorage.getItem("userrole");
+const userId = sessionStorage.getItem("userid");
+console.log("userRole: ",userRole);
+console.log("userId: ",userId);
           Swal.fire("", `Welcome! Glad to have you.`, "success");
 
           updateRole(response.data.role);
