@@ -2,3 +2,5 @@
 /backend/node_modules
 /frontend/build
 /backend/.env
+cert.zip
+private_key.txt
