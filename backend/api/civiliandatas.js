@@ -125,7 +125,7 @@ router.post("/add_civData", validateToken, async (req, res) => {
     civData = {
       name: name || "ADF ",
       cnic: cnic || " AD",
-      userid: userid || " AD",
+      userid: userid || 0,
       occupation: occupation , // Default value
       category: category,   // Default value
       type: Applicant || " ADF",
