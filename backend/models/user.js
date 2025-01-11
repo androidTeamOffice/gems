@@ -59,8 +59,6 @@ async function addUserToDatabase(user) {
     const connection = await pool.getConnection();
     try {
         const sql = `INSERT INTO users (username,user_cnic, password_hash, role) VALUES (?, ?, ?,?)`;
-        const [results] = await connection.execute(sql, [user.name,user.CNIC, user.password, user.role]);
-        const sql = `INSERT INTO users (username,user_cnic, password_hash, role) VALUES (?, ?, ?,?)`;
         const [results] = await connection.execute(sql, [user.name, user.CNIC, user.password, user.role]);
         user.id = results.insertId; // Set the generated ID on the user object
     } catch (error) {
