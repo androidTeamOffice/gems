@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
+import bgImage from "assets/images/signin-basic.jpg"; // Background image
 
 // Argon Dashboard 2 PRO MUI components
 import ArgonBox from "components/ArgonBox";
@@ -15,9 +16,6 @@ import ArgonButton from "components/ArgonButton";
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
-// Images
-const bgImage =
-  "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/reset-basic.jpg";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);

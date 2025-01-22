@@ -79,7 +79,7 @@ function Verifier() {
 
   const fetchData = async () => {
     try {
-      const imageUrl="http://210.56.14.227:3216/uploads/";
+      const imageUrl="https://gems.net.pk/uploads/";
       const response = await authAxios.get("/api/civilian_data_for_verification_list");
       console.log("CELL",response.data.civDatas); 
       const formattedData = response.data.civDatas.map((item, index) => ({

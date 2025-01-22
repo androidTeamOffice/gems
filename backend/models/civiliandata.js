@@ -158,7 +158,7 @@ async function verifyCivData(id) {
 
 async function verifyStatus(id) {
     try {
-        const sql = `SELECT status FROM civdatas WHERE user_cnic = ? ORDER BY Appointment_Day DESC LIMIT 1`;
+        const sql = `SELECT status,remarks FROM civdatas WHERE cnic = ? ORDER BY Appointment_Day DESC LIMIT 1`;
 
         const result = await pool.execute(sql, [id]); // Delete civData
 

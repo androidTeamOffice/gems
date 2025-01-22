@@ -8,6 +8,7 @@ import { useUserRole } from "../../../../context/UserRoleContext";
 const UserLandingPage = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState("New");
+const [remarks, setRemarks] = useState("");
   const { id } = useUserRole(); 
   useEffect(() => {
   
@@ -26,10 +27,11 @@ const UserLandingPage = () => {
 	const userId = sessionStorage.getItem("userName");
 	
     const payload = { id: userId };
-console.log("Payload:", payload);
+//console.log("Payload:", payload);
     try {
       const response = await api.post("/api/checkFormStatus", payload);
       setStatus(response.data.message || "New"); // Update the status based on the response
+      setRemarks(response.data.remarks || "");
     } catch (error) {
       console.error("Error fetching form status:", error);
     }
@@ -130,7 +132,19 @@ console.log("Payload:", payload);
     <Typography variant="caption">Rejected</Typography>
   </Box>
 </Box>
-
+{remarks && (
+        <Box
+          display="flex"
+          justifyContent="flex-start"
+          alignItems="center"
+          gap={2}
+          mt={2}
+        >
+          <Typography variant="caption">
+            Remarks (if rejected only): {remarks}
+          </Typography>
+        </Box>
+      )}
 
 
       <Box display="flex" justifyContent="space-between" alignItems="flex-start" mt={5} gap={5}>

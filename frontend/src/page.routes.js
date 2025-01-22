@@ -240,6 +240,24 @@ const pageRoutes = [
           },
         ],
       },
+{
+        name: "reset password",
+        dropdown: true,
+        collapse: [
+          {
+            name: "basic",
+            route: "/authentication/reset-password/basic",
+          },
+          {
+            name: "cover",
+            route: "/authentication/reset-password/cover",
+          },
+          {
+            name: "illustration",
+            route: "/authentication/reset-password/illustration",
+          },
+        ],
+      },
       {
         name: "sign up",
         dropdown: true,
