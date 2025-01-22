@@ -187,7 +187,16 @@ router.get("/appointmentSlots", async (req, res) => {
       res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
-
+router.get("/cvs", async (req, res) => {
+  console.log("Fetching all civDatas list!");
+  try {
+    const civDatas = await getAllCivDatas();
+    res.json({ civDatas });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 router.post("/civData_by_id", validateToken, async (req, res) => {
   const id = req.body.id;
   console.log("Finding civData!");
@@ -357,10 +366,13 @@ router.post(
     }
     try {
       const civDatas = await verifyStatus(id);
+console.log("cvs: ",civDatas?.[0]);
       const status = civDatas?.[0]?.[0]?.status || "new";
-      console.log(status);
+      const remarks = civDatas?.[0]?.[0]?.remarks || "";
+
+      console.log(status,remarks);
     
-        res.status(200).json({ message:  status});
+        res.status(200).json({ message:  status,remarks:remarks});
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });

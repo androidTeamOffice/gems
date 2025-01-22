@@ -71,7 +71,7 @@ function DefaultManager() {
 
   const fetchData = async () => {
     try {
-      const imageUrl = "http://210.56.14.227:3216/uploads/";
+      const imageUrl = "https://gems.net.pk/uploads/";
       const response = await authAxios.get("/api/civilian_data_verified_list");
       const formattedData = response.data.civDatas.map((item, index) => ({
         ser: index + 1,

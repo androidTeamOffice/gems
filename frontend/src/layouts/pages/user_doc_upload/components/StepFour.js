@@ -29,7 +29,7 @@ const AppointmentForm = ({ formData, setFormData }) => {
     timeSlot: "",
   });
   const [disabledDates, setDisabledDates] = useState([]);
-
+const [currentDated, setCurrentDated] = useState(new Date().toISOString().split("T")[0]);
   useEffect(() => {
     const fetchDisabledDates = async () => {
       try {
@@ -47,7 +47,13 @@ const AppointmentForm = ({ formData, setFormData }) => {
   useEffect(() => {
     const fetchSlots = async () => {
         try {
-            const currentDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
+const currentDate1 = new Date();
+const newDate = new Date(currentDate1);
+newDate.setDate(currentDate1.getDate() + 2);
+
+const currentDate = newDate.toISOString().split("T")[0];
+setCurrentDated(currentDated);
+            //const currentDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
             const response = await authAxios.get(`/api/appointmentSlots?date=${currentDate}`);
             
             if (response.data.success) {
@@ -135,7 +141,7 @@ useEffect(() => {
             fullWidth
             InputProps={{
               inputProps: {
-                min: new Date().toISOString().split("T")[0],
+                min: currentDated,
               },
             }}
             InputLabelProps={{

@@ -4,3 +4,9 @@
 /backend/.env
 cert.zip
 private_key.txt
+/uploads
+uploads
+uploads/*
+uploads/
+uploads/*/*/*
+/uploads/*.jpg

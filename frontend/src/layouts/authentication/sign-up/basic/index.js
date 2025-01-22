@@ -14,10 +14,9 @@ import Socials from "layouts/authentication/components/Socials";
 import Separator from "layouts/authentication/components/Separator";
 import Swal from "sweetalert2"; // SweetAlert for alerts
 import ArgonSelect from "components/ArgonSelect"; // Import ArgonSelect
+import bgImage from "assets/images/signin-basic.jpg"; // Background image
 
-// Images
-const bgImage =
-  "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-basic.jpg";
+
 
 const baseUrl = process.env.REACT_APP_BASE_URL; // Base URL for the API
 const api = axios.create({ baseURL: baseUrl });

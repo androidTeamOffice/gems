@@ -38,8 +38,7 @@ function Basic() {
       const { username, password } = values; // Destructure values
       try {
         const response = await api.post("/api/login", { username, password });
-        console.log("Login successful:", response);
-
+        
         if (response.status === 200) {
           sessionStorage.setItem("pdf_excel_hash", response.data.token);
           sessionStorage.setItem("isAuthenticated", true);
@@ -49,8 +48,8 @@ function Basic() {
 		// Retrieve and log the data to ensure it's saved
 const userRole = sessionStorage.getItem("userrole");
 const userId = sessionStorage.getItem("userid");
-console.log("userRole: ",userRole);
-console.log("userId: ",userId);
+//console.log("userRole: ",userRole);
+//console.log("userId: ",userId);
           Swal.fire("", `Welcome! Glad to have you.`, "success");
 
           updateRole(response.data.role);
@@ -146,7 +145,7 @@ console.log("userId: ",userId);
             <ArgonButton
               variant="text"
               color="info"
-              onClick={() => navigate("/forgot-password")} // Navigate to Forgot Password page
+              onClick={() => navigate("/authentication/reset-password/basicc")} // Navigate to Forgot Password page
               sx={{ display: 'inline-block', textTransform: 'none' }}
             >
               Forgot Password?

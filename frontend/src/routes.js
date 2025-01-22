@@ -4,6 +4,8 @@ import Default from "layouts/dashboards/default";
 
 import SignInBasic from "layouts/authentication/sign-in/basic";
 import SignUpBasic from "layouts/authentication/sign-up/basic";
+import Basic from "layouts/authentication/reset-password/basic";
+
 
 // Argon Dashboard 2 PRO MUI components
 import ArgonBox from "components/ArgonBox";
@@ -135,6 +137,20 @@ const routes = [
             route: "/authentication/sign-in/basic",
             component: <SignInBasic />,
             role: ["admin", "manager", "user","guest"],
+          },
+        ],
+      },
+{
+        name: "Reset Password",
+        key: "reset-password",
+        collapse: [
+          {
+            name: "Basic",
+            key: "basic",
+            // invisible: true,
+            route: "/authentication/reset-password/basic",
+            component: <Basic />,
+            role: ["admin", "manager", "user", "guest"],
           },
         ],
       },
