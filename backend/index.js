@@ -27,6 +27,7 @@ const schedulesRouter = require("./api/schedules");
 const civilianDataRouter = require("./api/civiliandatas");
 const resetPasswordRouter = require("./api/resetPassword"); // Assuming the file is named resetPassword.js
 const leaveCircle = require("./api/leaveCircle"); // Assuming the file is named resetPassword.js
+const otpRouter = require("./api/emailer");
 
 // const path = require('path');  // Required for path manipulation
 const app = express();
@@ -154,7 +155,7 @@ app.use("/api", dashboardRouter);
 app.use("/api", coursesRouter);
 app.use("/api", civilianDataRouter);
 app.use("/api", leaveCircle);
-
+app.use("/api", otpRouter);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
