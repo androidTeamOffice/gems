@@ -89,7 +89,7 @@ function DefaultManager() {
   useEffect(() => {
     async function fetchDisabledDates() {
       try {
-        const response = await authAxios.get("/disabled-dates");
+        const response = await authAxios.get("/api/disabled-dates");
         // The response format is: { dates: [ { id, date }, ... ] }
         setDisabledDates(response.data.dates);
       } catch (error) {
