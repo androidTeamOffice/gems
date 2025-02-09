@@ -8,7 +8,12 @@ import {
   Icon,
   Tooltip,
   TextField,
+  Table,
+  TableBody,
+  TableCell,
   TableContainer,
+  TableHead,
+  TableRow,
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
