@@ -20,18 +20,30 @@ const generateOTP = () => {
 
 // Setup Nodemailer transporter
 const transporter = nodemailer.createTransport({
-  // Example using Gmail; adjust for your email provider
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER, // your email address
-    pass: process.env.EMAIL_PASS, // your email password or application-specific password
+   host: 'h39.eu.core.hostnext.net', // Verified SMTP server 
+   port: 465, // Port 
+  //for secure SMTP (SSL/TLS) 
+    secure: true, // Use SSL/TLS 
+auth: {
+    user: process.env.EMAIL_USER,       // Your email address
+    pass: process.env.EMAIL_PASS,       // The correct password for the account
   },
+
+  tls: {
+    // WARNING: This disables certificate validation and is insecure!
+    rejectUnauthorized: true,
+  },
+  // Optional: Enable debug output for troubleshooting
+  logger: true,
+  debug: true
 });
 
-// POST /api/send-otp
-router.post("/api/send-otp", async (req, res) => {
-  const { email } = req.body;
 
+
+// POST /api/send-otp
+router.post("/send-otp", async (req, res) => {
+  const { email } = req.body;
+//   console.log("ema: ",process.env.EMAIL_PASS);
   if (!email) {
     return res.status(400).json({ message: "Email is required." });
   }
@@ -60,5 +72,42 @@ router.post("/api/send-otp", async (req, res) => {
     res.status(500).json({ message: "Error sending OTP email." });
   }
 });
+
+// POST /api/verify-otp - verifies the OTP for a given email
+router.post("/verify-otp", (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ message: "Email and OTP are required." });
+  }
+
+  // Retrieve the stored OTP data for this email
+  const stored = otpStore.get(email);
+  if (!stored) {
+    return res.status(400).json({ message: "OTP not found. Please request a new OTP." });
+  }
+
+  // Check if the OTP has expired
+  if (Date.now() > stored.expires) {
+    otpStore.delete(email); // Remove expired OTP
+    return res.status(400).json({ message: "OTP has expired. Please request a new OTP." });
+  }
+
+  // Compare the provided OTP with the stored one
+console.log("stored.otp: ",stored.otp);
+console.log("otp: ",otp);
+console.log("stored.otp!==otp: ",(stored.otp!==otp));
+  if (stored.otp !== otp) {
+    return res.status(400).json({ message: "Invalid OTP. Please try again." });
+  }
+
+  // If verification succeeds, remove the OTP to prevent reuse
+  otpStore.delete(email);
+
+  // Respond with a success message
+  res.status(200).json({ message: "OTP verified successfully." });
+});
+
+
 
 module.exports = router;

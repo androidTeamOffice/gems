@@ -108,7 +108,8 @@ function Basic() {
         email: formik.values.email,
         otp: otp,
       });
-      if (response.status === 200 && response.data.verified) {
+console.log("response.status: ",response.status);
+      if (response.status === 200) {
         Swal.fire("Success", "Email verified successfully!", "success");
         setEmailVerified(true);
       } else {
