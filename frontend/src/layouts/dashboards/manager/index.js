@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Dialog, DialogContent, IconButton } from "@mui/material";
+import { Dialog, DialogContent, IconButton, TablePagination } from "@mui/material";
 import { useState, useEffect } from "react";
 import {
   Grid,
