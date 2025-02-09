@@ -196,7 +196,7 @@ function DefaultManager() {
       });
       console.log("Response from server:", response.data);
       try {
-        const responsew = await authAxios.get("/disabled-dates");
+        const responsew = await authAxios.get("/api/disabled-dates");
         setDisabledDates(responsew.data.dates);
       } catch (error) {
         console.error("Error refreshing disabled dates:", error);
