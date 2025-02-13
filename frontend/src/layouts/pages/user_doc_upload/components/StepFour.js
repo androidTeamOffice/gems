@@ -8,6 +8,14 @@ import { createGlobalStyle } from "styled-components";
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const authAxios = axios.create({ baseURL: baseUrl });
 
+const CalendarStyles = createGlobalStyle`
+  .react-calendar .highlighted {
+    background-color: #ffcccc !important;
+    color: #d32f2f !important;
+    border-radius: 5px;
+  }
+`;
+
 function RequiredLabel({ text }) {
   return (
     <span>
@@ -117,13 +125,6 @@ const AppointmentForm = ({ formData, setFormData }) => {
     }
   };
 
-  const CalendarStyles = createGlobalStyle`
-  .react-calendar .highlighted {
-    background-color: #ffcccc !important;
-    color: #d32f2f !important;
-    border-radius: 5px;
-  }
-`;
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <CalendarStyles />
@@ -133,13 +134,15 @@ const AppointmentForm = ({ formData, setFormData }) => {
             Preferred Appointment Day
           </Typography>
           {/* Replaced TextField with react-calendar */}
+          {Calendar &&
           <Calendar
             onChange={handleDateChange}
             tileClassName={({ date }) =>
-              selectedDates.some((selectedDate) => selectedDate.toDateString() === date.toDateString()) ? "highlighted" : ""
+              disabledDates.some((selectedDate) => 
+selectedDate.toDateString() === date.toDateString()) ? "highlighted" : ""
             }
             minDate={new Date(currentDated)}
-          />
+          />}
         </Box>
 
         <Box flex={1} ml={2}>

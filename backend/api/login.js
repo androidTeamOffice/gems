@@ -12,7 +12,7 @@ const router = express.Router();
 // Create a rate limiter middleware for the login route
 const loginLimiter = rateLimit({
   windowMs: 30 * 60 * 1000, // 30 minutes
-  max: 5, // limit to 3 failed login attempts per IP in the window
+  max: 50, // limit to 3 failed login attempts per IP in the window
   message: {
     message: "Too many failed login attempts from this IP, please try again after 30 minutes."
   },
