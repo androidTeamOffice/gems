@@ -3,11 +3,24 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const pool = require("../db/db"); // Assuming the file is named db.js
 require("dotenv").config();
+const rateLimit = require('express-rate-limit');
 
-const { findUserByUsername,addUserToDatabase } = require("../models/user");
+const { findUserByUsername, addUserToDatabase } = require("../models/user");
 
 const router = express.Router();
-router.post("/login", async (req, res) => {
+
+// Create a rate limiter middleware for the login route
+const loginLimiter = rateLimit({
+  windowMs: 30 * 60 * 1000, // 30 minutes
+  max: 50, // limit to 3 failed login attempts per IP in the window
+  message: {
+    message: "Too many failed login attempts from this IP, please try again after 30 minutes."
+  },
+  statusCode: 429, // HTTP status code for Too Many Requests
+  skipSuccessfulRequests: true, // Only count requests that result in an error response
+});
+
+router.post("/login", loginLimiter, async (req, res) => {
   const { username = "", password = "" } = req.body;
 
   if (!username || !password) {
@@ -37,7 +50,7 @@ router.post("/login", async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Ensure secure flag is set in production
       sameSite: "Strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 60 * 60 * 1000, // 7 days
     });
 
     res.json({
@@ -67,7 +80,7 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert the new user into the database    
-    const newUser = addUserToDatabase({name:name, CNIC: CNIC, password: hashedPassword, role: "user" });
+    const newUser = addUserToDatabase({ name: name, CNIC: CNIC, password: hashedPassword, role: "user" });
 
     res.status(201).json({
       message: "User registered successfully",

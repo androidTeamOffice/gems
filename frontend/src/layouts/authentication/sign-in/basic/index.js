@@ -18,7 +18,7 @@ const api = axios.create({ baseURL: baseUrl });
 
 function Basic() {
   const navigate = useNavigate();
-  const { updateRole , updateid} = useUserRole();
+  const { updateRole, updateid } = useUserRole();
 
   // Form validation and API Request
   const validations = Yup.object().shape({
@@ -38,18 +38,18 @@ function Basic() {
       const { username, password } = values; // Destructure values
       try {
         const response = await api.post("/api/login", { username, password });
-        
+
         if (response.status === 200) {
           sessionStorage.setItem("pdf_excel_hash", response.data.token);
           sessionStorage.setItem("isAuthenticated", true);
           sessionStorage.setItem("userName", response.data.user);
           sessionStorage.setItem("userrole", response.data.role);
           sessionStorage.setItem("userid", response.data.userid);
-		// Retrieve and log the data to ensure it's saved
-const userRole = sessionStorage.getItem("userrole");
-const userId = sessionStorage.getItem("userid");
-//console.log("userRole: ",userRole);
-//console.log("userId: ",userId);
+          // Retrieve and log the data to ensure it's saved
+          const userRole = sessionStorage.getItem("userrole");
+          const userId = sessionStorage.getItem("userid");
+          //console.log("userRole: ",userRole);
+          //console.log("userId: ",userId);
           Swal.fire("", `Welcome! Glad to have you.`, "success");
 
           updateRole(response.data.role);
@@ -74,6 +74,12 @@ const userId = sessionStorage.getItem("userid");
       } catch (error) {
         if (error.response) {
           const { status, data } = error.response;
+          // Handle rate limit error specifically
+          if (status === 429) {
+            Swal.fire("Error", data.message || "Too many failed login attempts. Please try again after 30 minutes.", "error");
+            return;
+          }
+
           Swal.fire("Error", data.message || "An unexpected error occurred.", "error");
         }
       }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Dialog, DialogContent, IconButton } from "@mui/material"; 
+import { Dialog, DialogContent, IconButton, TablePagination } from "@mui/material";
 import { useState, useEffect } from "react";
 import {
   Grid,
@@ -8,6 +8,12 @@ import {
   Icon,
   Tooltip,
   TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
@@ -68,6 +74,35 @@ function DefaultManager() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [openDialog, setOpenDialog] = useState(false); // Dialog state
   const [selectedImage, setSelectedImage] = useState(""); // Store selected image URL
+
+  // State for any locally managed dates (if needed for adding/toggling)
+  // This example focuses on the disabled dates table that is fetched from the API.
+
+  // State for fetched disabled dates (from API)
+  const [disabledDates, setDisabledDates] = useState([]);
+
+  // Pagination state
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10; // fixed to 10 rows per page
+
+  // Fetch disabled dates from API on component mount
+  useEffect(() => {
+    async function fetchDisabledDates() {
+      try {
+        const response = await authAxios.get("/api/disabled-dates");
+        // The response format is: { dates: [ { id, date }, ... ] }
+        setDisabledDates(response.data.dates);
+      } catch (error) {
+        console.error("Error fetching disabled dates:", error);
+      }
+    }
+    fetchDisabledDates();
+  }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
 
   const fetchData = async () => {
     try {
@@ -142,34 +177,40 @@ function DefaultManager() {
       Swal.fire("Error!", "This date already exists.", "error");
     }
   };
- 
-  
+
+
   const handleSaveDisabledDates = async () => {
     const disabledDates = timeSlots
       .filter((slot) => slot.status === "disabled")
       .map((slot) => slot.date);
-  
+
     if (disabledDates.length === 0) {
       Swal.fire("Info", "No disabled dates to save.", "info");
       return;
     }
-  
+
     try {
       console.log("Sending disabled dates try:", disabledDates);
       const response = await authAxios.post("/api/disabled-dates", {
         dates: disabledDates,
       });
       console.log("Response from server:", response.data);
+      try {
+        const responsew = await authAxios.get("/api/disabled-dates");
+        setDisabledDates(responsew.data.dates);
+      } catch (error) {
+        console.error("Error refreshing disabled dates:", error);
+      }
       Swal.fire("Success", "Disabled dates saved successfully!", "success");
     } catch (error) {
       console.error("Error saving dates:", error);
       Swal.fire("Error", "Failed to save disabled dates.", "error");
     }
-  
-   
+
+
   };
-  
-  
+
+
   const handleToggleDate = (id, status) => {
     setTimeSlots((prev) =>
       prev.map((slot) =>
@@ -233,14 +274,54 @@ function DefaultManager() {
           </ArgonBox>
         </Card>
         <ArgonButton
-  variant="gradient"
-  color="success"
-  onClick={handleSaveDisabledDates}
-  sx={{ mt: 2 }}
->
-  Save Disabled Dates
-</ArgonButton>
+          variant="gradient"
+          color="success"
+          onClick={handleSaveDisabledDates}
+          sx={{ mt: 2 }}
+        >
+          Save Disabled Dates
+        </ArgonButton>
 
+      </ArgonBox>
+      {/* Table for Disabled Dates */}
+      <ArgonBox mt={4}>
+        <Card>
+          <ArgonBox p={3}>
+            <ArgonTypography variant="h5" fontWeight="medium" mb={2}>
+              Disabled Dates List
+            </ArgonTypography>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Date</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {disabledDates
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((dateObj) => (
+                      <TableRow key={dateObj.id}>
+                        <TableCell>
+                          {new Date(dateObj.date).toLocaleDateString()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {disabledDates.length > rowsPerPage && (
+              <TablePagination
+                component="div"
+                count={disabledDates.length}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[]}  // Hide the rows-per-page selector
+              />
+            )}
+          </ArgonBox>
+        </Card>
       </ArgonBox>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogContent>
