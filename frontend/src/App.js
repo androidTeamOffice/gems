@@ -107,7 +107,7 @@ export default function App() {
     
     const resetTimer = () => {
       clearTimeout(timeout);
-      timeout = setTimeout(handleSessionTimeout, 5 * 60 * 1000); // 5-minute timeout
+      timeout = setTimeout(handleSessionTimeout, 10 * 60 * 1000); // 5-minute timeout
     };
 
     // Set up event listeners to detect user activity
