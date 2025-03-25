@@ -46,10 +46,10 @@ app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 // app.use("/uploads", express.static(path.join(__dirname, "uploads/images")));
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Or specify a particular domain
+  res.header("Access-Control-Allow-Origin", "https://gems.net.pk"); // Or specify a particular domain
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   next();
 });
@@ -57,15 +57,15 @@ app.use((req, res, next) => {
 
 app.use(cors());
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Allow all origins
+  res.header("Access-Control-Allow-Origin", "https://gems.net.pk"); // Allow all origins
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   next();
 });
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "https://gems.net.pk");
   next();
 });
 // List images endpoint

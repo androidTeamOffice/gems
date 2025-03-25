@@ -43,14 +43,15 @@ auth: {
 // POST /api/send-otp
 router.post("/send-otp", async (req, res) => {
   const { email } = req.body;
-//   console.log("ema: ",process.env.EMAIL_PASS);
+  // console.log("ema: ",process.env.EMAIL_PASS);
+//   console.log("pass: ",process.env.EMAIL_USER);
   if (!email) {
     return res.status(400).json({ message: "Email is required." });
   }
 
   // Generate the OTP
   const otp = generateOTP();
-
+//console.log("otp: ",otp);
   // Store OTP and its expiry time in the in-memory store
   otpStore.set(email, { otp, expires: Date.now() + OTP_EXPIRY });
 

@@ -61,7 +61,7 @@ const AppointmentForm = ({ formData, setFormData }) => {
         const newDate = new Date(currentDate1);
         newDate.setDate(currentDate1.getDate() + 2);
         const currentDate = newDate.toISOString().split("T")[0];
-        setCurrentDated(currentDated);
+        setCurrentDated(currentDate);
 
         const response = await authAxios.get(`/api/appointmentSlots?date=${currentDate}`);
 
@@ -125,6 +125,25 @@ const AppointmentForm = ({ formData, setFormData }) => {
     }
   };
 
+const handleInputChange = (event, field) => {
+    const { value } = event.target || event;
+    setFormData((prevData) => ({ ...prevData, [field]: value }));
+    
+    if (field === "Appointment_Day") {
+      setAppointmentData((prevData) => ({
+        ...prevData,
+        appointmentDay: value,
+      }));
+    } else {
+      
+      setAppointmentData((prevData) => ({
+        ...prevData,
+        timeSlot: value,
+      }));
+    }
+  };
+
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <CalendarStyles />
@@ -137,10 +156,10 @@ const AppointmentForm = ({ formData, setFormData }) => {
           {Calendar &&
           <Calendar
             onChange={handleDateChange}
-            tileClassName={({ date }) =>
-              disabledDates.some((selectedDate) => 
-selectedDate.toDateString() === date.toDateString()) ? "highlighted" : ""
-            }
+            tileClassName={({ date }) => {
+              const dateString = date.toISOString().split("T")[0];
+              return disabledDates.includes(dateString) ? "highlighted" : "";
+            }}
             minDate={new Date(currentDated)}
           />}
         </Box>
