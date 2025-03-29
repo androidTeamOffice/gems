@@ -131,20 +131,20 @@ function Basic() {
         identifier: formik.values.mobile,
         otp: otp,
       });
-      console.log("response.status: ", response.status);
+
       if (response.status === 200) {
-        Swal.fire("Success", "Email verified successfully!", "success");
-        setEmailVerified(true);
+        Swal.fire("Success", "Mobile verified successfully!", "success");
+        setMobileVerified(true);
       } else {
         Swal.fire("Error", "Invalid OTP. Please try again.", "error");
       }
     } catch (error) {
-      console.error("Error verifying OTP:", error);
       Swal.fire("Error", "Failed to verify OTP. Please try again.", "error");
     } finally {
       setOtpLoading(false);
     }
   };
+
 
   return (
     <BasicLayout
