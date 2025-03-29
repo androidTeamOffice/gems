@@ -1,302 +1,153 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom"; // react-router-dom components
+import { Link, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
-import * as Yup from "yup"; // Yup for form validation
-import axios from "axios"; // Axios for API requests
+import * as Yup from "yup";
+import axios from "axios";
 import ArgonBox from "components/ArgonBox";
 import ArgonTypography from "components/ArgonTypography";
 import ArgonInput from "components/ArgonInput";
 import ArgonButton from "components/ArgonButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-import Swal from "sweetalert2"; // SweetAlert for alerts
-import bgImage from "assets/images/signin-basic.jpg"; // Background image
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Swal from "sweetalert2";
+import bgImage from "assets/images/signin-basic.jpg";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const baseUrl = process.env.REACT_APP_BASE_URL; // Base URL for the API
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const api = axios.create({ baseURL: baseUrl });
 
 function Basic() {
   const navigate = useNavigate();
   const [agreement, setAgreement] = useState(true);
-
-  // State for OTP handling
-  const [emailSent, setEmailSent] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
   const [otp, setOtp] = useState("");
   const [otpLoading, setOtpLoading] = useState(false);
 
-  const handleSetAgreement = () => {
-    setAgreement(!agreement);
-    console.log("agreement: ", agreement);
-  };
+  const toggleAgreement = () => setAgreement(!agreement);
 
-  // Form validation
   const validations = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     CNIC: Yup.string().required("CNIC is required"),
-    email: Yup.string().email("Invalid email address").required("Email is required"),
-    password: Yup.string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
+    mobile: Yup.string()
+      .matches(/^\d{10,15}$/, "Invalid mobile number")
+      .required("Mobile number is required"),
+    password: Yup.string().min(6, "Minimum 6 characters required").required("Password is required"),
   });
 
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      CNIC: "",
-      email: "",
-      password: "",
-    },
+    initialValues: { name: "", CNIC: "", mobile: "", password: "" },
     validationSchema: validations,
     onSubmit: async (values) => {
       try {
         const response = await api.post("/api/signup", values);
-
         if (response.status === 201) {
-          Swal.fire("Registration Successful", `Welcome!`, "success");
-          // Handle successful registration (e.g., navigate to sign-in page)
+          Swal.fire("Success", "Registration successful!", "success");
           navigate("/authentication/sign-in/basic");
-        } else if (response.status === 400) {
-          Swal.fire("Error", `Username already exists!`, "warning");
         } else {
-          Swal.fire("Error", `Registration failed. Please try again.`, "error");
-          alert("Registration failed. Please try again.");
+          Swal.fire("Error", "Registration failed. Please try again.", "error");
         }
       } catch (error) {
-        if (error.response && error.response.status === 400) {
-          Swal.fire("Error", `Username already exists!`, "warning");
-        } else {
-          console.error("Error during registration:", error);
-          Swal.fire("Error", `Error during registration: ${error}`, "error");
-        }
+        Swal.fire("Error", error.response?.data?.message || "Registration error", "error");
       }
     },
   });
 
-  // Function to send OTP to email
   const handleSendOTP = async () => {
-    if (!formik.values.email) {
-      Swal.fire("Error", "Please enter an email", "error");
+    if (!formik.values.mobile) {
+      Swal.fire("Error", "Please enter a mobile number", "error");
       return;
     }
+    setOtpLoading(true);
     try {
-      setOtpLoading(true);
-      const response = await api.post("/api/send-otp", { email: formik.values.email });
+      const response = await api.post("/api/send-otp", { mobile: formik.values.mobile });
       if (response.status === 200) {
-        Swal.fire("Success", "OTP sent to your email!", "success");
-        setEmailSent(true);
+        Swal.fire("Success", "OTP sent to your mobile!", "success");
+        setOtpSent(true);
       }
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-      Swal.fire("Error", "Failed to send OTP. Please try again.", "error");
+    } catch {
+      Swal.fire("Error", "Failed to send OTP. Try again.", "error");
     } finally {
       setOtpLoading(false);
     }
   };
 
-  // Function to verify OTP
   const handleVerifyOTP = async () => {
     if (!otp) {
-      Swal.fire("Error", "Please enter the OTP", "error");
+      Swal.fire("Error", "Enter OTP", "error");
       return;
     }
+    setOtpLoading(true);
     try {
-      setOtpLoading(true);
-      const response = await api.post("/api/verify-otp", {
-        email: formik.values.email,
-        otp: otp,
-      });
-console.log("response.status: ",response.status);
+      const response = await api.post("/api/verify-otp", { mobile: formik.values.mobile, otp });
       if (response.status === 200) {
-        Swal.fire("Success", "Email verified successfully!", "success");
-        setEmailVerified(true);
+        Swal.fire("Success", "Mobile verified!", "success");
+        setOtpVerified(true);
       } else {
-        Swal.fire("Error", "Invalid OTP. Please try again.", "error");
+        Swal.fire("Error", "Invalid OTP", "error");
       }
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-      Swal.fire("Error", "Failed to verify OTP. Please try again.", "error");
+    } catch {
+      Swal.fire("Error", "OTP verification failed", "error");
     } finally {
       setOtpLoading(false);
     }
   };
 
   return (
-    <BasicLayout
-      image={bgImage}
-      button={{ variant: "gradient", color: "dark" }}
-    >
+    <BasicLayout image={bgImage}>
       <Card>
         <ArgonBox p={3} mb={1} textAlign="center">
           <ArgonTypography variant="h5" fontWeight="medium">
-            Register with
+            Register with Mobile OTP
           </ArgonTypography>
         </ArgonBox>
-        <ArgonBox pt={2} pb={3} px={3}>
-          <ArgonBox component="form" role="form" onSubmit={formik.handleSubmit}>
-            {/* Name Field */}
-            <ArgonBox mb={2}>
-              <ArgonInput
-                placeholder="Name"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-              />
-              {formik.touched.name && formik.errors.name && (
-                <ErrorMessage message={formik.errors.name} />
-              )}
-            </ArgonBox>
-
-            {/* CNIC Field */}
-            <ArgonBox mb={2}>
-              <ArgonInput
-                placeholder="CNIC"
-                name="CNIC"
-                value={formik.values.CNIC}
-                onChange={formik.handleChange}
-                error={formik.touched.CNIC && Boolean(formik.errors.CNIC)}
-              />
-              {formik.touched.CNIC && formik.errors.CNIC && (
-                <ErrorMessage message={formik.errors.CNIC} />
-              )}
-            </ArgonBox>
-
-            {/* Email Field with OTP Button */}
+        <ArgonBox pt={2} pb={3} px={3} component="form" onSubmit={formik.handleSubmit}>
+          <ArgonBox mb={2}>
+            <ArgonInput placeholder="Name" name="name" {...formik.getFieldProps("name")} />
+          </ArgonBox>
+          <ArgonBox mb={2}>
+            <ArgonInput placeholder="CNIC" name="CNIC" {...formik.getFieldProps("CNIC")} />
+          </ArgonBox>
+          <ArgonBox mb={2} display="flex" alignItems="center">
+            <ArgonInput placeholder="Mobile Number" name="mobile" {...formik.getFieldProps("mobile")} fullWidth />
+            {!otpVerified && (
+              <ArgonButton onClick={handleSendOTP} disabled={otpLoading} sx={{ ml: 2 }}>
+                {otpLoading ? "Sending..." : "Send OTP"}
+              </ArgonButton>
+            )}
+            {otpVerified && <CheckCircleIcon sx={{ color: "green", ml: 2 }} />}
+          </ArgonBox>
+          {otpSent && !otpVerified && (
             <ArgonBox mb={2} display="flex" alignItems="center">
-              <ArgonInput
-                placeholder="Email"
-                name="email"
-                value={formik.values.email}
-                onChange={(e) => {
-                  formik.handleChange(e);
-                  // If user changes email after sending OTP, reset verification
-                  setEmailSent(false);
-                  setEmailVerified(false);
-                  setOtp("");
-                }}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                fullWidth
-              />
-              {/* Send OTP button */}
-              {!emailVerified && (
-                <ArgonButton
-                  variant="gradient"
-                  color="info"
-                  onClick={handleSendOTP}
-                  disabled={otpLoading || !formik.values.email}
-                  sx={{ ml: 2, height: "40px" }}
-                >
-                  {otpLoading ? "Sending..." : "Send OTP"}
-                </ArgonButton>
-              )}
-              {/* Display a green check if verified */}
-              {emailVerified && (
-                <CheckCircleIcon sx={{ color: "green", ml: 2 }} />
-              )}
-            </ArgonBox>
-            {formik.touched.email && formik.errors.email && (
-              <ErrorMessage message={formik.errors.email} />
-            )}
-
-            {/* OTP Input Field */}
-            {emailSent && !emailVerified && (
-              <ArgonBox mb={2} display="flex" alignItems="center">
-                <ArgonInput
-                  placeholder="Enter OTP"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  fullWidth
-                />
-                <ArgonButton
-                  variant="gradient"
-                  color="info"
-                  onClick={handleVerifyOTP}
-                  disabled={otpLoading || !otp}
-                  sx={{ ml: 2, height: "40px" }}
-                >
-                  {otpLoading ? "Verifying..." : "Verify OTP"}
-                </ArgonButton>
-              </ArgonBox>
-            )}
-
-            {/* Password Field */}
-            <ArgonBox mb={2}>
-              <ArgonInput
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={formik.touched.password && Boolean(formik.errors.password)}
-              />
-              {formik.touched.password && formik.errors.password && (
-                <ErrorMessage message={formik.errors.password} />
-              )}
-            </ArgonBox>
-
-            {/* Agreement */}
-            <ArgonBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgreement} />
-              <ArgonTypography
-                variant="button"
-                fontWeight="regular"
-                onClick={handleSetAgreement}
-                sx={{ cursor: "pointer", userSelect: "none" }}
-              >
-                &nbsp;&nbsp;I agree to the&nbsp;
-              </ArgonTypography>
-              <ArgonTypography
-                component="a"
-                href="#"
-                color="info"
-                variant="button"
-                fontWeight="bold"
-              >
-                Terms and Conditions
-              </ArgonTypography>
-            </ArgonBox>
-
-            {/* Sign up Button */}
-            <ArgonBox mt={4} mb={1}>
-              <ArgonButton
-                color="info"
-                disabled={!agreement || formik.isSubmitting || !emailVerified}
-                fullWidth
-                type="submit"
-              >
-                Sign up
+              <ArgonInput placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} fullWidth />
+              <ArgonButton onClick={handleVerifyOTP} disabled={otpLoading} sx={{ ml: 2 }}>
+                {otpLoading ? "Verifying..." : "Verify OTP"}
               </ArgonButton>
             </ArgonBox>
-
-            <ArgonBox mt={2}>
-              <ArgonTypography variant="button" color="text" fontWeight="regular">
-                Already have an account?&nbsp;
-                <ArgonTypography
-                  component={Link}
-                  to="/authentication/sign-in/basic"
-                  variant="button"
-                  color="info"
-                  fontWeight="bold"
-                >
-                  Sign in
-                </ArgonTypography>
-              </ArgonTypography>
-            </ArgonBox>
+          )}
+          <ArgonBox mb={2}>
+            <ArgonInput type="password" placeholder="Password" name="password" {...formik.getFieldProps("password")} />
+          </ArgonBox>
+          <ArgonBox display="flex" alignItems="center">
+            <Checkbox checked={agreement} onChange={toggleAgreement} />
+            <ArgonTypography variant="button" onClick={toggleAgreement} sx={{ cursor: "pointer" }}>
+              I agree to the <Link to="#">Terms and Conditions</Link>
+            </ArgonTypography>
+          </ArgonBox>
+          <ArgonBox mt={4} mb={1}>
+            <ArgonButton color="info" disabled={!agreement || formik.isSubmitting || !otpVerified} fullWidth type="submit">
+              Sign up
+            </ArgonButton>
+          </ArgonBox>
+          <ArgonBox mt={2}>
+            <ArgonTypography variant="button">
+              Already have an account? <Link to="/authentication/sign-in/basic">Sign in</Link>
+            </ArgonTypography>
           </ArgonBox>
         </ArgonBox>
       </Card>
     </BasicLayout>
-  );
-}
-
-function ErrorMessage({ message }) {
-  return (
-    <p style={{ color: "red", fontSize: "0.8rem", margin: "0 0" }}>
-      {message}
-    </p>
   );
 }
 
