@@ -12,7 +12,7 @@ import ArgonButton from "components/ArgonButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 import Swal from "sweetalert2"; // SweetAlert for alerts
 import bgImage from "assets/images/signin-basic.jpg"; // Background image
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const baseUrl = process.env.REACT_APP_BASE_URL; // Base URL for the API
 const api = axios.create({ baseURL: baseUrl });
@@ -29,6 +29,7 @@ function Basic() {
 
   const handleSetAgreement = () => {
     setAgreement(!agreement);
+    console.log("agreement: ", agreement);
   };
 
   // Form validation
@@ -38,6 +39,7 @@ function Basic() {
     mobile: Yup.string()
       .matches(/^\d{10,14}$/, "Invalid mobile number")
       .required("Mobile number is required"),
+
     password: Yup.string()
       .required("Password is required")
       .min(6, "Password must be at least 6 characters"),
@@ -57,18 +59,45 @@ function Basic() {
 
         if (response.status === 201) {
           Swal.fire("Registration Successful", `Welcome!`, "success");
+          // Handle successful registration (e.g., navigate to sign-in page)
           navigate("/authentication/sign-in/basic");
         } else if (response.status === 400) {
           Swal.fire("Error", `Username already exists!`, "warning");
         } else {
           Swal.fire("Error", `Registration failed. Please try again.`, "error");
+          alert("Registration failed. Please try again.");
         }
       } catch (error) {
-        Swal.fire("Error", "Error during registration. Please try again.", "error");
+        if (error.response && error.response.status === 400) {
+          Swal.fire("Error", `Username already exists!`, "warning");
+        } else {
+          console.error("Error during registration:", error);
+          Swal.fire("Error", `Error during registration: ${error}`, "error");
+        }
       }
     },
   });
 
+  // Function to send OTP to email
+  const handleSendOTP = async () => {
+    if (!formik.values.email) {
+      Swal.fire("Error", "Please enter an email", "error");
+      return;
+    }
+    try {
+      setOtpLoading(true);
+      const response = await api.post("/api/send-otp", { email: formik.values.email });
+      if (response.status === 200) {
+        Swal.fire("Success", "OTP sent to your email!", "success");
+        setEmailSent(true);
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      Swal.fire("Error", "Failed to send OTP. Please try again.", "error");
+    } finally {
+      setOtpLoading(false);
+    }
+  };
   // Function to send OTP to mobile
   const handleSendMobileOTP = async () => {
     if (!formik.values.mobile) {
@@ -102,14 +131,15 @@ function Basic() {
         identifier: formik.values.mobile,
         otp: otp,
       });
-
+      console.log("response.status: ", response.status);
       if (response.status === 200) {
-        Swal.fire("Success", "Mobile verified successfully!", "success");
-        setMobileVerified(true);
+        Swal.fire("Success", "Email verified successfully!", "success");
+        setEmailVerified(true);
       } else {
         Swal.fire("Error", "Invalid OTP. Please try again.", "error");
       }
     } catch (error) {
+      console.error("Error verifying OTP:", error);
       Swal.fire("Error", "Failed to verify OTP. Please try again.", "error");
     } finally {
       setOtpLoading(false);
@@ -117,15 +147,46 @@ function Basic() {
   };
 
   return (
-    <BasicLayout image={bgImage}>
+    <BasicLayout
+      image={bgImage}
+      button={{ variant: "gradient", color: "dark" }}
+    >
       <Card>
         <ArgonBox p={3} mb={1} textAlign="center">
           <ArgonTypography variant="h5" fontWeight="medium">
-            Register with Mobile OTP
+            Register with
           </ArgonTypography>
         </ArgonBox>
         <ArgonBox pt={2} pb={3} px={3}>
           <ArgonBox component="form" role="form" onSubmit={formik.handleSubmit}>
+            {/* Name Field */}
+            <ArgonBox mb={2}>
+              <ArgonInput
+                placeholder="Name"
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+              />
+              {formik.touched.name && formik.errors.name && (
+                <ErrorMessage message={formik.errors.name} />
+              )}
+            </ArgonBox>
+
+            {/* CNIC Field */}
+            <ArgonBox mb={2}>
+              <ArgonInput
+                placeholder="CNIC"
+                name="CNIC"
+                value={formik.values.CNIC}
+                onChange={formik.handleChange}
+                error={formik.touched.CNIC && Boolean(formik.errors.CNIC)}
+              />
+              {formik.touched.CNIC && formik.errors.CNIC && (
+                <ErrorMessage message={formik.errors.CNIC} />
+              )}
+            </ArgonBox>
+
             {/* Mobile Number Input */}
             <ArgonBox mb={2} display="flex" alignItems="center">
               <ArgonInput
@@ -176,11 +237,48 @@ function Basic() {
               </ArgonBox>
             )}
 
-            {/* Register Button */}
+            {/* Password Field */}
+            <ArgonBox mb={2}>
+              <ArgonInput
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+              />
+              {formik.touched.password && formik.errors.password && (
+                <ErrorMessage message={formik.errors.password} />
+              )}
+            </ArgonBox>
+
+            {/* Agreement */}
+            <ArgonBox display="flex" alignItems="center">
+              <Checkbox checked={agreement} onChange={handleSetAgreement} />
+              <ArgonTypography
+                variant="button"
+                fontWeight="regular"
+                onClick={handleSetAgreement}
+                sx={{ cursor: "pointer", userSelect: "none" }}
+              >
+                &nbsp;&nbsp;I agree to the&nbsp;
+              </ArgonTypography>
+              <ArgonTypography
+                component="a"
+                href="#"
+                color="info"
+                variant="button"
+                fontWeight="bold"
+              >
+                Terms and Conditions
+              </ArgonTypography>
+            </ArgonBox>
+
+            {/* Sign up Button */}
             <ArgonBox mt={4} mb={1}>
               <ArgonButton
                 color="info"
-                disabled={!agreement || formik.isSubmitting || !mobileVerified}
+                disabled={!agreement || formik.isSubmitting || !emailVerified}
                 fullWidth
                 type="submit"
               >
@@ -191,7 +289,13 @@ function Basic() {
             <ArgonBox mt={2}>
               <ArgonTypography variant="button" color="text" fontWeight="regular">
                 Already have an account?&nbsp;
-                <ArgonTypography component={Link} to="/authentication/sign-in/basic" variant="button" color="info" fontWeight="bold">
+                <ArgonTypography
+                  component={Link}
+                  to="/authentication/sign-in/basic"
+                  variant="button"
+                  color="info"
+                  fontWeight="bold"
+                >
                   Sign in
                 </ArgonTypography>
               </ArgonTypography>
@@ -200,6 +304,14 @@ function Basic() {
         </ArgonBox>
       </Card>
     </BasicLayout>
+  );
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p style={{ color: "red", fontSize: "0.8rem", margin: "0 0" }}>
+      {message}
+    </p>
   );
 }
 
